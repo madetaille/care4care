@@ -19,6 +19,7 @@ class C4CJob(models.Model):
     location = models.CharField(max_length=300) 
     start_date = models.DateTimeField()
     end_date = models.DateTimeField(default=None, null=True, blank=True)
+    complete = models.BooleanField(default=False)
 
 class C4CDonation(models.Model):
     sender = models.ForeignKey(C4CUser,related_name='donations_made')

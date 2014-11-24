@@ -34,17 +34,24 @@ class JobDetail(generic.DetailView):
     model = C4CJob
     template_name = 'job_detail.html'
     
+def acceptJob(request, c4cjob_id):
+    return
+    
+def confirmJob(request, c4cjob_id):
+    return
+    
 class UserJobs(generic.ListView):
     template_name = 'user_job.html'
     context_object_name = 'user_job_list'
     
     def get_queryset(self):
-        self.user = get_object_or_404(C4CUser, c4cuser_id = self.args[0])
-        return C4CJob.objects.filter(created_by = self.user)
+        self.membre = get_object_or_404(C4CUser, user=self.request.user)
+        return self.membre.jobs_created  #C4CJob.objects.filter(created_by = self.membre)
     
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super(UserJobs, self).get_context_data(**kwargs)
         # Add in the publisher
-        context['user'] = self.user
+        context['user'] = self.membre
         return context
+    

@@ -1,1 +1,22 @@
-{{ c4cjob }}
+<h1>{{ c4cjob.title }}</h1>
+
+<ul>
+	<li>{{c4cjob.}}</li>
+</ul>
+
+{% if c4cjob.done_by == None or c4cjob.asked_by == None %}
+<form action="{% url 'c4c:accept_job' c4cjob.id %}" method="post">
+{% csrf_token %}
+<input type="submit" value="Accept" />
+</form>
+{% elif c4cjob.complete == False %}
+<form action="{% url 'c4c:confirm_job' c4cjob.id %}" method="post">
+{% csrf_token %}
+<input type="submit" value="Done" />
+</form>
+{% elif c4cjob.complete %}
+<form action="{% url 'c4c:confirm_job' c4cjob.id %}" method="post">
+{% csrf_token %}
+<input type="submit" value="Confirm" />
+</form>
+{% endif %}
