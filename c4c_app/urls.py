@@ -7,6 +7,6 @@ urlpatterns = patterns('',
     url(r'^jobdetail/(?P<pk>\d+)/$', views.JobDetail.as_view(), name='job_detail'),
     url(r'^(?P<c4cjob_id>\d+)/acceptjob$', views.acceptJob, name='accept_job'),
     url(r'^(?P<c4cjob_id>\d+)/confirmjob$', views.confirmJob, name='confirm_job'),
-    url(r'^userjob/$', views.UserJobs.as_view(), name='user_job'),
-    #url(r'^createjob$', views.CreateJob.as_view(), name='create_job'),
+    url(r'^userjobs/$', views.UserJobs.as_view(), name='user_jobs'),
+    url(r'^createjob/$', views.createJob, name='create_job'),
 )
