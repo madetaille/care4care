@@ -11,8 +11,8 @@ class C4CUser(models.Model):
 
 class C4CJob(models.Model):
     created_by = models.ForeignKey(C4CUser,related_name='jobs_created')
-    asked_by = models.ForeignKey(C4CUser,related_name='jobs_asked')
-    done_by = models.ForeignKey(C4CUser,related_name='jobs_accepted')
+    asked_by = models.ForeignKey(C4CUser,related_name='jobs_asked', default = None)
+    done_by = models.ForeignKey(C4CUser,related_name='jobs_accepted', default = None)
     title = models.CharField(max_length=100)
     description = models.CharField(max_length=1000)
     duration = models.IntegerField() #in minutes
