@@ -6,20 +6,19 @@ class C4CUser(models.Model):
     address = models.CharField(max_length=300)
     time_account = models.IntegerField(default=0)
     birthday = models.DateField()
-    network = models.ManyToManyField("self",symmetrical=False)
-    branches = models.ManyToManyField("C4CBranch")
+    network = models.ManyToManyField("self",symmetrical=False, blank=True)
+    branches = models.ManyToManyField("C4CBranch", blank=True)
 
 class C4CJob(models.Model):
     created_by = models.ForeignKey(C4CUser,related_name='jobs_created')
-    asked_by = models.ForeignKey(C4CUser,related_name='jobs_asked', default = None)
-    done_by = models.ForeignKey(C4CUser,related_name='jobs_accepted', default = None)
+    asked_by = models.ForeignKey(C4CUser,related_name='jobs_asked', default = None, null=True, blank=True)
+    done_by = models.ForeignKey(C4CUser,related_name='jobs_accepted', default = None, null=True, blank=True)
     title = models.CharField(max_length=100)
     description = models.CharField(max_length=1000)
     duration = models.IntegerField() #in minutes
     location = models.CharField(max_length=300) 
     start_date = models.DateTimeField()
-    end_date = models.DateTimeField()
-    complete = models.BooleanField()
+    end_date = models.DateTimeField(default=None, null=True, blank=True)
 
 class C4CDonation(models.Model):
     sender = models.ForeignKey(C4CUser,related_name='donations_made')

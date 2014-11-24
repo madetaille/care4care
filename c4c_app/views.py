@@ -20,12 +20,12 @@ def createJob(request, c4cuser_id):
             job = C4CJob(created_by = maker, done_by = user, title = request.POST['title'],
                          description = request.POST['description'], location = request.POST['location'],
                          duration = request.POST['duration'], start_date = request.POST['start'],
-                         end_date = request.POST['end'], complete = False)
+                         end_date = request.POST['end'])
         else:
             job = C4CJob(created_by = maker, asked_by = user, title = request.POST['title'],
                          description = request.POST['description'], location = request.POST['location'],
                          duration = request.POST['duration'], start_date = request.POST['start'],
-                         end_date = request.POST['end'], complete = False)
+                         end_date = request.POST['end'])
         job.save()
         
         return HttpResponseRedirect(reverse('c4c:job_detail', args=(job.id,)))
