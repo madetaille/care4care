@@ -6,6 +6,7 @@ from django.views.generic.edit import CreateView
 from django.utils import timezone
 
 from c4c_app.models import *
+from c4c_app.user_views import *
 
 def createJob(request):
     maker = get_object_or_404(C4CUser, user=request.user)
@@ -26,7 +27,7 @@ def createJob(request):
                      start_date = request.GET['start'])
     job.save()
         
-    return HttpResponseRedirect(reverse('c4c:job_detail', args=(job.id)))
+    return HttpResponseRedirect(reverse('c4c:job_detail', args=(job.id,)))
 
 class JobCreation(CreateView):
     model = C4CJob
@@ -62,7 +63,7 @@ class JobDetail(generic.DetailView):
         # Call the base implementation first to get a context
         context = super(JobDetail, self).get_context_data(**kwargs)
         # Add in the publisher
-        context['user'] = get_object_or_404(C4CUser, user=self.request.user)
+        context['member'] = get_object_or_404(C4CUser, user=self.request.user)
         return context
     
     
@@ -72,20 +73,14 @@ def acceptJob(request, c4cjob_id):
 
     if job.offer == False:
         if user_site == job.asked_by:
-            return render(request, 'job_detail.html', {
-            'c4cjob' : job,
-            'error_message': "You can't accept an demand that you created !",
-            })
+            return HttpResponseRedirect(reverse('c4c:job_detail', args=(job.id,)))
         else:
             job.done_by = user_site
             job.save()
             return HttpResponseRedirect(reverse('c4c:job_detail', args=(job.id,)))
     else:
         if user_site == job.done_by:
-            return render(request, 'job_detail.html', {
-            'c4cjob' : job,
-            'error_message': "You can't accept a offer that you created !",
-            })
+            return HttpResponseRedirect(reverse('c4c:job_detail', args=(job.id,)))
         else:
             job.asked_by = user_site
             job.save()
@@ -104,13 +99,20 @@ def confirmJob(request, c4cjob_id):
     job = get_object_or_404(C4CJob, pk = c4cjob_id)
     job.complete = True
     job.save()
+<<<<<<< HEAD
     # avertir le createur de la completion du job 
+=======
+    # avertir le travailleur de la completion du job 
+>>>>>>> branch 'master' of https://github.com/madetaille/care4care.git
     return HttpResponseRedirect(reverse('c4c:job_detail', args=(job.id,)))
 
 def reportJob(request, c4cjob_id):
-    job = get_object_or_404(C4CJob, pk = c4cjob_id)
     # envoie d un email a l admin
+<<<<<<< HEAD
     return HttpResponseRedirect(reverse('c4c:job_detail', args=(job.id,)))
+=======
+    return HttpResponseRedirect(reverse('c4c:job_detail', args=(c4cjob_id,)))
+>>>>>>> branch 'master' of https://github.com/madetaille/care4care.git
 
 
 def cancelJob(request, c4cjob_id):
@@ -139,13 +141,10 @@ class UserJobs(generic.ListView):
     context_object_name = 'user_job_list'
     
     def get_queryset(self):
-        self.member = get_object_or_404(C4CUser, user=self.request.user)
-        return self.member.jobs_created.all()  #C4CJob.objects.filter(created_by = self.membre)
-    
-    def get_context_data(self, **kwargs):
-        # Call the base implementation first to get a context
-        context = super(UserJobs, self).get_context_data(**kwargs)
-        # Add in the publisher
-        context['user'] = self.member
-        return context
+        member = get_object_or_404(C4CUser, user=self.request.user)
+        res=[]
+        res.append(member.jobs_created.all())
+        res.append(member.jobs_asked.all())
+        res.append(member.jobs_accepted.all())
+        return res 
     
