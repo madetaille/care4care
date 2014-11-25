@@ -13,6 +13,7 @@ class C4CJob(models.Model):
     created_by = models.ForeignKey(C4CUser,related_name='jobs_created')
     asked_by = models.ForeignKey(C4CUser,related_name='jobs_asked', default = None, null=True, blank=True)
     done_by = models.ForeignKey(C4CUser,related_name='jobs_accepted', default = None, null=True, blank=True)
+    offer = models.BooleanField(default=False)
     title = models.CharField(max_length=100)
     description = models.CharField(max_length=1000)
     duration = models.IntegerField() #in minutes

@@ -28,20 +28,28 @@ class JobDetail(generic.DetailView):
     
 def acceptJob(request, c4cjob_id):
     job = get_object_or_404(C4CJob, pk = c4cjob_id)
-    user_job = job.created_by
     user_site = get_object_or_404(C4CUser, user = request.user)
-    if user_site == user_job:
-        return render(request, 'job_detail.html', {
+
+    if job.done_by == None:
+        if user_site == job.asked_by:
+            return render(request, 'job_detail.html', {
             'c4cjob' : job,
-            'error_message': "You can't accept a demand/offer that you created !.",
-        })
-    else:
-        if job.done_by == None:
+            'error_message': "You can't accept an demand that you created !",
+            })
+        else:
             job.done_by = user_site
+            job.offer = True
             job.save()
             return HttpResponseRedirect(reverse('c4c:job_detail', args=(job.id)))
+    else:
+        if user_site == job.done_by:
+            return render(request, 'job_detail.html', {
+            'c4cjob' : job,
+            'error_message': "You can't accept a offer that you created !",
+            })
         else:
             job.asked_by = user_site
+            job.offer = False
             job.save()
             return HttpResponseRedirect(reverse('c4c:job_detail', args=(job.id)))
 
