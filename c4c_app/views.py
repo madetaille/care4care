@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.views import generic
+from django.views.generic.edit import CreateView
 from django.utils import timezone
 
 from c4c_app.models import *
@@ -9,26 +10,48 @@ from c4c_app.models import *
 def createJob(request):
     maker = get_object_or_404(C4CUser, user=request.user)
     job = None
-    if(request.POST['kind'] == 'offer'):
+    if(request.GET['kind'] == 'offer'):
         job = C4CJob(created_by = maker, done_by = maker, 
-                     title = request.POST['title'],
-                     description = request.POST['description'], 
-                     location = request.POST['location'], 
-                     start_date = request.POST['start'])
+                     offer = True,
+                     title = request.GET['title'],
+                     description = request.GET['description'], 
+                     location = request.GET['location'], 
+                     start_date = request.GET['start'])
     else:
-        job = C4CJob(created_by = maker, done_by = maker, 
-                     title = request.POST['title'],
-                     description = request.POST['description'], 
-                     location = request.POST['location'],
-                     start_date = request.POST['start'])
+        job = C4CJob(created_by = maker, asked_by = maker, 
+                     offer = False,
+                     title = request.GET['title'],
+                     description = request.GET['description'],
+                     location = request.GET['location'],
+                     start_date = request.GET['start'])
     job.save()
         
     return HttpResponseRedirect(reverse('c4c:job_detail', args=(job.id)))
 
-class JobCreation(generic.DetailView):
+class JobCreation(CreateView):
     model = C4CJob
-    template_name = 'create_job.html'
+    template_name = 'c4cjob_form.html'
     
+    fields = ['title', 'description', 'location', 'start_date']
+    
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        maker = get_object_or_404(C4CUser, user=self.request.user)
+        self.object.created_by = maker
+            
+        typ = self.request.POST['kind']
+        if typ == 'offer':
+            self.object.offer = True
+        else:
+            self.object.offer = False
+            
+        if(form.instance.offer == True):
+            self.object.done_by = maker
+        else:
+            self.object.asked_by = maker
+            
+        self.object.save()
+        return HttpResponseRedirect(reverse('c4c:job_detail', args=(self.object.id,))) 
     
 
 class JobDetail(generic.DetailView):
@@ -56,7 +79,7 @@ def acceptJob(request, c4cjob_id):
         else:
             job.done_by = user_site
             job.save()
-            return HttpResponseRedirect(reverse('c4c:job_detail', args=(job.id)))
+            return HttpResponseRedirect(reverse('c4c:job_detail', args=(job.id,)))
     else:
         if user_site == job.done_by:
             return render(request, 'job_detail.html', {
@@ -66,7 +89,7 @@ def acceptJob(request, c4cjob_id):
         else:
             job.asked_by = user_site
             job.save()
-            return HttpResponseRedirect(reverse('c4c:job_detail', args=(job.id)))
+            return HttpResponseRedirect(reverse('c4c:job_detail', args=(job.id,)))
 
 def doneJob(request, c4cjob_id):
     job = get_object_or_404(C4CJob, pk = c4cjob_id)
@@ -74,7 +97,7 @@ def doneJob(request, c4cjob_id):
     job.end_date = timezone.now()
     job.save()
     # avertir le createur de la completion du job
-    return HttpResponseRedirect(reverse('c4c:job_detail', args=(job.id)))
+    return HttpResponseRedirect(reverse('c4c:job_detail', args=(job.id,)))
     
     
 def confirmJob(request, c4cjob_id):
@@ -82,12 +105,12 @@ def confirmJob(request, c4cjob_id):
     job.complete = True
     job.save()
     # avertir le createur de la completion du job 
-    return HttpResponseRedirect(reverse('c4c:job_detail', args=(job.id)))
+    return HttpResponseRedirect(reverse('c4c:job_detail', args=(job.id,)))
 
 def reportJob(request, c4cjob_id):
     job = get_object_or_404(C4CJob, pk = c4cjob_id)
     # envoie d un email a l admin
-    return HttpResponseRedirect(reverse('c4c:job_detail', args=(job.id)))
+    return HttpResponseRedirect(reverse('c4c:job_detail', args=(job.id,)))
 
 
 def cancelJob(request, c4cjob_id):
@@ -100,7 +123,7 @@ def cancelJob(request, c4cjob_id):
         job.asked_by = None
     job.save()
     
-    return HttpResponseRedirect(reverse('c4c:job_detail', args=(job.id)))
+    return HttpResponseRedirect(reverse('c4c:job_detail', args=(job.id,)))
 
 
 def deleteJob(request, c4cjob_id):

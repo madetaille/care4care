@@ -13,5 +13,5 @@ urlpatterns = patterns('',
     url(r'^(?P<c4cjob_id>\d+)/deletejob$', views.deleteJob, name='delete_job'),
     url(r'^userjobs/$', views.UserJobs.as_view(), name='user_jobs'),
     url(r'^createjob/$', views.createJob, name='create_job'),
-    url(r'jobcreation/$',views.JobCreation, name='job_creation'),
+    url(r'jobcreation/$',views.JobCreation.as_view(), name='job_creation'),
 )

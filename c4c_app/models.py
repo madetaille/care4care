@@ -16,7 +16,7 @@ class C4CJob(models.Model):
     offer = models.BooleanField(default=False)
     title = models.CharField(max_length=100)
     description = models.CharField(max_length=1000)
-    duration = models.IntegerField() #in minutes
+    duration = models.IntegerField(null=True) #in minutes
     location = models.CharField(max_length=300) 
     start_date = models.DateTimeField()
     end_date = models.DateTimeField(default=None, null=True, blank=True)
