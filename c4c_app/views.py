@@ -39,7 +39,7 @@ class JobDetail(generic.DetailView):
         # Call the base implementation first to get a context
         context = super(JobDetail, self).get_context_data(**kwargs)
         # Add in the publisher
-        context['user'] = get_object_or_404(C4CUser, user=self.request.user)
+        context['member'] = get_object_or_404(C4CUser, user=self.request.user)
         return context
     
     
@@ -49,20 +49,14 @@ def acceptJob(request, c4cjob_id):
 
     if job.offer == False:
         if user_site == job.asked_by:
-            return render(request, 'job_detail.html', {
-            'c4cjob' : job,
-            'error_message': "You can't accept an demand that you created !",
-            })
+            return HttpResponseRedirect(reverse('c4c:job_detail', args=(job.id,)))
         else:
             job.done_by = user_site
             job.save()
             return HttpResponseRedirect(reverse('c4c:job_detail', args=(job.id,)))
     else:
         if user_site == job.done_by:
-            return render(request, 'job_detail.html', {
-            'c4cjob' : job,
-            'error_message': "You can't accept a offer that you created !",
-            })
+            return HttpResponseRedirect(reverse('c4c:job_detail', args=(job.id,)))
         else:
             job.asked_by = user_site
             job.save()
