@@ -23,7 +23,7 @@ def createJob(request):
                      start_date = request.POST['start'])
     job.save()
         
-    return HttpResponseRedirect(reverse('c4c:job_detail', args=(job.id)))
+    return HttpResponseRedirect(reverse('c4c:job_detail', args=(job.id,)))
 
 class JobCreation(generic.DetailView):
     model = C4CJob
@@ -56,7 +56,7 @@ def acceptJob(request, c4cjob_id):
         else:
             job.done_by = user_site
             job.save()
-            return HttpResponseRedirect(reverse('c4c:job_detail', args=(job.id)))
+            return HttpResponseRedirect(reverse('c4c:job_detail', args=(job.id,)))
     else:
         if user_site == job.done_by:
             return render(request, 'job_detail.html', {
@@ -66,7 +66,7 @@ def acceptJob(request, c4cjob_id):
         else:
             job.asked_by = user_site
             job.save()
-            return HttpResponseRedirect(reverse('c4c:job_detail', args=(job.id)))
+            return HttpResponseRedirect(reverse('c4c:job_detail', args=(job.id,)))
 
 def doneJob(request, c4cjob_id):
     job = get_object_or_404(C4CJob, pk = c4cjob_id)
@@ -74,7 +74,7 @@ def doneJob(request, c4cjob_id):
     job.end_date = timezone.now()
     job.save()
     # avertir le createur de la completion du job
-    return HttpResponseRedirect(reverse('c4c:job_detail', args=(job.id)))
+    return HttpResponseRedirect(reverse('c4c:job_detail', args=(job.id,)))
     
     
 def confirmJob(request, c4cjob_id):
@@ -82,12 +82,12 @@ def confirmJob(request, c4cjob_id):
     job.complete = True
     job.save()
     # avertir le createur de la completion du job 
-    return HttpResponseRedirect(reverse('c4c:job_detail', args=(job.id)))
+    return HttpResponseRedirect(reverse('c4c:job_detail', args=(job.id,)))
 
 def reportJob(request, c4cjob_id):
     job = get_object_or_404(C4CJob, pk = c4cjob_id)
     # envoie d un email a l admin
-    return HttpResponseRedirect(reverse('c4c:job_detail', args=(job.id)))
+    return HttpResponseRedirect(reverse('c4c:job_detail', args=(job.id,)))
 
 
 def cancelJob(request, c4cjob_id):
@@ -100,7 +100,7 @@ def cancelJob(request, c4cjob_id):
         job.asked_by = None
     job.save()
     
-    return HttpResponseRedirect(reverse('c4c:job_detail', args=(job.id)))
+    return HttpResponseRedirect(reverse('c4c:job_detail', args=(job.id,)))
 
 
 def deleteJob(request, c4cjob_id):
