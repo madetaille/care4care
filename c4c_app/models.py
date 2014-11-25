@@ -41,3 +41,7 @@ class C4CEvent(models.Model):
     job = models.ForeignKey(C4CJob,default=None, null=True, blank=True)
     user = models.ForeignKey(C4CUser)
     description = models.CharField(max_length=1000)
+    
+    def short(self):
+        return self.name
+    short.allow_tags = True

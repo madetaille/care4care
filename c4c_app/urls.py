@@ -23,7 +23,7 @@ urlpatterns = patterns('',
     url(r'^branchdetail/(?P<pk>\d+)/$', views.BranchDetail.as_view(), name='branch_detail'),
     #Agenda
     url(r'^agenda/$', views.year, name='agenda'),
-    url(r'^agenda/(?P<pk>\d+)/$', views.year, name='agenda'),
+    url(r'^agenda/(\d+)/$', views.year, name='agenda'),
     url(r'^month/$', views.month, name='month'),
     url(r'^month/(\d+)/(\d+)/$', views.month, name='month'),
     url(r'^month/(\d+)/(\d+)/(prev|next)/$', views.month, name='month'),

@@ -1,4 +1,4 @@
-<a href= "{% url 'c4c:month' 'prev' %}">&lt;&lt; Prev </a>
+<a href= "{% url 'c4c:month' year month 'prev' %}">&lt;&lt; Prev </a>
 <a href= "{% url 'c4c:month' year month 'next' %}">Next &gt;&gt;</a>
 
 <h4>{{ mname }} {{ year }}</h4>
@@ -35,7 +35,7 @@
                 {{ day }}
                 {% for entry in entries %}
                     <br />
-                    <b>{{ entry.creator }}</b>: {{ entry.short|safe }}
+                    <b>{{ entry.user.user }}</b>: {{ entry.short|safe }}
                 {% endfor %}
             {% endif %}
             </td>

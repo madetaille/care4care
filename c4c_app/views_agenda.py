@@ -9,7 +9,7 @@ from datetime import date, datetime, timedelta
 import calendar
 import time
 
-from c4c_app.models import C4CEvent
+from c4c_app.models import C4CEvent, C4CUser, C4CJob
 
 mnames = "January February March April May June July August September October November December"
 mnames = mnames.split()
@@ -44,10 +44,10 @@ def month(request, year, month, change=None):
     year, month = int(year), int(month)
 
     # apply next / previous change
-    if change in ("next", "prev"):
+    if change in ('next', 'prev'):
         now, mdelta = date(year, month, 15), timedelta(days=31)
-        if change == "next":   mod = mdelta
-        elif change == "prev": mod = -mdelta
+        if change == 'next':   mod = mdelta
+        elif change == 'prev': mod = -mdelta
 
         year, month = (now+mod).timetuple()[:2]
 
@@ -86,7 +86,7 @@ def day(request, year, month, day):
             # add current user and date to each entry & save
             entries = formset.save(commit=False)
             for entry in entries:
-                entry.user = request.user
+                entry.user = get_object_or_404(C4CUser, user=request.user)
                 entry.date = date(int(year), int(month), int(day))
                 entry.save()
             return HttpResponseRedirect(reverse('c4c:month', args=(year, month)))
