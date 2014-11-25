@@ -8,3 +8,6 @@ from django.utils import timezone
 from c4c_app.models import *
 from c4c_app.views_user import *
 from c4c_app.views_job import *
+
+def home(request):
+    return render(request,'index.html')

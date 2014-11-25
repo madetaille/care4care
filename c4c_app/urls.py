@@ -3,8 +3,8 @@ from django.conf.urls import patterns, url
 from c4c_app import views
 
 urlpatterns = patterns('',
-    #url(r'^$', views.home, name='home'),
-    
+    #Home
+    url(r'^$', views.home, name='home'),
     #Jobs
     url(r'^jobdetail/(?P<pk>\d+)/$', views.JobDetail.as_view(), name='job_detail'),
     url(r'^(?P<c4cjob_id>\d+)/acceptjob$', views.acceptJob, name='accept_job'),
