@@ -99,20 +99,13 @@ def confirmJob(request, c4cjob_id):
     job = get_object_or_404(C4CJob, pk = c4cjob_id)
     job.complete = True
     job.save()
-<<<<<<< HEAD
     # avertir le createur de la completion du job 
-=======
     # avertir le travailleur de la completion du job 
->>>>>>> branch 'master' of https://github.com/madetaille/care4care.git
     return HttpResponseRedirect(reverse('c4c:job_detail', args=(job.id,)))
 
 def reportJob(request, c4cjob_id):
     # envoie d un email a l admin
-<<<<<<< HEAD
-    return HttpResponseRedirect(reverse('c4c:job_detail', args=(job.id,)))
-=======
     return HttpResponseRedirect(reverse('c4c:job_detail', args=(c4cjob_id,)))
->>>>>>> branch 'master' of https://github.com/madetaille/care4care.git
 
 
 def cancelJob(request, c4cjob_id):
