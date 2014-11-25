@@ -116,13 +116,10 @@ class UserJobs(generic.ListView):
     context_object_name = 'user_job_list'
     
     def get_queryset(self):
-        self.member = get_object_or_404(C4CUser, user=self.request.user)
-        return self.member.jobs_created.all()  #C4CJob.objects.filter(created_by = self.membre)
-    
-    def get_context_data(self, **kwargs):
-        # Call the base implementation first to get a context
-        context = super(UserJobs, self).get_context_data(**kwargs)
-        # Add in the publisher
-        context['user'] = self.member
-        return context
+        member = get_object_or_404(C4CUser, user=self.request.user)
+        res=[]
+        res.append(member.jobs_created.all())
+        res.append(member.jobs_asked.all())
+        res.append(member.jobs_accepted.all())
+        return res #C4CJob.objects.filter(created_by = self.membre)
     
