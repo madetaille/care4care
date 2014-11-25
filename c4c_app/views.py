@@ -5,6 +5,7 @@ from django.views import generic
 from django.utils import timezone
 
 from c4c_app.models import *
+from c4c_app.user_views import *
 
 def createJob(request):
     maker = get_object_or_404(C4CUser, user=request.user)
@@ -75,13 +76,12 @@ def confirmJob(request, c4cjob_id):
     job = get_object_or_404(C4CJob, pk = c4cjob_id)
     job.complete = True
     job.save()
-    # avertir le createur de la completion du job 
+    # avertir le travailleur de la completion du job 
     return HttpResponseRedirect(reverse('c4c:job_detail', args=(job.id,)))
 
 def reportJob(request, c4cjob_id):
-    job = get_object_or_404(C4CJob, pk = c4cjob_id)
     # envoie d un email a l admin
-    return HttpResponseRedirect(reverse('c4c:job_detail', args=(job.id,)))
+    return HttpResponseRedirect(reverse('c4c:job_detail', args=(c4cjob_id,)))
 
 
 def cancelJob(request, c4cjob_id):
@@ -115,5 +115,5 @@ class UserJobs(generic.ListView):
         res.append(member.jobs_created.all())
         res.append(member.jobs_asked.all())
         res.append(member.jobs_accepted.all())
-        return res #C4CJob.objects.filter(created_by = self.membre)
+        return res 
     
