@@ -32,7 +32,7 @@ class C4CDonation(models.Model):
 class C4CBranch(models.Model):
     name = models.CharField(max_length=100,primary_key=True)
     address = models.CharField(max_length=300)
-    officers = models.ManyToManyField("C4CUser")
+    officers = models.ManyToManyField("C4CUser",blank=True)
     main_user = models.OneToOneField(C4CUser,related_name='is_main_user_of_branch')
 
 class C4CEvent(models.Model):

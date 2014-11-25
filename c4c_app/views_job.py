@@ -1,11 +1,12 @@
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.views import generic
 from django.views.generic.edit import CreateView
 from django.utils import timezone
 
-from c4c_app.models import *
+from c4c_app.models import C4CUser,C4CJob
 
 def createJob(request):
     maker = get_object_or_404(C4CUser, user=request.user)

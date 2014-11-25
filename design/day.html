@@ -1,0 +1,18 @@
+<h4>My Event</h4>
+<form action="{% url 'c4c:day' year month day %}" method="POST"> {% csrf_token %}
+
+{{ entries.management_form }}
+
+{% for entry in entries.forms %}
+    {{ entry.id }}
+    <div class="entry">
+        <div class="del">Delete {{ entry.DELETE }}</div>
+        <div id="inp1">
+            <p>Title: {{ entry.name }}</p>
+        </div>
+        {{ entry.job }}
+        {{ entry.description }}
+    </div>
+{% endfor %}
+
+<input type="submit" value="Save" /> </form>

@@ -19,4 +19,14 @@ urlpatterns = patterns('',
     #User
     url(r'^userdetail/(?P<pk>\d+)/$', views.UserDetail.as_view(), name='user_detail'),
     url(r'^network/$', views.PersonalNetwork.as_view(), name='network'),
+    #Branch
+    url(r'^branchdetail/(?P<pk>\d+)/$', views.BranchDetail.as_view(), name='branch_detail'),
+    #Agenda
+    url(r'^agenda/$', views.year, name='agenda'),
+    url(r'^agenda/(?P<pk>\d+)/$', views.year, name='agenda'),
+    url(r'^month/$', views.month, name='month'),
+    url(r'^month/(\d+)/(\d+)/$', views.month, name='month'),
+    url(r'^month/(\d+)/(\d+)/(prev|next)/$', views.month, name='month'),
+    url(r'^day/(\d+)/(\d+)/(\d+)/$', views.day, name='day'),
+    
 )
