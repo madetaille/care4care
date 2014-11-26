@@ -5,6 +5,11 @@ from django.db import models
 class C4CUser(models.Model):
 
     """ Add additionnal interesting fields to the default Django's users """
+
+    class Meta:
+        verbose_name = 'C4C User'
+        verbose_name_plural = 'C4C Users'
+
     user = models.OneToOneField(django.contrib.auth.models.User, primary_key=True)  # make a link with internal django users
     address = models.CharField(max_length=300)
     time_account = models.IntegerField(default=0)
@@ -20,6 +25,11 @@ class C4CUser(models.Model):
 class C4CJob(models.Model):
 
     """ Represents a job """
+
+    class Meta:
+        verbose_name = 'Job'
+        verbose_name_plural = 'Jobs'
+
     created_by = models.ForeignKey(C4CUser, related_name='jobs_created')
     asked_by = models.ForeignKey(C4CUser, related_name='jobs_asked', default=None, null=True, blank=True)
     done_by = models.ForeignKey(C4CUser, related_name='jobs_accepted', default=None, null=True, blank=True)
@@ -49,6 +59,10 @@ class C4CDonation(models.Model):
 
     """ Represents a donation """
 
+    class Meta:
+        verbose_name = 'Donation'
+        verbose_name_plural = 'Donations'
+
     sender = models.ForeignKey(C4CUser, related_name='donations_made')
     receiver = models.ForeignKey(C4CUser, related_name='donations_received')
     date = models.DateTimeField()
@@ -64,6 +78,10 @@ class C4CBranch(models.Model):
 
     """ Represents a branch """
 
+    class Meta:
+        verbose_name = 'Branch'
+        verbose_name_plural = 'Branches'
+
     name = models.CharField(max_length=100, primary_key=True)
     address = models.CharField(max_length=300)
     officers = models.ManyToManyField("C4CUser", blank=True)
@@ -77,6 +95,11 @@ class C4CBranch(models.Model):
 class C4CEvent(models.Model):
 
     """ Represents an event """
+
+    class Meta:
+        verbose_name = 'Event'
+        verbose_name_plural = 'Events'
+
     name = models.CharField(max_length=100)
     date = models.DateTimeField()
     job = models.ForeignKey(C4CJob, default=None, null=True, blank=True)
