@@ -1,7 +1,26 @@
 {% extends "base.html" %}
 
-{% block title %}Care4Care - My profile{% endblock %}
+{% block title %}{% if viewer.pk == c4cuser.pk %} Care4Care - My profile {% else %} Care4Care - {{ c4cuser.user.username }}'s profile {% endif %}{% endblock %}
 
 {% block content %}
-    {{ c4cuser.user }}
+	{% if viewer.pk == c4cuser.pk %}
+		<h1 class="text-center">My profile</h1>
+	{% else %}
+		<h1 class="text-center">{{ c4cuser.user.username }}'s profile</h1>
+	{% endif %}
+	<br/>
+    <ul>
+		<li>Username: {{ c4cuser.user.username }}</li>
+		<li>First name: {{ c4cuser.user.first_name }}</li>
+		<li>Last name: {{ c4cuser.user.last_name }}</li>
+		<li>Email: {{ c4cuser.user.email }}</li>
+		<li>Address: {{ c4cuser.address }}</li>
+		<li>Birthday: {{ c4cuser.birthday }}</li>
+		<li>Account balance: {{ c4cuser.time_account }}</li>
+    </ul>
+
+    {% if viewer.pk == c4cuser.pk %}
+		<br/>
+		<p>You can <a href={% url 'c4c:user_edit' c4cuser.pk %}>edit your profile</a>.</p>
+	{% endif %}
 {% endblock content %}
