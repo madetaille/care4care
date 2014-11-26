@@ -1,7 +1,13 @@
-{% if network_list %}
-    {% for member in network_list %}
-		<ul>
-			<li><a href="{% url 'c4c:user_detail' member.pk %}">{{ member.user }}</a></li>
-        </ul>
-    {% endfor %}
-{% endif %}
+{% extends "base.html" %}
+
+{% block title %}Care4Care - User jobs{% endblock %}
+
+{% block content %}
+	{% if network_list %}
+	    {% for member in network_list %}
+			<ul>
+				<li><a href="{% url 'c4c:user_detail' member.pk %}">{{ member.user }}</a></li>
+	        </ul>
+	    {% endfor %}
+	{% endif %}
+{% endblock content %}

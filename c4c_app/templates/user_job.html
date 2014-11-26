@@ -1,16 +1,21 @@
-{% if user_job_list %}
-    {% for kind in user_job_list %}
-		{% if forloop.counter == 1 %}
-			<p>Created Jobs</p>
-		{% elif forloop.counter == 2 %}
-			<p>Demands</p>
-		{% elif forloop.counter == 3 %}
-			<p>Offers</p>
-		{% endif %}
-		<ul>
-		{% for job in kind %}
-			<li><a href="{% url 'c4c:job_detail' job.id %}">{{ job.title }}</a></li>
-        {% endfor %}
-        </ul>
-    {% endfor %}
-{% endif %}
+{% extends "base.html" %}
+
+{% block title %}Care4Care - User jobs{% endblock %}
+{% block content %}
+	{% if user_job_list %}
+	    {% for kind in user_job_list %}
+			{% if forloop.counter == 1 %}
+				<p>Created Jobs</p>
+			{% elif forloop.counter == 2 %}
+				<p>Demands</p>
+			{% elif forloop.counter == 3 %}
+				<p>Offers</p>
+			{% endif %}
+			<ul>
+			{% for job in kind %}
+				<li><a href="{% url 'c4c:job_detail' job.id %}">{{ job.title }}</a></li>
+	        {% endfor %}
+	        </ul>
+	    {% endfor %}
+	{% endif %}
+{% endblock content %}

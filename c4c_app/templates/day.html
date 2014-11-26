@@ -1,18 +1,24 @@
-<h4>My Event</h4>
-<form action="{% url 'c4c:day' year month day %}" method="POST"> {% csrf_token %}
+{% extends "base.html" %}
 
-{{ entries.management_form }}
+{% block title %}Care4Care - User jobs{% endblock %}
 
-{% for entry in entries.forms %}
-    {{ entry.id }}
-    <div class="entry">
-        <div class="del">Delete {{ entry.DELETE }}</div>
-        <div id="inp1">
-            <p>Title: {{ entry.name }}</p>
-            <p>Job: {{ entry.job }}</p>
-        </div>
-        {{ entry.description }}
-    </div>
-{% endfor %}
-
-<input type="submit" value="Save" /> </form>
+{% block content %}
+	<h4>My Event</h4>
+	<form action="{% url 'c4c:day' year month day %}" method="POST"> {% csrf_token %}
+	
+	{{ entries.management_form }}
+	
+	{% for entry in entries.forms %}
+	    {{ entry.id }}
+	    <div class="entry">
+	        <div class="del">Delete {{ entry.DELETE }}</div>
+	        <div id="inp1">
+	            <p>Title: {{ entry.name }}</p>
+	            <p>Job: {{ entry.job }}</p>
+	        </div>
+	        {{ entry.description }}
+	    </div>
+	{% endfor %}
+	
+	<input type="submit" value="Save" /> </form>
+{% endblock content %}
