@@ -28,11 +28,18 @@ class UserEdit(generic.edit.UpdateView):
 		self.object = form.save(commit=False)
 		self.object.save()
 		return HttpResponseRedirect(reverse('c4c:user_detail', args=(self.object.pk,)))
-        
+
 class PersonalNetwork(generic.ListView):
-    template_name = 'network.html'
-    context_object_name = 'network_list'
-    
-    def get_queryset(self):
-        member = get_object_or_404(C4CUser, user=self.request.user)
-        return member.network.all()
+	template_name = 'network.html'
+	context_object_name = 'network_list'
+	
+	def get_queryset(self):
+		member = get_object_or_404(C4CUser, user=self.request.user)
+		return member.network.all()
+	
+def addNetwork(request, c4cuser_pk):
+	user_to_add = get_object_or_404(C4CUser,pk = c4cuser_pk)
+	user = get_object_or_404(C4CUser,pk = request.user)
+	
+	user.network.add(user_to_add)
+	return HttpResponseRedirect(reverse('c4c:network'))

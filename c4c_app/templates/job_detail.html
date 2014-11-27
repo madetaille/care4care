@@ -3,15 +3,21 @@
 {% block title %}Care4Care - Job detail{% endblock %}
 
 {% block content %}
-	<h1>{{ c4cjob.title }}</h1>
+    <h1>{{ c4cjob.title }} :
+        {% if c4cjob.offer == True %}
+            offer
+        {% elif c4cjob.offer == False %}
+            demand
+        {% endif %}
+        </h1>
 	
 	<ul>
-		<li>{{c4cjob.created_by.user}}</li>
+		<li>{{c4cjob.created_by}}</li>
 		{% if c4cjob.asked_by != None %}
-			<li>{{c4cjob.asked_by.user}}</li>
+			<li>{{c4cjob.asked_by}}</li>
 		{% endif %}
 		{% if c4cjob.done_by != None %}
-			<li>{{c4cjob.done_by.user}}</li>
+			<li>{{c4cjob.done_by}}</li>
 		{% endif %}
 		<li>{{c4cjob.location}}</li>
 		<li>{{c4cjob.description}}</li>
@@ -40,6 +46,7 @@
 	{% elif c4cjob.end_date == None and c4cjob.done_by.pk == member.pk and c4cjob.done_by != None and c4cjob.asked_by != None %}
 		<form action="{% url 'c4c:done_job' c4cjob.id %}" method="post">
 		{% csrf_token %}
+		<input type="number" name="Duration" />
 		<input type="submit" value="Done" />
 		</form>
 	{% elif c4cjob.complete == False and c4cjob.asked_by.pk == member.pk and c4cjob.end_date != None %}
@@ -67,17 +74,27 @@
 		{% endif %}
 	{% endif %}
 	
-	{% if c4cjob.complete == False or c4cjob.end_date == None %}
+	{% if c4cjob.complete == False and c4cjob.end_date == None %}
 		{% if c4cjob.offer == True and c4cjob.done_by.pk == member.pk  %}
 			<form action="{% url 'c4c:delete_job' c4cjob.id %}" method="post">
 			{% csrf_token %}
 			<input type="submit" value="Delete" />
 			</form>
+            <br>
+            <form action="{% url 'c4c:job_update' c4cjob.pk %}" method="post">
+            {% csrf_token %}
+            <input type="submit" value="Update" />
+            </form>
 		{% elif c4cjob.offer == False and c4cjob.asked_by.pk == member.pk %}
 			<form action="{% url 'c4c:delete_job' c4cjob.id %}" method="post">
 			{% csrf_token %}
 			<input type="submit" value="Delete" />
 			</form>
+            <br>
+            <form action="{% url 'c4c:job_update' c4cjob.pk %}" method="post">
+            {% csrf_token %}
+            <input type="submit" value="Update" />
+            </form>
 		{% endif %}
 	{% endif %}
 {% endblock content %}
