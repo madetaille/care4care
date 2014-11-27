@@ -4,7 +4,7 @@
 
 {% block content %}
 	<h4>My Event</h4>
-	<form action="{% url 'c4c:day' year month day %}" method="POST"> {% csrf_token %}
+	<form action="{% url 'c4c:day' year month day user.pk %}" method="POST"> {% csrf_token %}
 	
 	{{ entries.management_form }}
 	
