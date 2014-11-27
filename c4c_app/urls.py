@@ -20,6 +20,7 @@ urlpatterns = patterns('',
     url(r'^userdetail/(?P<pk>\d+)/$', views.UserDetail.as_view(), name='user_detail'),
     url(r'^useredit/(?P<pk>\d+)/$', views.UserEdit.as_view(), name='user_edit'),
     url(r'^network/$', views.PersonalNetwork.as_view(), name='network'),
+    url(r'^(?P<c4cuser_pk>\d+)/addnetwork', views.addNetwork, name='add_network'),
     url(r'^registration/$', views.view_registration, name='registration'),
     #Branch
     url(r'^branchdetail/(?P<pk>\d+)/$', views.BranchDetail.as_view(), name='branch_detail'),
