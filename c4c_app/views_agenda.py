@@ -14,9 +14,14 @@ from c4c_app.models import C4CEvent, C4CUser, C4CJob
 mnames = "January February March April May June July August September October November December"
 mnames = mnames.split()
 
-def year(request, year=None):
+def year(request, year=None, member_pk=None):
     """Main listing, years and months; three years per page."""
     # prev / next years
+    
+    member=None
+    if member_pk: member = get_object_or_404(C4CUser, pk=member_pk)
+    else: member = get_object_or_404(C4CUser, user=request.user)
+    
     if year: year = int(year)
     else:    year = time.localtime()[0]
 
@@ -28,7 +33,7 @@ def year(request, year=None):
         mlst = []
         for n, month in enumerate(mnames):
             entry = current = False   # are there entry(s) for this month; current month?
-            entries = C4CEvent.objects.filter(date__year=y, date__month=n+1)
+            entries = C4CEvent.objects.filter(date__year=y, date__month=n+1, user=member)
 
             if entries:
                 entry = True
@@ -37,9 +42,14 @@ def year(request, year=None):
             mlst.append(dict(n=n+1, name=month, entry=entry, current=current))
         lst.append((y, mlst))
 
-    return render_to_response("agenda.html", dict(years=lst, user=request.user, year=year))
+    return render_to_response("agenda.html", dict(years=lst, user=member, year=year))
 
-def month(request, year, month, change=None):
+def month(request, year, month, change=None, member_pk=None):
+    
+    member=None
+    if member_pk: member = get_object_or_404(C4CUser, pk=member_pk)
+    else: member = get_object_or_404(C4CUser, user=request.user)
+    
     """Listing of days in `month`."""
     year, month = int(year), int(month)
 
@@ -63,7 +73,7 @@ def month(request, year, month, change=None):
     for day in month_days:
         entries = current = False   # are there entries for this day; current day?
         if day:
-            entries = C4CEvent.objects.filter(date__year=year, date__month=month, date__day=day)
+            entries = C4CEvent.objects.filter(date__year=year, date__month=month, date__day=day, user=member)
             if day == nday and year == nyear and month == nmonth:
                 current = True
 
@@ -72,10 +82,17 @@ def month(request, year, month, change=None):
             lst.append([])
             week += 1
 
-    return render_to_response("month.html", dict(year=year, month=month, user=request.user,
+    return render_to_response("month.html", dict(year=year, month=month, user=member,
                         month_days=lst, mname=mnames[month-1]))
     
-def day(request, year, month, day):
+def day(request, year, month, day, member_pk=None):
+    
+    member=None
+    if member_pk: member = get_object_or_404(C4CUser, pk=member_pk)
+    else: member = get_object_or_404(C4CUser, user=request.user)
+    
+    change =(member.user == request.user)
+    
     """Entries for the day."""
     EntriesFormset = modelformset_factory(C4CEvent, extra=1, exclude=("user", "date"),
                                           can_delete=True)
@@ -86,15 +103,15 @@ def day(request, year, month, day):
             # add current user and date to each entry & save
             entries = formset.save(commit=False)
             for entry in entries:
-                entry.user = get_object_or_404(C4CUser, user=request.user)
+                entry.user = get_object_or_404(C4CUser, user=member.user)
                 entry.date = date(int(year), int(month), int(day))
                 entry.save()
-            return HttpResponseRedirect(reverse('c4c:month', args=(year, month)))
+            return HttpResponseRedirect(reverse('c4c:month', args=(year, month, member.pk)))
 
     else:
         # display formset for existing enties and one extra form
         formset = EntriesFormset(queryset=C4CEvent.objects.filter(date__year=year,
-            date__month=month, date__day=day, user=request.user))
+            date__month=month, date__day=day, user=member))
     return render_to_response("day.html", add_csrf(request, entries=formset, year=year,
             month=month, day=day))
 

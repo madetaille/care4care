@@ -1,4 +1,4 @@
-import django.contrib.auth.models
+from django.contrib.auth.models import User, Group
 from django.db import models
 from django.db.models.signals import pre_save, post_save, pre_delete
 from django.dispatch import receiver
@@ -13,7 +13,7 @@ class C4CUser(models.Model):
         verbose_name = 'C4C User'
         verbose_name_plural = 'C4C Users'
 
-    user = models.OneToOneField(django.contrib.auth.models.User, primary_key=True)  # make a link with internal django users
+    user = models.OneToOneField(User, primary_key=True)  # make a link with internal django users
     address = models.CharField(max_length=300)
     time_account = models.IntegerField(default=0)
     birthday = models.DateField()
@@ -47,13 +47,13 @@ class C4CJob(models.Model):
         verbose_name = 'Job'
         verbose_name_plural = 'Jobs'
 
-    created_by = models.ForeignKey(C4CUser, related_name='jobs_created')
-    asked_by = models.ForeignKey(C4CUser, related_name='jobs_asked', default=None, null=True, blank=True)
-    done_by = models.ForeignKey(C4CUser, related_name='jobs_accepted', default=None, null=True, blank=True)
+    created_by = models.ForeignKey(User, related_name='jobs_created')
+    asked_by = models.ForeignKey(User, related_name='jobs_asked', default=None, null=True, blank=True)
+    done_by = models.ForeignKey(User, related_name='jobs_accepted', default=None, null=True, blank=True)
     offer = models.BooleanField(default=False)
     title = models.CharField(max_length=100)
     description = models.CharField(max_length=1000)
-    duration = models.IntegerField(null=True)  # in minutes
+    duration = models.IntegerField(default=0, null=True, blank=True)  # in minutes
     location = models.CharField(max_length=300)
     start_date = models.DateTimeField()
     end_date = models.DateTimeField(default=None, null=True, blank=True)
@@ -83,8 +83,8 @@ class C4CDonation(models.Model):
         verbose_name = 'Donation'
         verbose_name_plural = 'Donations'
 
-    sender = models.ForeignKey(C4CUser, related_name='donations_made')
-    receiver = models.ForeignKey(C4CUser, related_name='donations_received')
+    sender = models.ForeignKey(User, related_name='donations_made')
+    receiver = models.ForeignKey(User, related_name='donations_received')
     date = models.DateTimeField()
     message = models.CharField(max_length=1000)
     amount = models.IntegerField()  # in minutes
@@ -105,10 +105,13 @@ class C4CBranch(models.Model):
         verbose_name = 'Branch'
         verbose_name_plural = 'Branches'
 
-    name = models.CharField(max_length=100, primary_key=True)
+    name = models.CharField(max_length=60, primary_key=True)
     address = models.CharField(max_length=300)
-    officers = models.ManyToManyField("C4CUser", blank=True)
-    main_user = models.OneToOneField(C4CUser, related_name='is_main_user_of_branch')
+
+    group = models.OneToOneField(Group, unique=True, related_name="in_branches")
+    officers_group = models.OneToOneField(Group, unique=True, related_name="is_branch_officer_of")
+
+    main_user = models.OneToOneField(User, related_name='is_main_user_of_branch', unique=True)
 
     def __str__(self):
         """ Allows to clearly see the branches in the administration """
@@ -126,7 +129,7 @@ class C4CEvent(models.Model):
     name = models.CharField(max_length=100)
     date = models.DateTimeField()
     job = models.ForeignKey(C4CJob, default=None, null=True, blank=True)
-    user = models.ForeignKey(C4CUser)
+    user = models.ForeignKey(User)
     description = models.CharField(max_length=1000)
 
     def short(self):

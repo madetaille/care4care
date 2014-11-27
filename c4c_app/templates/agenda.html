@@ -3,8 +3,8 @@
 {% block title %}Care4Care - Agenda{% endblock %}
 
 {% block content %}
-	<a href="{% url 'c4c:agenda' year|add:'-1' %}">&lt;&lt; Prev</a>
-	<a href="{% url 'c4c:agenda' year|add:'1' %}">Next &gt;&gt;</a>
+	<a href="{% url 'c4c:agenda' year|add:'-1' user.pk %}">&lt;&lt; Prev</a>
+	<a href="{% url 'c4c:agenda' year|add:'1' user.pk %}">Next &gt;&gt;</a>
 	
 	{% for year, months in years %}
 		<div class="clear"></div>
@@ -14,7 +14,7 @@
 			{% if month.current %}"current"{% endif %}
 			{% if not month.current %}"month"{% endif %} >
 			{% if month.entry %}<b>{% endif %}
-				<a href="{% url 'c4c:month' year month.n %}">{{ month.name }}</a>
+				<a href="{% url 'c4c:month' year month.n user.pk %}">{{ month.name }}</a>
 			{% if month.entry %}</b>{% endif %}
 			</div>
 	
