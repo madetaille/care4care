@@ -25,6 +25,8 @@ urlpatterns = patterns('',
     url(r'^network/$', views.PersonalNetwork.as_view(), name='network'),
     url(r'^(?P<c4cuser_pk>\d+)/addnetwork', views.addNetwork, name='add_network'),
     url(r'^registration/$', views.view_registration, name='registration'),
+    url(r'^login/$', views.user_login, name='login'),
+    url(r'^logout/$', views.user_logout, name='logout'),
     #url(r'^donation/(?P<receiver_id>\d+)/(?P<amount>\d+)/(?P<date>\d+)/(?P<message>\d+)/$', views.donation, name='donation'),
     #Branch
     url(r'^branchdetail/(?P<pk>\d+)/$', views.BranchDetail.as_view(), name='branch_detail'),
