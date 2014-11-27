@@ -27,7 +27,30 @@ class C4CAdminDonation(admin.ModelAdmin):
 
 
 class C4CAdminBranch(admin.ModelAdmin):
-    pass
+    fields = ('name', 'address', 'main_user')
+    readonly_fields = ('group', 'officers_group')
+    actions = ['delete_selected']
+
+    def save_model(self, request, obj, form, change):
+        """ Automatically creates the two groups needed by the new branch """
+        if not change:
+            obj.group = Group.objects.create(name=("users - " + obj.name))
+            obj.officers_group = Group.objects.create(name=("officers - " + obj.name))
+            obj.officers_group.user_set.add(obj.main_user)
+        admin.ModelAdmin.save_model(self, request, obj, form, change)
+
+    def delete_model(self, request, obj):
+        """ Deletes the branch """
+        obj.group.delete()
+        obj.officers_group.delete()
+        admin.ModelAdmin.delete_model(self, request, obj)
+
+    def delete_selected(self, request, obj):
+        """ Deletes the branch (bulk)"""
+        for o in obj.all():
+            o.group.delete()
+            o.officers_group.delete()
+            o.delete()
 
 
 class C4CAdminEvent(admin.ModelAdmin):
