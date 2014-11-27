@@ -165,3 +165,28 @@ class UserJobs(generic.ListView):
         res.append(member.user.jobs_asked.all())
         res.append(member.user.jobs_accepted.all())
         return res
+    
+class AllJobs(generic.ListView):
+    template_name = 'all_jobs.html'
+    context_object_name = 'all_jobs_list'
+    
+    def get_queryset(self):
+        user = get_object_or_404(C4CUser, user = self.request.user)
+        users = C4CUser.objects.filter(branches = user.branches)
+        jobs = []
+        
+        for usr in users:
+            jobs.append(C4CJob.objects.filter(created_by = usr))
+        
+        demands = []
+        offers = []
+        for jobs_usr in jobs:
+            for job in jobs_usr:
+                if(job.offer == True):
+                    offers.append(job)
+                else:
+                    demands.append(job)
+                    
+        jobs.append(demands)
+        jobs.append(offers)
+        return jobs

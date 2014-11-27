@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Care4Care - Jobs{% endblock %}
+{% block content %}
+{% if all_jobs_list %}
+    {% for kind in all_jobs_list %}
+        {% if forloop.counter == 1 %}
+            <p>Demands</p>
+        {% elif forloop.counter == 2 %}
+            <p>Offers</p>
+        {% endif %}
+        <ul>
+        {% for job in kind %}
+            <li><a href="{% url 'c4c:job_detail' job.id %}">{{ job.title }}</a></li>
+        {% endfor %}
+        </ul>
+    {% endfor %}
+{% endif %}
+{% endblock content %}
