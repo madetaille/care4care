@@ -3,6 +3,7 @@ from django.conf.urls import patterns, url
 from c4c_app import views
 
 urlpatterns = patterns('',
+                       
     #Home
     url(r'^$', views.home, name='home'),
     #Jobs
@@ -33,7 +34,7 @@ urlpatterns = patterns('',
     url(r'^agenda/(\d+)/$', views.year, name='agenda'),
     url(r'^agenda/(\d+)/(\d+)/$', views.year, name='agenda'),
     url(r'^month/(\d+)/(\d+)/(\d+)/$', views.month, name='month'),
-    url(r'^month(\d+)//(\d+)/(\d+)/(prev|next)/$', views.month, name='month'),
+    url(r'^month/(\d+)/(\d+)/(\d+)/(prev|next)/$', views.month, name='month'),
     url(r'^day/(\d+)/(\d+)/(\d+)/(\d+)/$', views.day, name='day'),
     
 )
