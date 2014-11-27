@@ -18,7 +18,7 @@ urlpatterns = patterns('',
     url(r'^jobcreation/$',views.JobCreation.as_view(), name='job_creation'),
     url(r'^(?P<pk>\d+)/jobupdate/$',views.JobUpdate.as_view(), name='job_update'),
     url(r'^alljobs/$',views.AllJobs.as_view(), name='all_jobs'),
-    #url(r'^donation_form/$', views.donation_as_views(), name='donation_form'),
+    url(r'^donation/$', views.DonationCreation.as_view(), name='donation_creation'),
     #User
     url(r'^userdetail/(?P<pk>\d+)/$', views.UserDetail.as_view(), name='user_detail'),
     url(r'^useredit/(?P<pk>\d+)/$', views.UserEdit.as_view(), name='user_edit'),
