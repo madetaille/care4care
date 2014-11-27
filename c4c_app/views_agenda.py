@@ -106,6 +106,7 @@ def day(request, member_pk, year, month, day):
                 entry.user = member.user
                 entry.date = date(int(year), int(month), int(day))
                 entry.save()
+            formset.save()
             return HttpResponseRedirect(reverse('c4c:month', args=( member.pk, year, month)))
 
     else:
@@ -120,4 +121,4 @@ def add_csrf(request, ** kwargs):
     """Add CSRF and user to dictionary."""
     d = dict(** kwargs)
     d.update(csrf(request))
-    return d
+    return d    

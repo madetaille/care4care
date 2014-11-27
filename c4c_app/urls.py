@@ -28,12 +28,8 @@ urlpatterns = patterns('',
     url(r'^agenda/$', views.year, name='agenda'),
     url(r'^agenda/(\d+)/$', views.year, name='agenda'),
     url(r'^agenda/(\d+)/(\d+)/$', views.year, name='agenda'),
-    #url(r'^month/$', views.month, name='month'),
-    #url(r'^month/(\d+)/(\d+)/$', views.month, name='month'),
     url(r'^month/(\d+)/(\d+)/(\d+)/$', views.month, name='month'),
-    #url(r'^month/(\d+)/(\d+)/(prev|next)/$', views.month, name='month'),
     url(r'^month(\d+)//(\d+)/(\d+)/(prev|next)/$', views.month, name='month'),
-    #url(r'^day/(\d+)/(\d+)/(\d+)/$', views.day, name='day'),
     url(r'^day/(\d+)/(\d+)/(\d+)/(\d+)/$', views.day, name='day'),
     
 )
