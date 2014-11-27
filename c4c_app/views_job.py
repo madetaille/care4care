@@ -159,6 +159,8 @@ class UserJobs(generic.ListView):
     def get_queryset(self):
         member = get_object_or_404(C4CUser, user=self.request.user)
         res = []
+        res.append(C4CJob.objects.filter(complete=False, asked_by=member.user))
+        res.append(C4CJob.objects.filter(complete=False, done_by=member.user))
         res.append(member.user.jobs_created.all())
         res.append(member.user.jobs_asked.all())
         res.append(member.user.jobs_accepted.all())

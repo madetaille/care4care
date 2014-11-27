@@ -97,7 +97,7 @@ def day(request, member_pk, year, month, day):
     EntriesFormset = modelformset_factory(C4CEvent, extra=1, exclude=("user", "date"),
                                           can_delete=True)
 
-    if request.method == 'POST':
+    if request.method == 'POST' and change:
         formset = EntriesFormset(request.POST)
         if formset.is_valid():
             # add current user and date to each entry & save
@@ -113,11 +113,11 @@ def day(request, member_pk, year, month, day):
         formset = EntriesFormset(queryset=C4CEvent.objects.filter(date__year=year,
             date__month=month, date__day=day, user=member.user))
     return render_to_response("day.html", add_csrf(request, entries=formset, year=year,
-            month=month, day=day))
+            month=month, day=day, user=member.user))
 
 
 def add_csrf(request, ** kwargs):
     """Add CSRF and user to dictionary."""
-    d = dict(user=request.user, ** kwargs)
+    d = dict(** kwargs)
     d.update(csrf(request))
     return d

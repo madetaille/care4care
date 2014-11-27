@@ -5,10 +5,12 @@
 	{% if user_job_list %}
 	    {% for kind in user_job_list %}
 			{% if forloop.counter == 1 %}
-				<p>Created Jobs</p>
-			{% elif forloop.counter == 2 %}
-				<p>Demands</p>
+				<p>Ongoing</p>
 			{% elif forloop.counter == 3 %}
+				<p>Created Jobs</p>
+			{% elif forloop.counter == 4 %}
+				<p>Demands</p>
+			{% elif forloop.counter == 5 %}
 				<p>Offers</p>
 			{% endif %}
 			<ul>
