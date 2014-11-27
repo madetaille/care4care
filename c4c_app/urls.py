@@ -16,10 +16,12 @@ urlpatterns = patterns('',
     url(r'^userjobs/$', views.UserJobs.as_view(), name='user_jobs'),
     url(r'^createjob/$', views.createJob, name='create_job'),
     url(r'jobcreation/$',views.JobCreation.as_view(), name='job_creation'),
+    url(r'^donation_form/$', views.donation.as_views(), name='donation_form'),
     #User
     url(r'^userdetail/(?P<pk>\d+)/$', views.UserDetail.as_view(), name='user_detail'),
     url(r'^useredit/(?P<pk>\d+)/$', views.UserEdit.as_view(), name='user_edit'),
     url(r'^network/$', views.PersonalNetwork.as_view(), name='network'),
+    url(r'^donation/(?P<receiver_id>\d+)/(?P<amount>\d+)/(?P<date>\d+)/(?P<message>\d+)/$', views.donation, name='donation'),
     #Branch
     url(r'^branchdetail/(?P<pk>\d+)/$', views.BranchDetail.as_view(), name='branch_detail'),
     #Agenda

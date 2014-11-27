@@ -9,6 +9,7 @@ from django.utils import timezone
 from c4c_app.views_user import *
 from c4c_app.views_job import *
 from c4c_app.views_branch import *
+from c4c_app.views_donation import *
 from c4c_app.views_agenda import *
 
 def home(request):
