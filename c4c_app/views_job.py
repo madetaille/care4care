@@ -5,30 +5,9 @@ from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from django.views import generic
 from django.views.generic.edit import CreateView
+from django.views.generic.edit import UpdateView
 
 from c4c_app.models import C4CUser, C4CJob
-
-
-def createJob(request):
-    maker = get_object_or_404(C4CUser, user=request.user)
-    job = None
-    if(request.GET['kind'] == 'offer'):
-        job = C4CJob(created_by=maker, done_by=maker,
-                     offer=True,
-                     title=request.GET['title'],
-                     description=request.GET['description'],
-                     location=request.GET['location'],
-                     start_date=request.GET['start'])
-    else:
-        job = C4CJob(created_by=maker, asked_by=maker,
-                     offer=False,
-                     title=request.GET['title'],
-                     description=request.GET['description'],
-                     location=request.GET['location'],
-                     start_date=request.GET['start'])
-    job.save()
-
-    return HttpResponseRedirect(reverse('c4c:job_detail', args=(job.id,)))
 
 
 class JobCreation(CreateView):
@@ -56,7 +35,19 @@ class JobCreation(CreateView):
         self.object.save()
         return HttpResponseRedirect(reverse('c4c:job_detail', args=(self.object.id,)))
 
+class JobUpdate(UpdateView):
+    model = C4CJob
+    template_name = 'c4cjob_update_form.html'
+        
+    fields = ['title', 'description', 'location', 'start_date']
 
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+
+        self.object.save()
+        return HttpResponseRedirect(reverse('c4c:job_detail', args=(self.object.id,)))
+    
+    
 class JobDetail(generic.DetailView):
     model = C4CJob
     template_name = 'job_detail.html'

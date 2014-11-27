@@ -3,7 +3,13 @@
 {% block title %}Care4Care - Job detail{% endblock %}
 
 {% block content %}
-	<h1>{{ c4cjob.title }}</h1>
+    <h1>{{ c4cjob.title }} :
+        {% if c4cjob.offer == True %}
+            offer
+        {% elif c4cjob.offer == False %}
+            demand
+        {% endif %}
+        </h1>
 	
 	<ul>
 		<li>{{c4cjob.created_by.user}}</li>
@@ -73,11 +79,21 @@
 			{% csrf_token %}
 			<input type="submit" value="Delete" />
 			</form>
+            <br>
+            <form action="{% url 'c4c:job_update' c4cjob.pk %}" method="post">
+            {% csrf_token %}
+            <input type="submit" value="Update" />
+            </form>
 		{% elif c4cjob.offer == False and c4cjob.asked_by.pk == member.pk %}
 			<form action="{% url 'c4c:delete_job' c4cjob.id %}" method="post">
 			{% csrf_token %}
 			<input type="submit" value="Delete" />
 			</form>
+            <br>
+            <form action="{% url 'c4c:job_update' c4cjob.pk %}" method="post">
+            {% csrf_token %}
+            <input type="submit" value="Update" />
+            </form>
 		{% endif %}
 	{% endif %}
 {% endblock content %}
