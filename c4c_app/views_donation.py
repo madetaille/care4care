@@ -17,10 +17,10 @@ def donation(sender_id, receiver_id, amount, date, message):
     receiver.save()
 
     don.save()
-    return  #redirect("/donation_form.html")
+    return  redirect("/donation_form.html")
 
 
 
 def donation_as_views():
 
-    return  #redirect("/donation_form.html")
+    return  redirect("/donation_form.html")
