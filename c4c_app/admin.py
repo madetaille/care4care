@@ -35,7 +35,7 @@ class C4CAdminEvent(admin.ModelAdmin):
 
 
 admin.site.unregister(User)
-admin.site.unregister(Group)
+# admin.site.unregister(Group)
 admin.site.register(User, UserAdmin)
 
 admin.site.register(C4CJob, C4CAdminJob)

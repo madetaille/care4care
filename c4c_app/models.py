@@ -107,8 +107,11 @@ class C4CBranch(models.Model):
 
     name = models.CharField(max_length=100, primary_key=True)
     address = models.CharField(max_length=300)
-    officers = models.ManyToManyField("C4CUser", blank=True)
-    main_user = models.OneToOneField(C4CUser, related_name='is_main_user_of_branch')
+
+    group = models.OneToOneField(django.contrib.auth.models.Group, unique=True, related_name="in_branches")
+    officers_group = models.OneToOneField(django.contrib.auth.models.Group, unique=True, related_name="is_branch_officer_of")
+
+    main_user = models.OneToOneField(C4CUser, related_name='is_main_user_of_branch', unique=True)
 
     def __str__(self):
         """ Allows to clearly see the branches in the administration """
