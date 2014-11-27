@@ -14,7 +14,7 @@ from c4c_app.models import C4CEvent, C4CUser, C4CJob
 mnames = "January February March April May June July August September October November December"
 mnames = mnames.split()
 
-def year(request, year=None, member_pk=None):
+def year(request, member_pk=None, year=None):
     """Main listing, years and months; three years per page."""
     # prev / next years
     
@@ -33,7 +33,7 @@ def year(request, year=None, member_pk=None):
         mlst = []
         for n, month in enumerate(mnames):
             entry = current = False   # are there entry(s) for this month; current month?
-            entries = C4CEvent.objects.filter(date__year=y, date__month=n+1, user=member)
+            entries = C4CEvent.objects.filter(date__year=y, date__month=n+1, user=member.user)
 
             if entries:
                 entry = True
@@ -44,7 +44,7 @@ def year(request, year=None, member_pk=None):
 
     return render_to_response("agenda.html", dict(years=lst, user=member, year=year))
 
-def month(request, year, month, change=None, member_pk=None):
+def month(request, member_pk, year, month, change=None):
     
     member=None
     if member_pk: member = get_object_or_404(C4CUser, pk=member_pk)
@@ -73,7 +73,7 @@ def month(request, year, month, change=None, member_pk=None):
     for day in month_days:
         entries = current = False   # are there entries for this day; current day?
         if day:
-            entries = C4CEvent.objects.filter(date__year=year, date__month=month, date__day=day, user=member)
+            entries = C4CEvent.objects.filter(date__year=year, date__month=month, date__day=day, user=member.user)
             if day == nday and year == nyear and month == nmonth:
                 current = True
 
@@ -85,7 +85,7 @@ def month(request, year, month, change=None, member_pk=None):
     return render_to_response("month.html", dict(year=year, month=month, user=member,
                         month_days=lst, mname=mnames[month-1]))
     
-def day(request, year, month, day, member_pk=None):
+def day(request, member_pk, year, month, day):
     
     member=None
     if member_pk: member = get_object_or_404(C4CUser, pk=member_pk)
@@ -103,15 +103,15 @@ def day(request, year, month, day, member_pk=None):
             # add current user and date to each entry & save
             entries = formset.save(commit=False)
             for entry in entries:
-                entry.user = get_object_or_404(C4CUser, user=member.user)
+                entry.user = member.user
                 entry.date = date(int(year), int(month), int(day))
                 entry.save()
-            return HttpResponseRedirect(reverse('c4c:month', args=(year, month, member.pk)))
+            return HttpResponseRedirect(reverse('c4c:month', args=( member.pk, year, month)))
 
     else:
         # display formset for existing enties and one extra form
         formset = EntriesFormset(queryset=C4CEvent.objects.filter(date__year=year,
-            date__month=month, date__day=day, user=member))
+            date__month=month, date__day=day, user=member.user))
     return render_to_response("day.html", add_csrf(request, entries=formset, year=year,
             month=month, day=day))
 

@@ -3,8 +3,8 @@
 {% block title %}Care4Care{% endblock %}
 
 {% block content %}
-	<a href= "{% url 'c4c:month' year month 'prev' user.pk %}">&lt;&lt; Prev </a>
-	<a href= "{% url 'c4c:month' year month 'next' user.pk %}">Next &gt;&gt;</a>
+	<a href= "{% url 'c4c:month' user.pk year month 'prev' %}">&lt;&lt; Prev </a>
+	<a href= "{% url 'c4c:month' user.pk year month 'next' %}">Next &gt;&gt;</a>
 	
 	<h4>{{ mname }} {{ year }}</h4>
 	
@@ -30,7 +30,7 @@
 	            {% if day != 0 and not current %}"day"{% endif %}
 	            {% if day != 0 and current %}"current"{% endif %}
 	            {% if day != 0 %}
-	                onClick="parent.location='{% url 'c4c:day' year month day user.pk %}'"
+	                onClick="parent.location='{% url 'c4c:day' user.pk year month day %}'"
 	                onMouseOver="this.bgColor='#eeeeee';"
 	                onMouseOut="this.bgColor='white';"
 	            {% endif %} >
@@ -40,7 +40,7 @@
 	                {{ day }}
 	                {% for entry in entries %}
 	                    <br />
-	                    <b>{{ entry.user.user }}</b>: {{ entry.short|safe }}
+	                    <b>{{ entry.user }}</b>: {{ entry.short|safe }}
 	                {% endfor %}
 	            {% endif %}
 	            </td>
