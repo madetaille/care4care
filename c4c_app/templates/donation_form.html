@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Care4Care - Donation detail{% endblock %}
+
+
+{% block content %}
+	<form action="{% url 'c4c:donation' %}" method="post" >
+		<input type="text" name="user" value="User" checked>User
+	    <br/>
+	    <input type="text" name="Time_Amount" value="Time_Amount" checked>Time Amount
+	    <br/> <br/>
+	    <input type="submit" value="Submit" />
+	</form>
+{% endblock content %}
