@@ -27,13 +27,13 @@ class C4CUser(models.Model):
     def recompute_time_account(self):
         """ Recomputes the time account of a user """
         count = 0
-        for job in self.jobs_asked.filter(complete=True):
+        for job in self.user.jobs_asked.filter(complete=True):
             count -= job.duration
-        for job in self.jobs_accepted.filter(complete=True):
+        for job in self.user.jobs_accepted.filter(complete=True):
             count += job.duration
-        for donation in self.donations_made.all():
+        for donation in self.user.donations_made.all():
             count -= donation.amount
-        for donation in self.donations_received.all():
+        for donation in self.user.donations_received.all():
             count += donation.amount
         self.time_account = count
         self.save()
