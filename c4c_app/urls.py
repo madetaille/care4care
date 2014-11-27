@@ -21,6 +21,9 @@ urlpatterns = patterns('',
     url(r'^useredit/(?P<pk>\d+)/$', views.UserEdit.as_view(), name='user_edit'),
     url(r'^network/$', views.PersonalNetwork.as_view(), name='network'),
     url(r'^registration/$', views.view_registration, name='registration'),
+    url(r'^login/$', views.user_login, name='login'),
+    url(r'^logout/$', views.user_logout, name='logout'),
+
     #Branch
     url(r'^branchdetail/(?P<pk>\d+)/$', views.BranchDetail.as_view(), name='branch_detail'),
     #Agenda
