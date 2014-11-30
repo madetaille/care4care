@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Care4Care - Donation detail{% endblock %}
+
+{% block content %}
+
+<h1> Detail de la Donation effectuer </h1>
+
+<ul>
+    <li> Detinataire : {{ c4cdonation.receiver }}</li>
+    <li> Date du transfert : {{ c4cdonation.date }}</li>
+    <li> montant : {{ c4cdonation.amount }}</li>
+    <li> Message : {{ c4cdonation.message }}</li>
+</ul>
+
+
+{% endblock content %}

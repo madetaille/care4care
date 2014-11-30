@@ -19,6 +19,8 @@ urlpatterns = patterns('',
     url(r'^(?P<pk>\d+)/jobupdate/$',views.JobUpdate.as_view(), name='job_update'),
     url(r'^alljobs/$',views.AllJobs.as_view(), name='all_jobs'),
     url(r'^donation/$', views.DonationCreation.as_view(), name='donation_creation'),
+    url(r'^donation_detail/(?P<pk>\d+)/$', views.DonationDetail.as_view(), name='donation_detail'),
+    #url(r'^don/(?P<pk>\d+)/$', views.donation, name='donation_detail'),
     #User
     url(r'^userdetail/(?P<pk>\d+)/$', views.UserDetail.as_view(), name='user_detail'),
     url(r'^useredit/(?P<pk>\d+)/$', views.UserEdit.as_view(), name='user_edit'),
