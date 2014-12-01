@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Care4Care - Donation detail{% endblock %}
+
+{% block content %}
+
+<h1> Liste de vos donations </h1>
+
+
+{% for job in allDonationList %}
+        <ul>
+				<li><a href="{% url 'c4c:donation_detail' job.id %}">{{ job.receiver }}</a> {{ job.date }}</li>
+
+       </ul>
+{% endfor %}
+
+{% endblock content %}

@@ -51,6 +51,16 @@ class DonationDetail(generic.DetailView):
         context['member'] = member
         return context
 
+class AllDonation(generic.ListView):
+    template_name = 'c4cdonation_list.html'
+    context_object_name = 'allDonationList'
+    model = C4CDonation
+
+    def get_queryset(self):
+        user = get_object_or_404(C4CUser, user = self.request.user)
+        donations = C4CDonation.objects.filter(sender = self.request.user)
+
+        return donations
 
 
 
