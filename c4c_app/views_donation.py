@@ -51,31 +51,25 @@ class DonationDetail(generic.DetailView):
         context['member'] = member
         return context
 
-class AllDonation(generic.ListView):
-    template_name = 'c4cdonation_list.html'
-    context_object_name = 'allDonationList'
+class AllDonation_made(generic.ListView):
+    template_name = 'donation_list_M.html'
+    context_object_name = 'allDonationListMade'
     model = C4CDonation
 
     def get_queryset(self):
         user = get_object_or_404(C4CUser, user = self.request.user)
-        donations = C4CDonation.objects.filter(sender = self.request.user)
+        donations_sender = C4CDonation.objects.filter(sender = self.request.user)
 
-        return donations
+        return donations_sender
 
+class AllDonation_received(generic.ListView):
+    template_name = 'donation_list_R.html'
+    context_object_name = 'allDonationListReceived'
+    model = C4CDonation
 
+    def get_queryset(self):
+        user = get_object_or_404(C4CUser, user = self.request.user)
+        donations_receiver = C4CDonation.objects.filter(receiver = self.request.user)
 
-def donation(sender_id, receiver_id, amount, date, message):
-    #create Donation
-    don = C4CDonation(sender_id, receiver_id, amount, date, message)
+        return donations_receiver
 
-
- #compute time from user
-    sender = get_object_or_404(C4CUser, pk=sender_id.user.id)
-    receiver = get_object_or_404(C4CUser, pk=receiver_id)
-    sender.time_account -= amount
-    sender.save()
-    receiver.time_account += amount
-    receiver.save()
-
-    don.save()
-    #return  HttpResponseRedirect("/")
