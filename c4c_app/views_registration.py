@@ -1,5 +1,4 @@
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate
 from c4c_app.models import C4CUser
 from django import forms
 from django.shortcuts import render
