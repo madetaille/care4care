@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Care4Care - Donation detail{% endblock %}
+
+{% block content %}
+
+<a href="{% url 'c4c:donation_list_M' %}"> All Donation Made </a>
+<a href="{% url 'c4c:donation_creation' %}"> New Donation </a>
+
+<h1> List of received donation </h1>
+
+{% for donation in allDonationListReceived %}
+        <ul>
+				<li>{{ donation.receiver }} {{ donation.date }} <a href="{% url 'c4c:donation_detail' donation.id %}"> detail </a> </li>
+
+       </ul>
+{% endfor %}
+
+{% endblock content %}

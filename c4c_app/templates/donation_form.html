@@ -4,6 +4,8 @@
 
 
 {% block content %}
+<a href="{% url 'c4c:donation_list_M' %}"> All Donation Made </a>
+<a href="{% url 'c4c:donation_list_R' %}"> All Donation Received </a>
         <fieldset >
             <legend > Donation  </legend>
 	<form action="" method="post" role="form" class="form-horizontal">{% csrf_token %}
