@@ -23,47 +23,25 @@ class UserDetail(generic.DetailView):
         context['viewer'] = viewer
         return context
 
-class UpdateForm(forms.Form):
-    username = forms.CharField(label='Your name', max_length=100)
-    password = forms.CharField(label='Password', max_length=10,widget=forms.PasswordInput)
-    email = forms.EmailField(label='Email', max_length=50)
-    first_name = forms.CharField(label='First name', max_length=40)
-    last_name = forms.CharField(label='Last name', max_length=40)
-    address = forms.CharField(max_length=300)
-    birthday = DateField(widget=widgets.AdminDateWidget)
+class UserEdit(generic.edit.UpdateView):
+    template_name = 'base_user_edit.html'
+    model = User
+    fields = ['username','first_name','last_name','email']
 
-def user_edit(request):
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.save()
+        return HttpResponseRedirect(reverse('c4c:user_detail', args=(self.object.pk,)))
+
+class C4CUserEdit(generic.edit.UpdateView):
     template_name = 'c4cuser_edit.html'
+    model = C4CUser
+    fields = ['address','birthday']
 
-    # if this is a POST request we need to process the form data
-    if request.method == 'POST':
-
-        user = get_object_or_404(User, pk=request.user.pk)
-        c4cuser = get_object_or_404(C4CUser, pk=request.user)
-        data = {'username':user.username, 'password':user.password, 'email': user.email, 'first_name':user.first_name, 'last_name': user.last_name, 'address': c4cuser.address, 'birthday': c4cuser.birthday}
-        form = UpdateForm(request.POST,initial=data)
-
-        # check whether it's valid:
-        if form.is_valid():
-
-            user.username = form.cleaned_data['username']
-            user.email = form.cleaned_data['email']
-            password = make_password(form.cleaned_data['password'])
-            user.password = password
-            user.first_name = form.cleaned_data['first_name']
-            user.last_name = form.cleaned_data['last_name']
-            user.save()
-
-            c4cuser.address = form.cleaned_data['address']
-            c4cuser.birthday = form.cleaned_data['birthday']
-            c4cuser.save()
-
-            return HttpResponseRedirect('/')
-
-    else:
-        form = UpdateForm()
-
-    return render(request, template_name, {'form': form.as_p()})
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.save()
+        return HttpResponseRedirect(reverse('c4c:user_detail', args=(self.object.pk,)))
 
 class PersonalNetwork(generic.ListView):
     template_name = 'network.html'
