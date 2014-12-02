@@ -42,6 +42,11 @@ urlpatterns = patterns('',
     url(r'^day/(\d+)/(\d+)/(\d+)/(\d+)/$', views.day, name='day'),
     #Stat
     url(r'^stat/$', views.stat, name='stat'),
+    #News
+    #url(r'^news/$', views.news, name = 'news'),
+    #What is Care 4 Care ?
+    url(r'^whatisc4c/$', views.whatisc4c, name = 'whatisc4c')
+    
 
 
 )
