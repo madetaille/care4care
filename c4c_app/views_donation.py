@@ -6,12 +6,13 @@ from c4c_app.models import C4CDonation
 from c4c_app.models import C4CUser
 from django.views import generic
 from django.views.generic.edit import CreateView
+from datetime import *
 from django.views.generic.edit import UpdateView
 #from c4c_app.forms import ContactForm
 
 class DonationCreation(CreateView):
 
-    fields = [ 'receiver', 'date', 'message', 'amount']
+    fields = [ 'receiver', 'message', 'amount']
     model = C4CDonation
     template_name = 'donation_form.html'
 
@@ -25,7 +26,7 @@ class DonationCreation(CreateView):
         if(sender.time_account > amount ):
             self.object.sender = sender.user
             self.object.receiver = get_object_or_404(C4CUser, pk=self.request.POST['receiver']).user
-            self.object.date = self.request.POST['date']
+            self.object.date = datetime.now()
             self.object.message = self.request.POST['message']
             self.object.amount = self.request.POST['amount']
             self.object.save()
