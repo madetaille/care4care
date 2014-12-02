@@ -140,6 +140,23 @@ class C4CEvent(models.Model):
         """ Allows to clearly see the events in the administration """
         return "{} - {}".format(str(self.date), self.name)
 
+class C4CNews(models.Model):
+
+    class Meta:
+        verbose_name = 'News'
+        verbose_name_plural = 'News'
+
+    title = models.CharField(max_length=100)
+    date = models.DateTimeField()
+    branch = models.ForeignKey(C4CBranch, default=None, null=True, blank=True)
+    user = models.ForeignKey(User)
+    description = models.CharField(max_length=1000)
+
+
+    def __str__(self):
+        """ Allows to clearly see the events in the administration """
+        return "{} - {}".format(str(self.date), self.title)
+
 
 # Signal handlers for time account update
 def _get_set_without_none(listt):
