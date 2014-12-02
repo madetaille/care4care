@@ -45,7 +45,9 @@ urlpatterns = patterns('',
     #News
     #url(r'^news/$', views.news, name = 'news'),
     #What is Care 4 Care ?
-    url(r'^whatisc4c/$', views.whatisc4c, name = 'whatisc4c')
+    url(r'^whatisc4c/$', views.whatisc4c, name = 'whatisc4c'),
+    url(r'^aboutus/$', views.aboutus, name = 'aboutus')
+    
     
 
 
