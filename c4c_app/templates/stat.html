@@ -16,6 +16,20 @@
         <!-- Custom styles for this template -->
         <link href="{{ STATIC_URL }}css/style.css" rel="stylesheet">
 
+        <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+        <script type="text/javascript">
+        google.load('visualization', '1.0', {'packages':['corechart']});
+        google.setOnLoadCallback(drawChart);
+        function drawChart() {
+          var data = new google.visualization.DataTable();
+          data.addColumn('string', 'Number');
+          data.addColumn('number', 'Number/10');
+          data.addRows( {{ data|safe }} );
+        var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+        chart.draw(data, {width: 400, height: 240, title: "Numbers", align: "middle"});
+        }
+        </script>
+
         {% block add_header %}
         {% endblock add_header %}
 
@@ -52,6 +66,9 @@
             </div>
         </nav>
 
+
+
+
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-3">
@@ -73,19 +90,28 @@
                 </div>
                 <div class="col-sm-9">
                     {% block content %}
+                        <div id="chart_div"></div>
                     {% endblock content %}
                 </div>
             </div>
-            
+
             <hr/>
             <footer>
                 <p>&copy; Care4Care</p>
             </footer>
         </div>
-        
+
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script type="text/javascript" src="https://www.google.com/jsapi"></script>
         <script src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
         {% block add_script_footer %}
         {% endblock add_script_footer %}
     </body>
 </html>
+
+
+
+
+
+
+
