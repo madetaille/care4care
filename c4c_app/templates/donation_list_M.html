@@ -3,8 +3,8 @@
 {% block title %}Care4Care - Donation detail{% endblock %}
 
 {% block content %}
-<a href="{% url 'c4c:donation_list_R' %}"> All Donation Received </a>
-<a href="{% url 'c4c:donation_creation' %}"> New Donation </a>
+<a class="btn btn-default" href="{% url 'c4c:donation_list_R' %}"> All Donation Received </a>
+<a class="btn btn-default" href="{% url 'c4c:donation_creation' %}"> New Donation </a>
 <h1> List of Donation Made </h1>
 
 {% for donation in allDonationListMade %}
