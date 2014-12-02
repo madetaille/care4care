@@ -3,8 +3,9 @@
 {% block title %}Care4Care - Update profile{% endblock %}
 
 {% block content %}
-	<form method="post">{% csrf_token %}
-	    {{ form.as_p }}
-	    <input type="submit" value="Update profile" />
-	</form>
+    <form method="post">
+        {% csrf_token %}
+        {{ form}}
+        <input type="submit" value="Update profile" />
+    </form>
 {% endblock content %}

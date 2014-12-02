@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 from django.utils import timezone
 from django.views import generic
 from django.views.generic.edit import CreateView
@@ -152,19 +152,22 @@ def deleteJob(request, c4cjob_id):
     return HttpResponseRedirect(reverse('c4c:user_jobs'))
 
 
-class UserJobs(generic.ListView):
-    template_name = 'user_job.html'
-    context_object_name = 'user_job_list'
-
-    def get_queryset(self):
-        member = get_object_or_404(C4CUser, user=self.request.user)
-        res = []
-        res.append(C4CJob.objects.filter(complete=False, asked_by=member.user))
-        res.append(C4CJob.objects.filter(complete=False, done_by=member.user))
-        res.append(member.user.jobs_created.all())
-        res.append(member.user.jobs_asked.all())
-        res.append(member.user.jobs_accepted.all())
-        return res
+def userJobs(request, member_pk=None):
+    
+    member=None
+    if member_pk: member = get_object_or_404(C4CUser, pk=member_pk)
+    else: member = get_object_or_404(C4CUser, user=request.user)
+    
+    res = []
+    res.append(C4CJob.objects.filter(complete=False, asked_by=member.user))
+    res.append(C4CJob.objects.filter(complete=False, done_by=member.user))
+    res.append(member.user.jobs_created.all())
+    res.append(member.user.jobs_asked.all())
+    res.append(member.user.jobs_accepted.all())
+    
+    context={'user_job_list':res}
+    
+    return render(request,'user_job.html',context)
     
 class AllJobs(generic.ListView):
     template_name = 'all_jobs.html'

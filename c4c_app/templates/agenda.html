@@ -11,13 +11,12 @@
 		<h4>{{ year }}</h4>
 		{% for month in months %}
 			<div class=
-			{% if month.current %}"current"{% endif %}
-			{% if not month.current %}"month"{% endif %} >
-			{% if month.entry %}<b>{% endif %}
-				<a href="{% url 'c4c:month' user.pk year month.n %}">{{ month.name }}</a>
-			{% if month.entry %}</b>{% endif %}
+				{% if month.current %}"current"{% endif %}
+				{% if not month.current %}"month"{% endif %} >
+				{% if month.entry %}<b>{% endif %}
+					<a href="{% url 'c4c:month' user.pk year month.n %}">{{ month.name }}</a>
+				{% if month.entry %}</b>{% endif %}
 			</div>
-	
 			{% if month.n == 6 %}<br />{% endif %}
 		{% endfor %}
 	{% endfor %}

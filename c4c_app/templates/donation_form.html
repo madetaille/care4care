@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Care4Care - Donation detail{% endblock %}
+
+
+{% block content %}
+<a href="{% url 'c4c:donation_list_M' %}"> All Donation Made </a>
+<a href="{% url 'c4c:donation_list_R' %}"> All Donation Received </a>
+        <fieldset >
+            <legend > Donation  </legend>
+	<form action="" method="post" role="form" class="form-horizontal">{% csrf_token %}
+        {{ form.as_p }}
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+             <button type="submit" class="btn btn-default">Submit</button>
+             <button type="reset" class="btn btn-default">reset</button>
+            </div>
+        </div>
+	</form>
+        </fieldset>
+
+
+{% endblock content %}
