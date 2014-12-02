@@ -28,6 +28,7 @@ def view_registration(request):
             user = User.objects.create_user(form.cleaned_data['username'], form.cleaned_data['email'], form.cleaned_data['password'])
             user.first_name = form.cleaned_data['first_name']
             user.last_name = form.cleaned_data['last_name']
+            user.save()
             c4cuser = C4CUser(user=user, address=form.cleaned_data['address'], birthday=form.cleaned_data['birthday'])
             c4cuser.save()
 

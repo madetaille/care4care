@@ -2,7 +2,7 @@ from django.conf.urls import patterns, url
 
 from c4c_app import views
 
-urlpatterns = patterns('',                 
+urlpatterns = patterns('',
     #Home
     url(r'^$', views.home, name='home'),
     #Jobs
@@ -18,18 +18,19 @@ urlpatterns = patterns('',
     url(r'^jobcreation/$',views.JobCreation.as_view(), name='job_creation'),
     url(r'^(?P<pk>\d+)/jobupdate/$',views.JobUpdate.as_view(), name='job_update'),
     url(r'^alljobs/$',views.AllJobs.as_view(), name='all_jobs'),
+    #Gift
     url(r'^donation/$', views.DonationCreation.as_view(), name='donation_creation'),
     url(r'^donation_detail/(?P<pk>\d+)/$', views.DonationDetail.as_view(), name='donation_detail'),
-    url(r'^alldonation/$', views.AllDonation.as_view(), name='c4cdonation_list'),
+    url(r'^alldonationMade/$', views.AllDonation_made.as_view(), name='donation_list_M'),
+    url(r'^alldonationReceived/$', views.AllDonation_received.as_view(), name='donation_list_R'),
     #User
     url(r'^userdetail/(?P<pk>\d+)/$', views.UserDetail.as_view(), name='user_detail'),
-    url(r'^useredit/(?P<pk>\d+)/$', views.UserEdit.as_view(), name='user_edit'),
+    url(r'^useredit/$', views.user_edit, name='user_edit'),
     url(r'^network/$', views.PersonalNetwork.as_view(), name='network'),
     url(r'^(?P<c4cuser_pk>\d+)/addnetwork', views.addNetwork, name='add_network'),
     url(r'^registration/$', views.view_registration, name='registration'),
     url(r'^login/$', views.user_login, name='login'),
     url(r'^logout/$', views.user_logout, name='logout'),
-    #url(r'^donation/(?P<receiver_id>\d+)/(?P<amount>\d+)/(?P<date>\d+)/(?P<message>\d+)/$', views.donation, name='donation'),
     #Branch
     url(r'^branchdetail/(?P<pk>\d+)/$', views.BranchDetail.as_view(), name='branch_detail'),
     #Agenda
@@ -42,5 +43,5 @@ urlpatterns = patterns('',
     #Stat
     url(r'^stat/$', views.stat, name='stat'),
 
-    
+
 )
