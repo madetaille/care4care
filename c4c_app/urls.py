@@ -2,7 +2,7 @@ from django.conf.urls import patterns, url
 
 from c4c_app import views
 
-urlpatterns = patterns('',                 
+urlpatterns = patterns('',
     #Home
     url(r'^$', views.home, name='home'),
     #Jobs
@@ -25,7 +25,7 @@ urlpatterns = patterns('',
     url(r'^alldonationReceived/$', views.AllDonation_received.as_view(), name='donation_list_R'),
     #User
     url(r'^userdetail/(?P<pk>\d+)/$', views.UserDetail.as_view(), name='user_detail'),
-    url(r'^useredit/(?P<pk>\d+)/$', views.UserEdit.as_view(), name='user_edit'),
+    url(r'^useredit/$', views.user_edit, name='user_edit'),
     url(r'^network/$', views.PersonalNetwork.as_view(), name='network'),
     url(r'^(?P<c4cuser_pk>\d+)/addnetwork', views.addNetwork, name='add_network'),
     url(r'^registration/$', views.view_registration, name='registration'),
@@ -40,5 +40,8 @@ urlpatterns = patterns('',
     url(r'^month/(\d+)/(\d+)/(\d+)/$', views.month, name='month'),
     url(r'^month/(\d+)/(\d+)/(\d+)/(prev|next)/$', views.month, name='month'),
     url(r'^day/(\d+)/(\d+)/(\d+)/(\d+)/$', views.day, name='day'),
-    
+    #Stat
+    url(r'^stat/$', views.stat, name='stat'),
+
+
 )

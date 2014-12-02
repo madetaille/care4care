@@ -13,6 +13,7 @@ from c4c_app.views_donation import *
 from c4c_app.views_agenda import *
 from c4c_app.views_registration import *
 from c4c_app.views_login import *
+from c4c_app.views_stat import *
 
 def home(request):
     return render(request,'index.html')

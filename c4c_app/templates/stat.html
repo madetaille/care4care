@@ -14,7 +14,21 @@
         <link href="{{ STATIC_URL }}css/bootstrap.min.css" rel="stylesheet">
 
         <!-- Custom styles for this template -->
-        <!--<link href="{{ STATIC_URL }}css/style.css" rel="stylesheet"> -->
+        <link href="{{ STATIC_URL }}css/style.css" rel="stylesheet">
+
+        <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+        <script type="text/javascript">
+        google.load('visualization', '1.0', {'packages':['corechart']});
+        google.setOnLoadCallback(drawChart);
+        function drawChart() {
+          var data = new google.visualization.DataTable();
+          data.addColumn('string', 'Number');
+          data.addColumn('number', 'Number/10');
+          data.addRows( {{ data|safe }} );
+        var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+        chart.draw(data, {width: 400, height: 240, title: "Numbers", align: "middle"});
+        }
+        </script>
 
         {% block add_header %}
         {% endblock add_header %}
@@ -52,20 +66,19 @@
             </div>
         </nav>
 
+
+
+
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-3">
                     <ul class="nav nav-pills nav-stacked">
                         <li role="presentation" class="active"><a href="#">Feeds</a></li>
-                        {% if user.is_authenticated %}
                         <li role="presentation"><a href="#">Messages <span class="badge">4</span></a></li>
                         <li role="presentation"><a href="#">My profile</a></li>
                         <li role="presentation"><a href="{% url 'c4c:agenda'  %}">My agenda</a></li>
                         <li role="presentation"><a href="{% url 'c4c:network'  %}">Personal Network</a></li>
-                        <li role="presentation"><a href="{% url 'c4c:donation_creation' %}"> New Donation </a></li>
-                        <li role="presentation"><a href="#"> News </a></li>
                         <li role="presentation"><a href="#">History</a></li>
-                        {% endif %}
                     </ul>
                     <hr/>
                     <ul class="nav nav-pills nav-stacked">
@@ -77,19 +90,28 @@
                 </div>
                 <div class="col-sm-9">
                     {% block content %}
+                        <div id="chart_div"></div>
                     {% endblock content %}
                 </div>
             </div>
-            
+
             <hr/>
             <footer>
                 <p>&copy; Care4Care</p>
             </footer>
         </div>
-        
+
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script type="text/javascript" src="https://www.google.com/jsapi"></script>
         <script src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
         {% block add_script_footer %}
         {% endblock add_script_footer %}
     </body>
 </html>
+
+
+
+
+
+
+
