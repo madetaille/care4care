@@ -1,10 +1,17 @@
 from django.contrib import admin
+from django.contrib.admin import AdminSite
 from django.contrib.auth.admin import UserAdmin as OriginalUserAdmin
 from django.contrib.auth.models import User, Group, Permission
 from django.db.models import Q
 from django.forms import ModelForm
+from django.utils.translation import ugettext_lazy
 
 from c4c_app.models import C4CBranch, C4CDonation, C4CEvent, C4CJob, C4CUser, C4CNews
+
+
+admin.site.site_title = 'Care4Care Administration'
+admin.site.site_header = 'Care4Care Administration'
+
 #########################################
 #                                       #
 # Models accessible only to super-admin #
@@ -26,6 +33,7 @@ class UserAdmin(OriginalUserAdmin):
 
 
 class C4CAdminBranch(admin.ModelAdmin):
+    list_display = ('name', 'address', 'main_user')
     fields = ('name', 'address', 'main_user')
     readonly_fields = ('group', 'officers_group')
     actions = ['delete_selected']
@@ -71,6 +79,7 @@ def _get_user_queryset_from_officer(user):
 
 
 class C4CAdminJob(admin.ModelAdmin):
+    list_display = ('title', 'created_by', 'start_date', 'end_date', 'offer', 'complete')
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         """ Restrict users that are displayed in the form for non-superadmin """
@@ -88,6 +97,7 @@ class C4CAdminJob(admin.ModelAdmin):
 
 
 class C4CAdminDonation(admin.ModelAdmin):
+    list_display = ('sender', 'receiver', 'date', 'amount')
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         """ Restrict users that are displayed in the form for non-superadmin """
@@ -105,6 +115,7 @@ class C4CAdminDonation(admin.ModelAdmin):
 
 
 class C4CAdminEvent(admin.ModelAdmin):
+    list_display = ('user', 'date', 'name', 'job')
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         """ Restrict users that are displayed in the form for non-superadmin """
@@ -129,6 +140,7 @@ class C4CAdminNewsForm(ModelForm):
 
 
 class C4CAdminNews(admin.ModelAdmin):
+    list_display = ('title', 'date', 'user', 'branch')
     form = C4CAdminNewsForm
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
