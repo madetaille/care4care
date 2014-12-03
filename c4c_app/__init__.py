@@ -1,0 +1,1 @@
+default_app_config = 'c4c_app.apps.C4CAppConfig'
