@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 
 urlpatterns = patterns('',
     #Home
-    url(r'^$', views.home, name='home'),
+    url(r'^$', views.Feeds.as_view(template_name='index.html'), name='home'),
     #Jobs
     url(r'^feeds/$', views.Feeds.as_view(), name='feeds'),
     url(r'^jobdetail/(?P<pk>\d+)/$', views.JobDetail.as_view(), name='job_detail'),
@@ -15,7 +15,7 @@ urlpatterns = patterns('',
     url(r'^(?P<c4cjob_id>\d+)/reportjob$', views.reportJob, name='report_job'),
     url(r'^(?P<c4cjob_id>\d+)/canceljob$', views.cancelJob, name='cancel_job'),
     url(r'^(?P<c4cjob_id>\d+)/deletejob$', views.deleteJob, name='delete_job'),
-    url(r'^userjobs/$', views.userJobs, name='user_jobs'),
+    url(r'^userjobs/$', login_required(views.userJobs), name='user_jobs'),
     url(r'^(?P<member_pk>\d+)/userjobs/$', views.userJobs, name='user_jobs'),
     url(r'^userjobs/$', views.userJobs, name='user_jobs'),
     url(r'^jobcreation/$',login_required(views.JobCreation.as_view()), name='job_creation'),
