@@ -201,7 +201,10 @@ class Feeds(generic.ListView):
         users = None
         if self.request.user.is_authenticated():
             user = get_object_or_404(C4CUser, user=self.request.user)
-            users = C4CUser.objects.filter(branches=user.get_branches())
+            users = set()
+            for branch in user.get_branches():
+                users = set(branch.get_users()).union(users)
+            users = [u.c4cuser for u in users]
         else:
             users = C4CUser.objects.all()
 
@@ -225,7 +228,7 @@ class Feeds(generic.ListView):
     
     
 def send_email_creation_job(job, maker):
-        subject, from_email, to = 'Care4Care : your created a job !', settings.EMAIL_HOST_USER, maker.user.email
+        subject, from_email, to = 'Care4Care : you created a job !', settings.EMAIL_HOST_USER, maker.user.email
         text_content = ''
         htmly = get_template('email_jobcreation.html')
         
@@ -237,7 +240,7 @@ def send_email_creation_job(job, maker):
 
 
 def send_email_done_job(job):
-    subject, from_email, to = 'Care4Care : your job is now completed !', settings.EMAIL_HOST_USER, job.asked_by.email
+    subject, from_email, to = 'Care4Care : a job is waiting for you to be completed !', settings.EMAIL_HOST_USER, job.asked_by.email
     htmly = get_template('email_jobcompleted.html')
     text_content = ''
     
