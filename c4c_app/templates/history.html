@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% if history %}
+        {% for objectBlock in history %}
+            {% if forloop.counter == 1 %}
+                <h3> Donation received </h3>
+            <table class="table table-striped" >
+                    <tr>
+                        <th>Date</th>
+                        <th>Message</th>
+                        <th>Amount</th>
+                     </tr>
+                {% for object in objectBlock %}
+                    <tr>
+                        <td>{{ object.date }}</td>
+                        <td>{{ object.message }}</td>
+                        <td>{{ object.amount}}</td>
+                     </tr>
+                {% endfor %}
+            </table>
+            {% elif forloop.counter == 2 %}
+                <h3> Donation made </h3>
+               <table class="table table-striped" >
+                    <tr>
+                        <th>Date</th>
+                        <th>Message</th>
+                        <th>Amount</th>
+                     </tr>
+                {% for object in objectBlock %}
+                    <tr>
+                        <td>{{ object.date }}</td>
+                        <td>{{ object.message }}</td>
+                        <td>{{ object.amount}}</td>
+                     </tr>
+                {% endfor %}
+            </table>
+            {% elif forloop.counter == 3 %}
+                <h3> Job you asked for </h3>
+               {% for object in history %}
+               -> Donation received
+               {% endfor %}
+            {% elif forloop.counter == 4 %}
+                <h3> Job you have done </h3>
+               {% for object in history %}
+                -> Donation received
+               {% endfor %}
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+{% endblock content %}
