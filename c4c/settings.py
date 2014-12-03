@@ -88,3 +88,12 @@ STATIC_URL = '/static/'
 
 # Login url
 LOGIN_URL = '/login/'
+
+# settings for the emails
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'care4careOrganisation@gmail.com'
+EMAIL_HOST_PASSWORD = 'care4careemail'
+DEFAULT_FROM_EMAIL = 'care4careProject@gmail.com'
