@@ -1,7 +1,8 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as OriginalUserAdmin
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import User, Group, Permission
 from django.db.models import Q
+from django.forms import ModelForm
 
 from c4c_app.models import C4CBranch, C4CDonation, C4CEvent, C4CJob, C4CUser, C4CNews
 #########################################
@@ -36,6 +37,12 @@ class C4CAdminBranch(admin.ModelAdmin):
             obj.officers_group = Group.objects.create(name=("officers - " + obj.name))
             obj.group.user_set.add(obj.main_user)
             obj.officers_group.user_set.add(obj.main_user)
+            perms = ['add_c4cjob', 'delete_c4cjob', 'change_c4cjob',
+                     'add_c4cnews', 'delete_c4cnews', 'change_c4cnews',
+                     'add_c4cevent', 'delete_c4cevent', 'change_c4cevent',
+                     'add_c4cdonation', 'delete_c4cdonation', 'change_c4cdonation']
+            for p in perms:
+                obj.officers_group.permissions.add(Permission.objects.get(codename=p))
         admin.ModelAdmin.save_model(self, request, obj, form, change)
 
     def delete_model(self, request, obj):
@@ -114,7 +121,22 @@ class C4CAdminEvent(admin.ModelAdmin):
         return qs
 
 
+class C4CAdminNewsForm(ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(C4CAdminNewsForm, self).__init__(*args, **kwargs)
+        self.fields['branch'].required = True
+
+
 class C4CAdminNews(admin.ModelAdmin):
+    form = C4CAdminNewsForm
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        """ Restrict users that are displayed in the form for non-superadmin """
+        if not request.user.is_superuser:  # officer
+            if db_field.name in ("branch"):
+                kwargs["queryset"] = C4CBranch.objects.filter(group__in=list(request.user.groups.all()))
+        return super(C4CAdminNews, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
     def get_queryset(self, request):
         qs = super(C4CAdminNews, self).get_queryset(request)
@@ -123,15 +145,23 @@ class C4CAdminNews(admin.ModelAdmin):
         return qs
 
     def get_readonly_fields(self, request, obj=None):
-        print("wut")
         r = list(super(C4CAdminNews, self).get_readonly_fields(request, obj))
         if not request.user.is_superuser:  # officer
-            r = r + ['user', 'branch']
-        print(str(r))
+            r = r + ['user']
         return r
 
+    def get_fields(self, request, obj=None):
+        r = super(C4CAdminNews, self).get_fields(request, obj)
+        if not request.user.is_superuser:  # officer
+            r = ('title', 'date', 'branch', 'description')
+        return r
+
+    def save_model(self, request, obj, form, change):
+        obj.user = request.user
+        obj.save()
+
 admin.site.unregister(User)
-# admin.site.unregister(Group)
+admin.site.unregister(Group)
 admin.site.register(User, UserAdmin)
 
 admin.site.register(C4CJob, C4CAdminJob)

@@ -241,6 +241,8 @@ def send_email_creation_job(job, maker):
 
 def send_email_done_job(job):
     subject, from_email, to = 'Care4Care : a job is waiting for you to be completed !', settings.EMAIL_HOST_USER, job.asked_by.email
+    
+    
     htmly = get_template('email_jobcompleted.html')
     text_content = ''
 
