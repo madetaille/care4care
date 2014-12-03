@@ -14,6 +14,7 @@ from c4c_app.models import C4CEvent, C4CUser, C4CJob
 mnames = "January February March April May June July August September October November December"
 mnames = mnames.split()
 
+@login_required
 def year(request, member_pk=None, year=None):
     """Main listing, years and months; three years per page."""
     # prev / next years
@@ -44,6 +45,7 @@ def year(request, member_pk=None, year=None):
 
     return render(request,"agenda.html", dict(years=lst, user=member, year=year))
 
+@login_required
 def month(request, member_pk, year, month, change=None):
     
     member=None
@@ -84,7 +86,8 @@ def month(request, member_pk, year, month, change=None):
 
     return render(request,"month.html", dict(year=year, month=month, user=member,
                         month_days=lst, mname=mnames[month-1]))
-    
+
+@login_required   
 def day(request, member_pk, year, month, day):
     
     member=None
