@@ -1,19 +1,17 @@
 from django.contrib.auth.decorators import login_required
+from django.core.mail import EmailMultiAlternatives
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
+from django.template import Context
+from django.template.loader import get_template
 from django.utils import timezone
 from django.views import generic
 from django.views.generic.edit import CreateView
 from django.views.generic.edit import UpdateView
 
-from c4c_app.models import C4CUser, C4CJob, C4CEvent
-
-from django.core.mail import EmailMultiAlternatives
-from django.template.loader import get_template
-from django.template import Context
 from c4c import settings
-
+from c4c_app.models import C4CUser, C4CJob, C4CEvent
 class JobCreation(CreateView):
     model = C4CJob
     template_name = 'c4cjob_form.html'
@@ -37,11 +35,11 @@ class JobCreation(CreateView):
             self.object.asked_by = maker.user
 
         self.object.save()
-        
+
         """send an email"""
         job = get_object_or_404(C4CJob, id=self.object.id)
         send_email_creation_job(job, maker)
-        
+
         return HttpResponseRedirect(reverse('c4c:job_detail', args=(self.object.id,)))
 
 
@@ -225,8 +223,8 @@ class Feeds(generic.ListView):
         res.append(demands)
         res.append(offers)
         return res
-    
-    
+
+
 def send_email_creation_job(job, maker):
         subject, from_email, to = 'Care4Care : you created a job !', settings.EMAIL_HOST_USER, maker.user.email
         text_content = ''
@@ -239,12 +237,13 @@ def send_email_creation_job(job, maker):
         msg.send()
 
 
+
 def send_email_done_job(job):
     subject, from_email, to = 'Care4Care : a job is waiting for you to be completed !', settings.EMAIL_HOST_USER, job.asked_by.email
     htmly = get_template('email_jobcompleted.html')
     text_content = ''
-    
-    d = Context({ 'c4cjob': job })
+
+    d = Context({'c4cjob': job})
     html_content = htmly.render(d)
     msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
     msg.attach_alternative(html_content, "text/html")

@@ -21,13 +21,13 @@ class C4CUser(models.Model):
 
     def get_branches(self):
         """ Get branches to which this user belongs """
-        return [a.group for a in list(C4CBranch.objects.filter(group__in=list(self.user.groups.all())))]
+        return list(C4CBranch.objects.filter(group__in=list(self.user.groups.all())))
 
     def get_administrated_branches(self):
         """ Get branches that are administrated by this user """
         if self.user.is_superuser:
             return list(C4CBranch.objects.all())
-        return [a.group for a in list(C4CBranch.objects.filter(officers_group__in=list(self.user.groups.all())))]
+        return list(C4CBranch.objects.filter(officers_group__in=list(self.user.groups.all())))
 
     def __str__(self):
         """ Allows to clearly see the username in the administration """
@@ -160,11 +160,11 @@ class C4CNews(models.Model):
         verbose_name = 'News'
         verbose_name_plural = 'News'
 
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=200)
     date = models.DateTimeField()
     branch = models.ForeignKey(C4CBranch, default=None, null=True, blank=True)
     user = models.ForeignKey(User)
-    description = models.CharField(max_length=1000)
+    description = models.TextField()
 
     def __str__(self):
         """ Allows to clearly see the events in the administration """
