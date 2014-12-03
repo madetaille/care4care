@@ -4,47 +4,109 @@
     {% if history %}
         {% for objectBlock in history %}
             {% if forloop.counter == 1 %}
+                {% if objectBlock %}
                 <h3> Donation received </h3>
-            <table class="table table-striped" >
+            <table class="table table-striped .table-striped" >
                     <tr>
                         <th>Date</th>
                         <th>Message</th>
                         <th>Amount</th>
+                        <th>Details</th>
                      </tr>
                 {% for object in objectBlock %}
                     <tr>
                         <td>{{ object.date }}</td>
                         <td>{{ object.message }}</td>
                         <td>{{ object.amount}}</td>
+                        <td><a href="{% url 'c4c:donation_detail' object.id %}"> details </a></td>
                      </tr>
                 {% endfor %}
             </table>
+                {% else %}
+                    <p>You have received no donation yet !</p>
+                {% endif %}
             {% elif forloop.counter == 2 %}
+                {% if objectBlock %}
                 <h3> Donation made </h3>
                <table class="table table-striped" >
                     <tr>
                         <th>Date</th>
                         <th>Message</th>
                         <th>Amount</th>
+                        <th>Details</th>
                      </tr>
                 {% for object in objectBlock %}
                     <tr>
                         <td>{{ object.date }}</td>
                         <td>{{ object.message }}</td>
                         <td>{{ object.amount}}</td>
+                        <td><a href="{% url 'c4c:donation_detail' object.id %}"> details </a></td>
                      </tr>
                 {% endfor %}
             </table>
+                {% else %}
+                    <p>You have made no donation yet !</p>
+                {% endif %}
             {% elif forloop.counter == 3 %}
+                {% if objectBlock %}
                 <h3> Job you asked for </h3>
-               {% for object in history %}
-               -> Donation received
+                <table class="table table-striped" >
+                     <tr>
+                        <th>title</th>
+                        <th>description</th>
+                        <th>duration</th>
+                        <th>location</th>
+                        <th>complete</th>
+                        <th> more details</th>
+                     </tr>
+               {% for object in objectBlock %}
+                     <tr>
+                        <td>{{ object.title }}</td>
+                        <td>{{ object.description }}</td>
+                        <td>{{ object.duration }}</td>
+                        <td>{{ object.location }}</td>
+                        {% if object.complete == False %}
+                        <td> NO </td>
+                         {% else %}
+                        <td>YES</td>
+                         {% endif %}
+                         <td><a href="{% url 'c4c:job_detail' object.id %}"> details </a></td>
+                     </tr>
                {% endfor %}
+               </table>
+                {% else %}
+                    <p>You have no job asked !</p>
+                {% endif %}
             {% elif forloop.counter == 4 %}
+                {% if objectBlock %}
                 <h3> Job you have done </h3>
-               {% for object in history %}
-                -> Donation received
+               <table class="table table-striped" >
+                     <tr>
+                        <th>title</th>
+                        <th>description</th>
+                        <th>duration</th>
+                        <th>location</th>
+                        <th>complete</th>
+                        <th> more details</th>
+                     </tr>
+               {% for object in objectBlock %}
+                     <tr>
+                        <td>{{ object.title }}</td>
+                        <td>{{ object.description }}</td>
+                        <td>{{ object.duration }}</td>
+                        <td>{{ object.location }}</td>
+                         {% if object.complete == False %}
+                        <td> NO </td>
+                         {% else %}
+                        <td>YES</td>
+                         {% endif %}
+                         <th><a href="{% url 'c4c:job_detail' object.id %}"> details </a></th>
+                     </tr>
                {% endfor %}
+               </table>
+                {% else %}
+                    <p>You have no job asked !</p>
+                {% endif %}
             {% endif %}
         {% endfor %}
     {% endif %}
