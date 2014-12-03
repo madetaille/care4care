@@ -161,7 +161,7 @@ class C4CAdminNews(admin.ModelAdmin):
         obj.save()
 
 admin.site.unregister(User)
-# admin.site.unregister(Group)
+admin.site.unregister(Group)
 admin.site.register(User, UserAdmin)
 
 admin.site.register(C4CJob, C4CAdminJob)
