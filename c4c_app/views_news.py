@@ -39,8 +39,8 @@ class NewsDetail(generic.DetailView):
         # Call the base implementation first to get a context
         context = super(NewsDetail, self).get_context_data(**kwargs)
         # Add in the publisher
-        member = get_object_or_404(C4CNews, user=self.request.user.user)
-        context['News'] = member
+        #member = get_object_or_404(C4CNews, user=self.request.user.user)
+        #context['News'] = member
         return context
 
 class AllNews(generic.ListView):
