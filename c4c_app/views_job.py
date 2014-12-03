@@ -226,19 +226,20 @@ class Feeds(generic.ListView):
 
 
 def send_email_creation_job(job, maker):
-    subject, from_email, to = 'Care4Care : your created a job !', settings.EMAIL_HOST_USER, maker.user.email
-    text_content = ''
-    htmly = get_template('email_jobcreation.html')
+        subject, from_email, to = 'Care4Care : you created a job !', settings.EMAIL_HOST_USER, maker.user.email
+        text_content = ''
+        htmly = get_template('email_jobcreation.html')
+        
+        d = Context({ 'c4cjob': job })
+        html_content = htmly.render(d)
+        msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
+        msg.attach_alternative(html_content, "text/html")
+        msg.send()
 
-    d = Context({'c4cjob': job})
-    html_content = htmly.render(d)
-    msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
-    msg.attach_alternative(html_content, "text/html")
-    msg.send()
 
 
 def send_email_done_job(job):
-    subject, from_email, to = 'Care4Care : your job is now completed !', settings.EMAIL_HOST_USER, job.asked_by.email
+    subject, from_email, to = 'Care4Care : a job is waiting for you to be completed !', settings.EMAIL_HOST_USER, job.asked_by.email
     htmly = get_template('email_jobcompleted.html')
     text_content = ''
 
