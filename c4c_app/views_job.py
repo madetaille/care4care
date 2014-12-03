@@ -191,7 +191,10 @@ class Feeds(generic.ListView):
         users = None
         if self.request.user.is_authenticated():
             user = get_object_or_404(C4CUser, user=self.request.user)
-            users = C4CUser.objects.filter(branches=user.c4cuser.get_branches())
+            users = set()
+            for branch in user.get_branches():
+                users = set(branch.get_users()).union(users)
+            users = [u.c4cuser for u in users]
         else:
             users = C4CUser.objects.all()
 

@@ -3,7 +3,7 @@ from django.contrib.auth.admin import UserAdmin as OriginalUserAdmin
 from django.contrib.auth.models import User, Group
 from django.db.models import Q
 
-from c4c_app.models import C4CBranch, C4CDonation, C4CEvent, C4CJob, C4CUser
+from c4c_app.models import C4CBranch, C4CDonation, C4CEvent, C4CJob, C4CUser, C4CNews
 #########################################
 #                                       #
 # Models accessible only to super-admin #
@@ -60,7 +60,7 @@ class C4CAdminBranch(admin.ModelAdmin):
 
 def _get_user_queryset_from_officer(user):
     """ Return a queryset asking for all the users that the officer can moderate """
-    return User.objects.filter(groups__in=user.c4cuser.get_administrated_branches())
+    return User.objects.filter(groups__in=[b.group for b in user.c4cuser.get_administrated_branches()])
 
 
 class C4CAdminJob(admin.ModelAdmin):
@@ -114,6 +114,22 @@ class C4CAdminEvent(admin.ModelAdmin):
         return qs
 
 
+class C4CAdminNews(admin.ModelAdmin):
+
+    def get_queryset(self, request):
+        qs = super(C4CAdminNews, self).get_queryset(request)
+        if not request.user.is_superuser:  # officer
+            return qs.filter(branch__in=request.user.c4cuser.get_administrated_branches(), user=request.user)
+        return qs
+
+    def get_readonly_fields(self, request, obj=None):
+        print("wut")
+        r = list(super(C4CAdminNews, self).get_readonly_fields(request, obj))
+        if not request.user.is_superuser:  # officer
+            r = r + ['user', 'branch']
+        print(str(r))
+        return r
+
 admin.site.unregister(User)
 # admin.site.unregister(Group)
 admin.site.register(User, UserAdmin)
@@ -122,3 +138,4 @@ admin.site.register(C4CJob, C4CAdminJob)
 admin.site.register(C4CDonation, C4CAdminDonation)
 admin.site.register(C4CBranch, C4CAdminBranch)
 admin.site.register(C4CEvent, C4CAdminEvent)
+admin.site.register(C4CNews, C4CAdminNews)
