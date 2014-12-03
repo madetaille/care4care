@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as OriginalUserAdmin
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import User, Group, Permission
 from django.db.models import Q
 from django.forms import ModelForm
 
@@ -37,6 +37,12 @@ class C4CAdminBranch(admin.ModelAdmin):
             obj.officers_group = Group.objects.create(name=("officers - " + obj.name))
             obj.group.user_set.add(obj.main_user)
             obj.officers_group.user_set.add(obj.main_user)
+            perms = ['add_c4cjob', 'delete_c4cjob', 'change_c4cjob',
+                     'add_c4cnews', 'delete_c4cnews', 'change_c4cnews',
+                     'add_c4cevent', 'delete_c4cevent', 'change_c4cevent',
+                     'add_c4cdonation', 'delete_c4cdonation', 'change_c4cdonation']
+            for p in perms:
+                obj.officers_group.permissions.add(Permission.objects.get(codename=p))
         admin.ModelAdmin.save_model(self, request, obj, form, change)
 
     def delete_model(self, request, obj):
