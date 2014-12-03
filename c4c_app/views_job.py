@@ -9,9 +9,10 @@ from django.utils import timezone
 from django.views import generic
 from django.views.generic.edit import CreateView
 from django.views.generic.edit import UpdateView
+import datetime
 
 from c4c import settings
-from c4c_app.models import C4CUser, C4CJob, C4CEvent
+from c4c_app.models import C4CUser, C4CJob, C4CEvent, C4CBranch
 class JobCreation(CreateView):
     model = C4CJob
     template_name = 'c4cjob_form.html'
@@ -87,6 +88,7 @@ def acceptJob(request, c4cjob_id):
             event2 = C4CEvent(name=job.title, date=job.start_date, job=job, user=job.done_by, description=job.description)
             event1.save()
             event2.save()
+            send_email_accepted_offer(job)
             return HttpResponseRedirect(reverse('c4c:job_detail', args=(job.id,)))
     else:
         if user_site.user == job.done_by:
@@ -98,6 +100,7 @@ def acceptJob(request, c4cjob_id):
             event2 = C4CEvent(name=job.title, date=job.start_date, job=job, user=job.done_by, description=job.description)
             event1.save()
             event2.save()
+            send_email_accepted_demand(job)
             return HttpResponseRedirect(reverse('c4c:job_detail', args=(job.id,)))
 
 
@@ -129,6 +132,13 @@ def confirmJob(request, c4cjob_id):
 @login_required
 def reportJob(request, c4cjob_id):
     # TODO: envoie d un email a l admin
+    job = get_object_or_404(C4CJob, pk=c4cjob_id)
+    branch_user = request.user.get_branches()
+    
+    branch_admins = get_object_or_404(C4CBranch, name = branch_user.name)
+    officers = branch_admins.officers_group.users.all()
+    
+    send_email_report_admin(job, officers)
     return HttpResponseRedirect(reverse('c4c:job_detail', args=(c4cjob_id,)))
 
 
@@ -136,16 +146,17 @@ def reportJob(request, c4cjob_id):
 def cancelJob(request, c4cjob_id):
     job = get_object_or_404(C4CJob, pk=c4cjob_id)
 
-    # TODO: avertir demandeur/offreur par email
     if job.offer == False:
-        event1 = get_object_or_404(C4CEvent, job=job, user=job.done_by.user)
-        event2 = get_object_or_404(C4CEvent, job=job, user=job.asked_by.user)
+        send_email_canceled_demand(job)
+        event1 = get_object_or_404(C4CEvent, job=job, user=job.done_by)
+        event2 = get_object_or_404(C4CEvent, job=job, user=job.asked_by)
         event1.delete()
         event2.delete()
         job.done_by = None
     else:
-        event1 = get_object_or_404(C4CEvent, job=job, user=job.done_by.user)
-        event2 = get_object_or_404(C4CEvent, job=job, user=job.asked_by.user)
+        send_email_canceled_offer(job)
+        event1 = get_object_or_404(C4CEvent, job=job, user=job.done_by)
+        event2 = get_object_or_404(C4CEvent, job=job, user=job.asked_by)
         event1.delete()
         event2.delete()
         job.asked_by = None
@@ -158,12 +169,16 @@ def cancelJob(request, c4cjob_id):
 def deleteJob(request, c4cjob_id):
     job = get_object_or_404(C4CJob, pk=c4cjob_id)
 
+    if job.offer == False:
+        send_email_delete_demand(job)
+    elif job.offer == True:
+        send_email_delete_offer(job)
+        
     if(job.asked_by is not None and job.done_by is not None):
-        event1 = get_object_or_404(C4CEvent, job=job, user=job.done_by.user)
-        event2 = get_object_or_404(C4CEvent, job=job, user=job.asked_by.user)
+        event1 = get_object_or_404(C4CEvent, job=job, user=job.done_by)
+        event2 = get_object_or_404(C4CEvent, job=job, user=job.asked_by)
         event1.delete()
         event2.delete()
-    # TODO: envoie email pour avertir autre personne qui a accepte
     job.delete()
     return HttpResponseRedirect(reverse('c4c:user_jobs'))
 
@@ -178,11 +193,11 @@ def userJobs(request, member_pk=None):
         member = get_object_or_404(C4CUser, user=request.user)
 
     res = []
-    res.append(C4CJob.objects.filter(complete=False, asked_by=member.user))
-    res.append(C4CJob.objects.filter(complete=False, done_by=member.user))
-    res.append(member.user.jobs_created.all())
-    res.append(member.user.jobs_asked.all())
-    res.append(member.user.jobs_accepted.all())
+    res.append(member.user.jobs_asked.filter(complete=False).order_by("-start_date"))
+    res.append(member.user.jobs_accepted.filter(complete=False).order_by("-start_date"))
+    res.append(member.user.jobs_created.all().order_by("-start_date"))
+    res.append(member.user.jobs_asked.all().order_by("-start_date"))
+    res.append(member.user.jobs_accepted.all().order_by("-start_date"))
 
     context = {'user_job_list': res}
 
@@ -207,7 +222,7 @@ class Feeds(generic.ListView):
         jobs = []
         res = []
         for usr in users:
-            jobs.append(C4CJob.objects.filter(created_by=usr.user))
+            jobs.append(C4CJob.objects.filter(created_by=usr.user, complete=False, start_date__gte=datetime.date.today()))
 
         demands = []
         offers = []
@@ -217,7 +232,9 @@ class Feeds(generic.ListView):
                     offers.append(job)
                 else:
                     demands.append(job)
-
+        
+        demands.sort(key=lambda x: x.start_date, reverse=True)
+        offers.sort(key=lambda x: x.start_date, reverse=True)
         res.append(demands)
         res.append(offers)
         return res
@@ -261,4 +278,89 @@ def send_email_confirm(job):
     msg.attach_alternative(html_content, "text/html")
     msg.send()
     
+def send_email_report_admin(job, admins):
+    subject, from_email,= 'Care4Care : there is a conflict between two members !', settings.EMAIL_HOST_USER
+    
+    for users in admins:
+        to = users.email
+        htmly = get_template('email_jobreported.html')
+        text_content = ''
+
+        d = Context({'c4cjob': job})
+        html_content = htmly.render(d)
+        msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
+        msg.attach_alternative(html_content, "text/html")
+        msg.send()
+    
+def send_email_canceled_demand(job):
+    subject, from_email, to = 'Care4Care : a demand you asked for has been canceled !', settings.EMAIL_HOST_USER, job.asked_by.email
+    
+    htmly = get_template('email_jobcanceled.html')
+    text_content = ''
+
+    d = Context({'c4cjob': job})
+    html_content = htmly.render(d)
+    msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
+    msg.attach_alternative(html_content, "text/html")
+    msg.send()
+
+def send_email_canceled_offer(job):
+    subject, from_email, to = 'Care4Care : an offer you made has been canceled !', settings.EMAIL_HOST_USER, job.done_by.email
+    
+    htmly = get_template('email_jobcanceled.html')
+    text_content = ''
+
+    d = Context({'c4cjob': job})
+    html_content = htmly.render(d)
+    msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
+    msg.attach_alternative(html_content, "text/html")
+    msg.send()
+    
+def send_email_delete_offer(job):
+    subject, from_email, to = 'Care4Care : an offer you accepted has been deleted !', settings.EMAIL_HOST_USER, job.asked_by.email
+    
+    htmly = get_template('email_jobdeleted.html')
+    text_content = ''
+
+    d = Context({'c4cjob': job})
+    html_content = htmly.render(d)
+    msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
+    msg.attach_alternative(html_content, "text/html")
+    msg.send()
+    
+def send_email_delete_demand(job):
+    subject, from_email, to = 'Care4Care : a demand you accepted has been deleted !', settings.EMAIL_HOST_USER, job.done_by.email
+    
+    htmly = get_template('email_jobdeleted.html')
+    text_content = ''
+
+    d = Context({'c4cjob': job})
+    html_content = htmly.render(d)
+    msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
+    msg.attach_alternative(html_content, "text/html")
+    msg.send()
+    
+def send_email_accepted_offer(job):
+    subject, from_email, to = 'Care4Care : a demand you made has been accepted !', settings.EMAIL_HOST_USER, job.done_by.email
+    
+    htmly = get_template('email_jobaccepted.html')
+    text_content = ''
+
+    d = Context({'c4cjob': job})
+    html_content = htmly.render(d)
+    msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
+    msg.attach_alternative(html_content, "text/html")
+    msg.send()
+    
+def send_email_accepted_demand(job):
+    subject, from_email, to = 'Care4Care : an offer you made has been accepted !', settings.EMAIL_HOST_USER, job.asked_by.email
+    
+    htmly = get_template('email_jobaccepted.html')
+    text_content = ''
+
+    d = Context({'c4cjob': job})
+    html_content = htmly.render(d)
+    msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
+    msg.attach_alternative(html_content, "text/html")
+    msg.send()
     

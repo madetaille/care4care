@@ -1,0 +1,21 @@
+{% if c4cjob.offer == True %}
+Hello {{ c4cjob.done_by }} ! <br>
+An offer that you made has been canceled by {{ c4cjob.asked_by }}. <br>
+Its specifications were : <br>
+<li>Location : {{c4cjob.location}}</li>
+<li>Description : {{c4cjob.description}}</li>
+<br>
+<br>
+Best regards, <br>
+The C4C Organisation.
+{% elif c4cjob.offer == False %}
+Hello {{ c4cjob.asked_by }} ! <br>
+A demand that you asked for has been canceled by {{ c4cjob.done_by }}. <br>
+Its specifications were : <br>
+<li>Location : {{c4cjob.location}}</li>
+<li>Description : {{c4cjob.description}}</li>
+<br>
+<br>
+Best regards, <br>
+The C4C Organisation.
+{% endif %}
