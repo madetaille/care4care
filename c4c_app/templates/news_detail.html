@@ -1,0 +1,24 @@
+
+{% extends "base.html" %}
+
+
+{% block title %}Care4Care - News detail{% endblock %}
+{% block content %}
+<a class="btn btn-default" href="{% url 'c4c:all_news_list_Branch' %}"> All branch news </a>
+<a class="btn btn-default" href="{% url 'c4c:all_news_list' %}"> All News </a>
+
+
+<div class="panel panel-primary">
+    <div class="panel-heading">
+    {{ C4CNews.title}} -- {{ C4CNews.date}} by {{ C4CNews.user}}
+    </div>
+    <div class="panel-body">
+    {{ C4CNews.description}}
+    </div>
+    <div class="panel-footer">
+       {% if news.branch %}
+        <p>Related branch : {{ news.branch }}</p>
+        {% endif %}
+   </div>
+</div>
+{% endblock content %}

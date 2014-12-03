@@ -56,20 +56,19 @@
             <div class="row">
                 <div class="col-sm-3">
                     <ul class="nav nav-pills nav-stacked">
-                        <li role="presentation" class="active"><a href="#">Feeds</a></li>
+                        <li role="presentation"><a href="{% url 'c4c:feeds' %}">Feeds</a></li>
                         {% if user.is_authenticated %}
-                        <li role="presentation"><a href="#">Messages <span class="badge">4</span></a></li>
                         <li role="presentation"><a href="#">My profile</a></li>
+                        <li role="presentation"><a href="{% url 'c4c:user_jobs'  %}">My Jobs</a></li>
                         <li role="presentation"><a href="{% url 'c4c:agenda'  %}">My agenda</a></li>
                         <li role="presentation"><a href="{% url 'c4c:network'  %}">Personal Network</a></li>
-                        <li role="presentation"><a href="{% url 'c4c:donation_creation' %}"> New Donation </a></li>
-                        <li role="presentation"><a href="#"> News </a></li>
+                        <li role="presentation"><a href="{% url 'c4c:donation_creation' %}"> Make Donation </a></li>
                         <li role="presentation"><a href="#">History</a></li>
                         {% endif %}
                     </ul>
                     <hr/>
                     <ul class="nav nav-pills nav-stacked">
-                    	<li role="presentation"><a href="#">News</a></li>
+                        <li role="presentation"><a href="{% url 'c4c:all_news_list' %}"> News </a></li>
                         <li role="presentation"><a href="{% url 'c4c:whatisc4c' %}">What is Care4Care?</a></li>
                         <li role="presentation"><a href="{% url 'c4c:aboutus' %}">About us</a></li>
                         <li role="presentation"><a href="#">Help</a></li>
