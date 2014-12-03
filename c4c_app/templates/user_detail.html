@@ -9,11 +9,25 @@
         <h1 class="text-center">{{ c4cuser.user.username }}'s profile</h1>
     {% endif %}
     <br/>
+
+    <h2> User details: </h2>
     <ul>
         <li>Username: {{ c4cuser.user.username }}</li>
         <li>First name: {{ c4cuser.user.first_name }}</li>
         <li>Last name: {{ c4cuser.user.last_name }}</li>
         <li>Email: {{ c4cuser.user.email }}</li>
+        {% if viewer.pk == c4cuser.pk %}
+            <li>Password: ... </li>
+        {% endif %}
+    </ul>
+
+    {% if viewer.pk == c4cuser.pk %}
+        <br/>
+        <p>You can <a href={% url 'c4c:user_edit' c4cuser.user.pk %}>edit your profile</a>.</p>
+    {% endif %}
+
+    <h2> C4C details: </h2>
+    <ul>
         <li>Address: {{ c4cuser.address }}</li>
         <li>Birthday: {{ c4cuser.birthday }}</li>
         <li>Account balance: {{ c4cuser.time_account }}</li>
@@ -21,6 +35,6 @@
 
     {% if viewer.pk == c4cuser.pk %}
         <br/>
-        <p>You can <a href={% url 'c4c:user_edit' %}>edit your profile</a>.</p>
+        <p>You can <a href={% url 'c4c:c4cuser_edit' c4cuser.user.pk %}>edit your profile</a>.</p>
     {% endif %}
 {% endblock content %}

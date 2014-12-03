@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 
-{% block title %}Care4Care - Update profile (C4C) {% endblock %}
+{% block title %}Care4Care - Update profile (User) {% endblock %}
 
 {% block content %}
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <input type="submit" value="Update C4C details" />
+        <input type="submit" value="Update User details" />
     </form>
 {% endblock content %}
