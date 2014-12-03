@@ -1,11 +1,13 @@
 from django.conf.urls import patterns, url
 
 from c4c_app import views
+from django.contrib.auth.decorators import login_required
 
 urlpatterns = patterns('',
     #Home
     url(r'^$', views.home, name='home'),
     #Jobs
+    url(r'^feeds/$', views.Feeds.as_view(), name='feeds'),
     url(r'^jobdetail/(?P<pk>\d+)/$', views.JobDetail.as_view(), name='job_detail'),
     url(r'^(?P<c4cjob_id>\d+)/acceptjob$', views.acceptJob, name='accept_job'),
     url(r'^(?P<c4cjob_id>\d+)/donejob$', views.doneJob, name='done_job'),
@@ -15,9 +17,9 @@ urlpatterns = patterns('',
     url(r'^(?P<c4cjob_id>\d+)/deletejob$', views.deleteJob, name='delete_job'),
     url(r'^userjobs/$', views.userJobs, name='user_jobs'),
     url(r'^(?P<member_pk>\d+)/userjobs/$', views.userJobs, name='user_jobs'),
+    url(r'^userjobs/$', views.userJobs, name='user_jobs'),
     url(r'^jobcreation/$',views.JobCreation.as_view(), name='job_creation'),
     url(r'^(?P<pk>\d+)/jobupdate/$',views.JobUpdate.as_view(), name='job_update'),
-    url(r'^alljobs/$',views.AllJobs.as_view(), name='all_jobs'),
     #Gift
     url(r'^donation/$', views.DonationCreation.as_view(), name='donation_creation'),
     url(r'^donation_detail/(?P<pk>\d+)/$', views.DonationDetail.as_view(), name='donation_detail'),

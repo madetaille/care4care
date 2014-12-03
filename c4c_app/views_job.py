@@ -60,7 +60,7 @@ class JobDetail(generic.DetailView):
         context['member'] = member
         return context
 
-
+@login_required
 def acceptJob(request, c4cjob_id):
     job = get_object_or_404(C4CJob, pk=c4cjob_id)
     user_site = get_object_or_404(C4CUser, user=request.user)
@@ -88,7 +88,7 @@ def acceptJob(request, c4cjob_id):
             event2.save()
             return HttpResponseRedirect(reverse('c4c:job_detail', args=(job.id,)))
 
-
+@login_required
 def doneJob(request, c4cjob_id):
     job = get_object_or_404(C4CJob, pk=c4cjob_id)
     job.duration = request.POST['Duration']
@@ -100,7 +100,7 @@ def doneJob(request, c4cjob_id):
     # TODO: avertir le createur de la completion du job
     return HttpResponseRedirect(reverse('c4c:job_detail', args=(job.id,)))
 
-
+@login_required
 def confirmJob(request, c4cjob_id):
     job = get_object_or_404(C4CJob, pk=c4cjob_id)
     job.complete = True
@@ -112,12 +112,12 @@ def confirmJob(request, c4cjob_id):
     # TODO: avertir le travailleur de la completion du job
     return HttpResponseRedirect(reverse('c4c:job_detail', args=(job.id,)))
 
-
+@login_required
 def reportJob(request, c4cjob_id):
     # TODO: envoie d un email a l admin
     return HttpResponseRedirect(reverse('c4c:job_detail', args=(c4cjob_id,)))
 
-
+@login_required
 def cancelJob(request, c4cjob_id):
     job = get_object_or_404(C4CJob, pk=c4cjob_id)
 
@@ -138,7 +138,7 @@ def cancelJob(request, c4cjob_id):
 
     return HttpResponseRedirect(reverse('c4c:job_detail', args=(job.id,)))
 
-
+@login_required
 def deleteJob(request, c4cjob_id):
     job = get_object_or_404(C4CJob, pk=c4cjob_id)
     
@@ -151,7 +151,7 @@ def deleteJob(request, c4cjob_id):
     job.delete()
     return HttpResponseRedirect(reverse('c4c:user_jobs'))
 
-
+@login_required
 def userJobs(request, member_pk=None):
     
     member=None
@@ -168,18 +168,23 @@ def userJobs(request, member_pk=None):
     context={'user_job_list':res}
     
     return render(request,'user_job.html',context)
-    
-class AllJobs(generic.ListView):
+
+class Feeds(generic.ListView):
     template_name = 'all_jobs.html'
     context_object_name = 'all_jobs_list'
     
     def get_queryset(self):
-        user = get_object_or_404(C4CUser, user = self.request.user)
-        users = C4CUser.objects.filter(branches = user.branches)
+        users = None
+        if self.request.user.is_authenticated():
+            user = get_object_or_404(C4CUser, user = self.request.user)
+            users = C4CUser.objects.filter(branches = user.branches.all())
+        else:
+            users = C4CUser.objects.all()
+            
         jobs = []
-        
+        res = []
         for usr in users:
-            jobs.append(C4CJob.objects.filter(created_by = usr))
+            jobs.append(C4CJob.objects.filter(created_by = usr.user))
         
         demands = []
         offers = []
@@ -190,6 +195,6 @@ class AllJobs(generic.ListView):
                 else:
                     demands.append(job)
                     
-        jobs.append(demands)
-        jobs.append(offers)
-        return jobs
+        res.append(demands)
+        res.append(offers)
+        return res
