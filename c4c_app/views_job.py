@@ -110,7 +110,6 @@ def doneJob(request, c4cjob_id):
     event = get_object_or_404(C4CEvent, job=job, user=request.user)
     event.delete()
 
-    # TODO: avertir le createur de la completion du job
     send_email_done_job(job)
     return HttpResponseRedirect(reverse('c4c:job_detail', args=(job.id,)))
 
@@ -123,8 +122,7 @@ def confirmJob(request, c4cjob_id):
 
     event = get_object_or_404(C4CEvent, job=job, user=request.user)
     event.delete()
-    # TODO: avertir le createur de la completion du job
-    # TODO: avertir le travailleur de la completion du job
+    send_email_confirm(job)
     return HttpResponseRedirect(reverse('c4c:job_detail', args=(job.id,)))
 
 
@@ -240,6 +238,8 @@ def send_email_creation_job(job, maker):
 
 def send_email_done_job(job):
     subject, from_email, to = 'Care4Care : a job is waiting for you to be completed !', settings.EMAIL_HOST_USER, job.asked_by.email
+    
+    
     htmly = get_template('email_jobcompleted.html')
     text_content = ''
 
@@ -248,3 +248,17 @@ def send_email_done_job(job):
     msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
     msg.attach_alternative(html_content, "text/html")
     msg.send()
+    
+def send_email_confirm(job):
+    subject, from_email, to = 'Care4Care : a job you did has been confirmed !', settings.EMAIL_HOST_USER, job.done_by.email
+    
+    htmly = get_template('email_jobconfirmed.html')
+    text_content = ''
+
+    d = Context({'c4cjob': job})
+    html_content = htmly.render(d)
+    msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
+    msg.attach_alternative(html_content, "text/html")
+    msg.send()
+    
+    
