@@ -9,6 +9,7 @@
 <a class="btn btn-default" href="{% url 'c4c:news_creation' %}"> Create News </a>
         {% endif %}
 {% for news in allNews %}
+
 <div class="panel panel-primary" style = "margin-top:10px">
      <div class="panel-heading">
     {{ news.title}} -- {{ news.date}} by {{ news.user}}
@@ -16,7 +17,11 @@
     <div class="panel-body">
     {{ news.description}}
     </div>
-    <div class="panel-footer"> Related Branch : {{ news.branch}}</div>
+   <div class="panel-footer">
+       {% if news.branch %}
+<p>Related branch : {{ news.branch }}</p>
+        {% endif %}
+   </div>
 </div>
 {% endfor %}
 {% endblock content %}

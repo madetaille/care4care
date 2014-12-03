@@ -15,6 +15,12 @@
     <div class="panel-body">
     {{ C4CNews.description}}
     </div>
-    <div class="panel-footer"> Related Branch : {{ C4CNews.branch}}</div>
+    <div class="panel-footer">
+        {% if C4CNews.branch != None%}
+            Related Branch : {{ C4CNews.branch}}
+        {% else %}
+            General Information
+        (% endif %}
+    </div>
 </div>
 {% endblock content %}
