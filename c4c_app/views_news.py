@@ -9,7 +9,6 @@ from django import forms
 
 class NewsCreation(CreateView):
 
-
     fields = [ 'title', 'branch', 'description']
     model = C4CNews
     template_name = 'news_form.html'
@@ -28,7 +27,6 @@ class NewsCreation(CreateView):
         self.object.save()
 
         return HttpResponseRedirect(reverse("c4c:news_detail", args=(self.object.id,)))
-
 
 
 class NewsDetail(generic.DetailView):
@@ -59,8 +57,12 @@ class AllNewsBranch(generic.ListView):
     model = C4CNews
 
     def get_queryset(self):
-        #member = get_object_or_404(C4CUser, user=self.request.user)
-        #branches = list(self.request.user.branches.all())
-        #allNews = C4CNews.objects.filter(branch__in=branches)
         allNews = []
+        user = get_object_or_404(C4CUser, user = self.request.user)
+        branches = user.get_branches()
+
+        for one_branch in branches:
+            allNews += C4CNews.objects.filter(branch = one_branch.name)
+
+        allNews.sort(key=lambda x: x.date, reverse=True) #sorted by date
         return allNews

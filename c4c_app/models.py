@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.contrib.auth.models import User, Group
 from django.db import models
 from django.db.models.signals import pre_save, post_save, pre_delete
@@ -170,8 +172,18 @@ class C4CNews(models.Model):
         """ Allows to clearly see the events in the administration """
         return "{} - {}".format(str(self.date), self.title)
 
+# Signal handler for User
+
+
+@receiver(pre_save, sender=User)
+def handle_user_pre_save(sender, instance, **kwargs):
+    """ Create a C4CUser when none have been created before (to fix a problem with ```manage.py superuser``` """
+    if instance.is_superuser and not hasattr(instance, "c4cuser"):
+        C4CUser(user=instance, address="Super user", birthday=datetime.now()).save()
 
 # Signal handlers for time account update
+
+
 def _get_set_without_none(listt):
     """ Get a set that does not include None from the list ``listt`` """
     return set([i for i in listt if i is not None])
