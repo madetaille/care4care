@@ -39,8 +39,8 @@ class NewsDetail(generic.DetailView):
         # Call the base implementation first to get a context
         context = super(NewsDetail, self).get_context_data(**kwargs)
         # Add in the publisher
-        #member = get_object_or_404(C4CNews, user=self.request.user.user)
-        #context['News'] = member
+        member = get_object_or_404(C4CNews, pk=self.object.id)
+        context['member'] = member
         return context
 
 class AllNews(generic.ListView):
@@ -60,6 +60,7 @@ class AllNewsBranch(generic.ListView):
 
     def get_queryset(self):
         #member = get_object_or_404(C4CUser, user=self.request.user)
-        #allNews = C4CNews.objects.filter(branch = member.branches)
+        #branches = list(self.request.user.branches.all())
+        #allNews = C4CNews.objects.filter(branch__in=branches)
         allNews = []
         return allNews
