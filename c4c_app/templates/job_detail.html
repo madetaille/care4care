@@ -32,7 +32,8 @@
 			<li><p> Ongoing </p></li>
 		{% endif %}
 	</ul>
-		
+	
+{% if user.is_authenticated %}		
 	{% if c4cjob.done_by == None and c4cjob.asked_by.pk != member.pk %}
 		<form action="{% url 'c4c:accept_job' c4cjob.id %}" method="post">
 		{% csrf_token %}
@@ -97,4 +98,5 @@
             </form>
 		{% endif %}
 	{% endif %}
+{% endif %}
 {% endblock content %}

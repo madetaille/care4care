@@ -18,7 +18,16 @@ class C4CUser(models.Model):
     time_account = models.IntegerField(default=0)
     birthday = models.DateField()
     network = models.ManyToManyField("self", symmetrical=False, blank=True)
-    branches = models.ManyToManyField("C4CBranch", blank=True)
+
+    def get_branches(self):
+        """ Get branches to which this user belongs """
+        return [a.group for a in list(C4CBranch.objects.filter(group__in=list(self.user.groups.all())))]
+
+    def get_administrated_branches(self):
+        """ Get branches that are administrated by this user """
+        if self.user.is_superuser:
+            return list(C4CBranch.objects.all())
+        return [a.group for a in list(C4CBranch.objects.filter(officers_group__in=list(self.user.groups.all())))]
 
     def __str__(self):
         """ Allows to clearly see the username in the administration """
@@ -117,6 +126,10 @@ class C4CBranch(models.Model):
         """ Allows to clearly see the branches in the administration """
         return self.name
 
+    def get_users(self):
+        """ Returns a queryset that will list all users contained in this branch """
+        return User.objects.filter(groups__in=(self.group, self.officers_group))
+
 
 class C4CEvent(models.Model):
 
@@ -139,6 +152,7 @@ class C4CEvent(models.Model):
     def __str__(self):
         """ Allows to clearly see the events in the administration """
         return "{} - {}".format(str(self.date), self.name)
+
 
 class C4CNews(models.Model):
 
