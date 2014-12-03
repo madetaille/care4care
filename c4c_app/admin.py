@@ -1,9 +1,9 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as OriginalUserAdmin
 from django.contrib.auth.models import User, Group
+from django.db.models import Q
 
 from c4c_app.models import C4CBranch, C4CDonation, C4CEvent, C4CJob, C4CUser
-
 #########################################
 #                                       #
 # Models accessible only to super-admin #
@@ -60,8 +60,7 @@ class C4CAdminBranch(admin.ModelAdmin):
 
 def _get_user_queryset_from_officer(user):
     """ Return a queryset asking for all the users that the officer can moderate """
-    groups = [a.group for a in list(C4CBranch.objects.filter(officers_group__in=list(user.groups.all())))]
-    return User.objects.filter(groups__in=groups)
+    return User.objects.filter(groups__in=user.c4cuser.get_administrated_branches())
 
 
 class C4CAdminJob(admin.ModelAdmin):
@@ -74,10 +73,10 @@ class C4CAdminJob(admin.ModelAdmin):
         return super(C4CAdminJob, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
     def get_queryset(self, request):
-        qs = super(C4CAdminDonation, self).get_queryset(request)
+        qs = super(C4CAdminJob, self).get_queryset(request)
         if not request.user.is_superuser:  # officer
             users = list(_get_user_queryset_from_officer(request.user))
-            return qs.filter(created_by__in=users, asked_by__in=users, done_by__in=users)
+            return qs.filter(Q(created_by__in=users) | Q(asked_by__in=users) | Q(done_by__in=users))
         return qs
 
 
@@ -94,7 +93,7 @@ class C4CAdminDonation(admin.ModelAdmin):
         qs = super(C4CAdminDonation, self).get_queryset(request)
         if not request.user.is_superuser:  # officer
             users = list(_get_user_queryset_from_officer(request.user))
-            return qs.filter(sender__in=users, receiver__in=users)
+            return qs.filter(Q(sender__in=users) | Q(receiver__in=users))
         return qs
 
 
@@ -106,6 +105,13 @@ class C4CAdminEvent(admin.ModelAdmin):
             if db_field.name in ("user"):
                 kwargs["queryset"] = _get_user_queryset_from_officer(request.user)
         return super(C4CAdminEvent, self).formfield_for_foreignkey(db_field, request, **kwargs)
+
+    def get_queryset(self, request):
+        qs = super(C4CAdminEvent, self).get_queryset(request)
+        if not request.user.is_superuser:  # officer
+            users = list(_get_user_queryset_from_officer(request.user))
+            return qs.filter(user__in=users)
+        return qs
 
 
 admin.site.unregister(User)
