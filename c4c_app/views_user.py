@@ -28,6 +28,14 @@ class UserEdit(generic.edit.UpdateView):
     model = User
     fields = ['username','first_name','last_name','email']
 
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(UserEdit, self).get_context_data(**kwargs)
+        viewer = get_object_or_404(User, pk=self.request.user.pk)
+        context['viewerpk'] = viewer.pk
+        context['ownerpk'] = int(self.kwargs.get('pk'))
+        return context
+
     def form_valid(self, form):
         self.object = form.save(commit=False)
         self.object.save()
@@ -37,6 +45,14 @@ class C4CUserEdit(generic.edit.UpdateView):
     template_name = 'c4cuser_edit.html'
     model = C4CUser
     fields = ['address','birthday']
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(C4CUserEdit, self).get_context_data(**kwargs)
+        viewer = get_object_or_404(C4CUser, user=self.request.user)
+        context['viewerpk'] = viewer.user.pk
+        context['ownerpk'] = int(self.kwargs.get('pk'))
+        return context
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
