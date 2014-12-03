@@ -35,67 +35,36 @@
 	
 {% if user.is_authenticated %}		
 	{% if c4cjob.done_by == None and c4cjob.asked_by.pk != member.pk %}
-		<form action="{% url 'c4c:accept_job' c4cjob.id %}" method="post">
-		{% csrf_token %}
-		<input type="submit" value="Accept" />
-		</form>
+		<button type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:accept_job' c4cjob.id %}'">Accept</button> 
 	{% elif c4cjob.asked_by == None and c4cjob.done_by.pk != member.pk %}
-		<form action="{% url 'c4c:accept_job' c4cjob.id %}" method="post">
-		{% csrf_token %}
-		<input type="submit" value="Accept" />
-		</form>
+		<button type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:accept_job' c4cjob.id %}'">Accept</button> 
 	{% elif c4cjob.end_date == None and c4cjob.done_by.pk == member.pk and c4cjob.done_by != None and c4cjob.asked_by != None %}
 		<form action="{% url 'c4c:done_job' c4cjob.id %}" method="post">
 		{% csrf_token %}
 		<input type="number" name="Duration" />
-		<input type="submit" value="Done" />
+		<button type="submit" class="btn btn-primary">Done</button> 
 		</form>
 	{% elif c4cjob.complete == False and c4cjob.asked_by.pk == member.pk and c4cjob.end_date != None %}
-		<form action="{% url 'c4c:confirm_job' c4cjob.id %}" method="post">
-		{% csrf_token %}
-		<input type="submit" value="Confirm" />
-		</form>
-		<form action="{% url 'c4c:report_job' c4cjob.id %}" method="post">
-		{% csrf_token %}
-		<input type="submit" value="Report" />
+		<button type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:confirm_job' c4cjob.id %}'">Confirm</button> 
+		<button type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:report_job' c4cjob.id %}'">Report</button> 
 		</form>
 	{% endif %}
 	
 	{% if c4cjob.end_date == None and c4cjob.done_by != None and c4cjob.asked_by != None %}
 		{% if c4cjob.offer == True and c4cjob.asked_by.pk == member.pk  %}
-			<form action="{% url 'c4c:cancel_job' c4cjob.id %}" method="post">
-			{% csrf_token %}
-			<input type="submit" value="Cancel" />
-			</form>
+			<button type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:cancel_job' c4cjob.id %}'">Cancel</button> 
 		{% elif c4cjob.offer == False and c4cjob.done_by.pk == member.pk %}
-			<form action="{% url 'c4c:cancel_job' c4cjob.id %}" method="post">
-			{% csrf_token %}
-			<input type="submit" value="Cancel" />
-			</form>
+			<button type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:cancel_job' c4cjob.id %}'">Cancel</button> 
 		{% endif %}
 	{% endif %}
 	
 	{% if c4cjob.complete == False and c4cjob.end_date == None %}
 		{% if c4cjob.offer == True and c4cjob.done_by.pk == member.pk  %}
-			<form action="{% url 'c4c:delete_job' c4cjob.id %}" method="post">
-			{% csrf_token %}
-			<input type="submit" value="Delete" />
-			</form>
-            <br>
-            <form action="{% url 'c4c:job_update' c4cjob.pk %}" method="post">
-            {% csrf_token %}
-            <input type="submit" value="Update" />
-            </form>
+			<button type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:delete_job' c4cjob.id %}'">Delete</button>
+			<button type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:job_update' c4cjob.pk %}'">Update</button>
 		{% elif c4cjob.offer == False and c4cjob.asked_by.pk == member.pk %}
-			<form action="{% url 'c4c:delete_job' c4cjob.id %}" method="post">
-			{% csrf_token %}
-			<input type="submit" value="Delete" />
-			</form>
-            <br>
-            <form action="{% url 'c4c:job_update' c4cjob.pk %}" method="post">
-            {% csrf_token %}
-            <input type="submit" value="Update" />
-            </form>
+			<button type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:delete_job' c4cjob.id %}'">Delete</button>
+			<button type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:job_update' c4cjob.pk %}'">Update</button>
 		{% endif %}
 	{% endif %}
 {% endif %}
