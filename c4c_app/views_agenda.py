@@ -4,17 +4,16 @@ from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.core.context_processors import csrf
 from django.forms.models import modelformset_factory
+from datetime import date, timedelta
 from django.utils import timezone
-from datetime import date, datetime, timedelta
 import calendar
 import time
 
-from c4c_app.models import C4CEvent, C4CUser, C4CJob
+from c4c_app.models import C4CEvent, C4CUser
 
 mnames = "January February March April May June July August September October November December"
 mnames = mnames.split()
 
-@login_required
 def year(request, member_pk=None, year=None):
     """Main listing, years and months; three years per page."""
     # prev / next years
@@ -42,10 +41,12 @@ def year(request, member_pk=None, year=None):
                 current = True
             mlst.append(dict(n=n+1, name=month, entry=entry, current=current))
         lst.append((y, mlst))
+        
+    context={'years':lst, 'user':member, 'year':year}
+    
+    return render(request,"agenda.html", context)
 
-    return render(request,"agenda.html", dict(years=lst, user=member, year=year))
 
-@login_required
 def month(request, member_pk, year, month, change=None):
     
     member=None
@@ -83,11 +84,12 @@ def month(request, member_pk, year, month, change=None):
         if len(lst[week]) == 7:
             lst.append([])
             week += 1
+    
+    context = {'year':year, 'month':month, 'user':member, 'month_days':lst, 'mname':mnames[month-1]}
+    
+    return render(request,"month.html", context)
 
-    return render(request,"month.html", dict(year=year, month=month, user=member,
-                        month_days=lst, mname=mnames[month-1]))
-
-@login_required   
+  
 def day(request, member_pk, year, month, day):
     
     member=None
@@ -116,10 +118,11 @@ def day(request, member_pk, year, month, day):
         # display formset for existing enties and one extra form
         formset = EntriesFormset(queryset=C4CEvent.objects.filter(date__year=year,
             date__month=month, date__day=day, user=member.user))
+        
     return render(request,"day.html", add_csrf(request, entries=formset, year=year,
             month=month, day=day, user=member.user))
 
-
+@login_required
 def add_csrf(request, ** kwargs):
     """Add CSRF and user to dictionary."""
     d = dict(** kwargs)

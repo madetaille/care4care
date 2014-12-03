@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 
-{% block title %}Care4Care{% endblock %}
+{% block title %}Care4Care - Job Creation{% endblock %}
 
 {% block content %}
 	<form method="post">{% csrf_token %}
 		<input type="radio" name="kind" value="offer" checked>Offer
 	    <br/>
 	    <input type="radio" name="kind" value="demand" checked>Demand
-	    <br/> <br/>
+		<br/>
 	    {{ form.as_p }}
 	    <input type="submit" value="Submit" />
 	</form>

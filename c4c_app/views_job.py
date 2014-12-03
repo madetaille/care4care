@@ -55,8 +55,11 @@ class JobDetail(generic.DetailView):
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super(JobDetail, self).get_context_data(**kwargs)
-        # Add in the publisher
-        member = get_object_or_404(C4CUser, user=self.request.user)
+        
+        member = None
+        if self.request.user.is_authenticated():
+            member = get_object_or_404(C4CUser, user=self.request.user)
+            
         context['member'] = member
         return context
 
