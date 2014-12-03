@@ -13,7 +13,7 @@
             <div class="col-md-6">
 				<h3 class="text-center">Demands</h3>
 			{% for job in kind %}
-				<div class="panel panel-default">
+				<div class="panel panel-default" onclick="location.href='{% url 'c4c:job_detail' job.id %}'">
 					<div class="panel-heading">
 						<h3 class="panel-title"> {{job.title}} </h3>
 					</div>
@@ -31,7 +31,7 @@
             <div class="col-md-6">
 				<h3 class="text-center">Offers</h3>
 			{% for job in kind %}
-				<div class="panel panel-default">
+				<div class="panel panel-default" onclick="location.href='{% url 'c4c:job_detail' job.id %}'">
 					<div class="panel-heading">
 						<h3 class="panel-title"> {{job.title}} </h3>
 					</div>
