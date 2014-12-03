@@ -1,7 +1,8 @@
 from django.contrib.contenttypes import generic
+from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect, render
 from c4c_app.models import C4CDonation
 from c4c_app.models import C4CUser
 from django.views import generic
@@ -33,12 +34,21 @@ class DonationCreation(CreateView):
             self.donation_bool = True
         else:
             self.donation_bool = False
+            #return HttpResponseRedirect(reverse('c4c:user_jobs'))
+            return HttpResponseRedirect(reverse('c4c:donation_error'))
 
-        self.object.save()
         return HttpResponseRedirect(reverse("c4c:donation_detail", args=(self.object.id,)))
 
     def __str__(self):
         return self.name
+
+@login_required
+def DonationError(request):
+    request.user
+    user = get_object_or_404(C4CUser, user = request.user)
+    context = {"user":user}
+    request.C4CUser = user
+    return render(request,'error.html', context)
 
 class DonationDetail(generic.DetailView):
     model = C4CDonation

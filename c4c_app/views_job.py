@@ -9,6 +9,7 @@ from django.utils import timezone
 from django.views import generic
 from django.views.generic.edit import CreateView
 from django.views.generic.edit import UpdateView
+import datetime
 
 from c4c import settings
 from c4c_app.models import C4CUser, C4CJob, C4CEvent
@@ -178,11 +179,11 @@ def userJobs(request, member_pk=None):
         member = get_object_or_404(C4CUser, user=request.user)
 
     res = []
-    res.append(C4CJob.objects.filter(complete=False, asked_by=member.user))
-    res.append(C4CJob.objects.filter(complete=False, done_by=member.user))
-    res.append(member.user.jobs_created.all())
-    res.append(member.user.jobs_asked.all())
-    res.append(member.user.jobs_accepted.all())
+    res.append(member.user.jobs_asked.filter(complete=False).order_by("-start_date"))
+    res.append(member.user.jobs_accepted.filter(complete=False).order_by("-start_date"))
+    res.append(member.user.jobs_created.all().order_by("-start_date"))
+    res.append(member.user.jobs_asked.all().order_by("-start_date"))
+    res.append(member.user.jobs_accepted.all().order_by("-start_date"))
 
     context = {'user_job_list': res}
 
@@ -207,7 +208,7 @@ class Feeds(generic.ListView):
         jobs = []
         res = []
         for usr in users:
-            jobs.append(C4CJob.objects.filter(created_by=usr.user))
+            jobs.append(C4CJob.objects.filter(created_by=usr.user, complete=False, start_date__gte=datetime.date.today()))
 
         demands = []
         offers = []
@@ -217,7 +218,9 @@ class Feeds(generic.ListView):
                     offers.append(job)
                 else:
                     demands.append(job)
-
+        
+        demands.sort(key=lambda x: x.start_date, reverse=True)
+        offers.sort(key=lambda x: x.start_date, reverse=True)
         res.append(demands)
         res.append(offers)
         return res

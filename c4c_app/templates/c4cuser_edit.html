@@ -3,9 +3,13 @@
 {% block title %}Care4Care - Update profile (C4C) {% endblock %}
 
 {% block content %}
+{% if viewerpk == ownerpk %}
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
         <input type="submit" value="Update C4C details" />
     </form>
+{% else %}
+    <p>You cannot modify another user's profile.</p>
+{% endif %}
 {% endblock content %}

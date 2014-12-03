@@ -7,7 +7,7 @@
 			{% if forloop.counter == 1 %}
 				<h3 class="text-center">Ongoing</h3>
 				{% for job in kind %}
-				<div class="panel panel-default">
+				<div class="panel panel-default" onclick="location.href='{% url 'c4c:job_detail' job.id %}'">
 					<div class="panel-heading">
 						<h3 class="panel-title"> {{job.title}} </h3>
 					</div>
@@ -23,7 +23,7 @@
 			{% elif forloop.counter == 3 %}
 				<h3 class="text-center">Created jobs</h3>
 				{% for job in kind %}
-				<div class="panel panel-default">
+				<div class="panel panel-default" onclick="location.href='{% url 'c4c:job_detail' job.id %}'">
 					<div class="panel-heading">
 						<h3 class="panel-title"> {{job.title}} </h3>
 					</div>
@@ -37,9 +37,9 @@
 				</div>
 	        {% endfor %}
 			{% elif forloop.counter == 4 %}
-				<h3 class="text-center">Demands</h3>
+				<h3 class="text-center">My Demands</h3>
 				{% for job in kind %}
-				<div class="panel panel-default">
+				<div class="panel panel-default" onclick="location.href='{% url 'c4c:job_detail' job.id %}'">
 					<div class="panel-heading">
 						<h3 class="panel-title"> {{job.title}} </h3>
 					</div>
@@ -53,9 +53,9 @@
 				</div>
 	        {% endfor %}
 			{% elif forloop.counter == 5 %}
-				<h3 class="text-center">Offers</h3>
+				<h3 class="text-center">My Offers</h3>
 				{% for job in kind %}
-				<div class="panel panel-default">
+				<div class="panel panel-default" onclick="location.href='{% url 'c4c:job_detail' job.id %}'">
 					<div class="panel-heading">
 						<h3 class="panel-title"> {{job.title}} </h3>
 					</div>
