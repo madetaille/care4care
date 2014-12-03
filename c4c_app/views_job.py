@@ -168,18 +168,23 @@ def userJobs(request, member_pk=None):
     context={'user_job_list':res}
     
     return render(request,'user_job.html',context)
-    
+
 class AllJobs(generic.ListView):
     template_name = 'all_jobs.html'
     context_object_name = 'all_jobs_list'
     
     def get_queryset(self):
-        user = get_object_or_404(C4CUser, user = self.request.user)
-        users = C4CUser.objects.filter(branches = user.branches)
+        users = None
+        if self.request.user.is_authenticated():
+            user = get_object_or_404(C4CUser, user = self.request.user)
+            users = C4CUser.objects.filter(branches = user.branches.all())
+        else:
+            users = C4CUser.objects.all()
+            
         jobs = []
-        
+        res = []
         for usr in users:
-            jobs.append(C4CJob.objects.filter(created_by = usr))
+            jobs.append(C4CJob.objects.filter(created_by = usr.user))
         
         demands = []
         offers = []
@@ -190,6 +195,6 @@ class AllJobs(generic.ListView):
                 else:
                     demands.append(job)
                     
-        jobs.append(demands)
-        jobs.append(offers)
-        return jobs
+        res.append(demands)
+        res.append(offers)
+        return res
