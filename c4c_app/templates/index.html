@@ -14,148 +14,52 @@
 			</div>
 		</div>
 	</div>
+	<div>
+<button type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:job_creation' %}'">I NEED HELP!</button> 
+<button type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:job_creation' %}'">I WANT TO HELP!</button> 
+</div>
+{% if all_jobs_list %}
 	<div class="row">
-		<div class="col-md-6">
-			<h3 class="text-center">Offers</h3>
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h3 class="panel-title">Offer 1</h3>
+    {% for kind in all_jobs_list %}
+        {% if forloop.counter == 1 %}
+            <div class="col-md-6">
+				<h3 class="text-center">Demands</h3>
+			{% for job in kind %}
+				<div class="panel panel-default" onclick="location.href='{% url 'c4c:job_detail' job.id %}'">
+					<div class="panel-heading">
+						<h3 class="panel-title"> {{job.title}} </h3>
+					</div>
+					<div class="panel-body">
+						<div class="pull-left">{{job.title}}</div>
+						<div class="pull-right">{{job.asked_by}}</div>
+						<div class="text-center"><b>{{job.start_date}}</b></div>
+						{{job.description}}<br/>
+						<button type="button" class="btn btn-primary pull-right" onclick="location.href='{% url 'c4c:job_detail' job.id %}'">More Infos</button> 
+					</div>
 				</div>
-				<div class="panel-body">
-					<div class="pull-left">Louvain-la-Neuve</div>
-					<div class="pull-right">Kim Mens</div>
-					<div class="text-center"><b>Monday 17 November 2014</b></div>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-					Sed mattis, leo nec tempor molestie, diam nulla congue felis, 
-					et ultricies justo lectus eu lectus. Integer in placerat magna. 
-					Pellentesque vehicula sapien a eros vulputate commodo. 
-					Vestibulum mauris leo, condimentum dapibus ipsum ut, 
-					commodo imperdiet ex. Praesent ornare imperdiet convallis.<br/>
-					<button type="button" class="btn btn-primary pull-right">More infos</button> 
-				</div>
+			{% endfor %}
 			</div>
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h3 class="panel-title">Offer 2</h3>
+        {% elif forloop.counter == 2 %}
+            <div class="col-md-6">
+				<h3 class="text-center">Offers</h3>
+			{% for job in kind %}
+				<div class="panel panel-default" onclick="location.href='{% url 'c4c:job_detail' job.id %}'">
+					<div class="panel-heading">
+						<h3 class="panel-title"> {{job.title}} </h3>
+					</div>
+					<div class="panel-body">
+						<div class="pull-left">{{job.title}}</div>
+						<div class="pull-right">{{job.done_by}}</div>
+						<div class="text-center"><b>{{job.start_date}}</b></div>
+						{{job.description}}<br/>
+						<button type="button" class="btn btn-primary pull-right" onclick="location.href='{% url 'c4c:job_detail' job.id %}'">More Infos</button> 
+					</div>
 				</div>
-				<div class="panel-body">
-					<div class="pull-left">Louvain-la-Neuve</div>
-					<div class="pull-right">Kim Mens</div>
-					<div class="text-center"><b>Monday 17 November 2014</b></div>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-					Sed mattis, leo nec tempor molestie, diam nulla congue felis, 
-					et ultricies justo lectus eu lectus. Integer in placerat magna. 
-					Pellentesque vehicula sapien a eros vulputate commodo. 
-					Vestibulum mauris leo, condimentum dapibus ipsum ut, 
-					commodo imperdiet ex. Praesent ornare imperdiet convallis.<br/>
-					<button type="button" class="btn btn-primary pull-right">More infos</button> 
-				</div>
+			{% endfor %}
 			</div>
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h3 class="panel-title">Offer 3</h3>
-				</div>
-				<div class="panel-body">
-					<div class="pull-left">Louvain-la-Neuve</div>
-					<div class="pull-right">Kim Mens</div>
-					<div class="text-center"><b>Monday 17 November 2014</b></div>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-					Sed mattis, leo nec tempor molestie, diam nulla congue felis, 
-					et ultricies justo lectus eu lectus. Integer in placerat magna. 
-					Pellentesque vehicula sapien a eros vulputate commodo. 
-					Vestibulum mauris leo, condimentum dapibus ipsum ut, 
-					commodo imperdiet ex. Praesent ornare imperdiet convallis.<br/>
-					<button type="button" class="btn btn-primary pull-right">More infos</button> 
-				</div>
-			</div>
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h3 class="panel-title">Offer 4</h3>
-				</div>
-				<div class="panel-body">
-					<div class="pull-left">Louvain-la-Neuve</div>
-					<div class="pull-right">Kim Mens</div>
-					<div class="text-center"><b>Monday 17 November 2014</b></div>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-					Sed mattis, leo nec tempor molestie, diam nulla congue felis, 
-					et ultricies justo lectus eu lectus. Integer in placerat magna. 
-					Pellentesque vehicula sapien a eros vulputate commodo. 
-					Vestibulum mauris leo, condimentum dapibus ipsum ut, 
-					commodo imperdiet ex. Praesent ornare imperdiet convallis.<br/>
-					<button type="button" class="btn btn-primary pull-right">More infos</button> 
-				</div>
-			</div>
-		</div>
-		<div class="col-md-6">
-			<h3 class="text-center">Demands</h3>
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h3 class="panel-title">Demand 1</h3>
-				</div>
-				<div class="panel-body">
-					<div class="pull-left">Louvain-la-Neuve</div>
-					<div class="pull-right">Kim Mens</div>
-					<div class="text-center"><b>Monday 17 November 2014</b></div>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-					Sed mattis, leo nec tempor molestie, diam nulla congue felis, 
-					et ultricies justo lectus eu lectus. Integer in placerat magna. 
-					Pellentesque vehicula sapien a eros vulputate commodo. 
-					Vestibulum mauris leo, condimentum dapibus ipsum ut, 
-					commodo imperdiet ex. Praesent ornare imperdiet convallis.<br/>
-					<button type="button" class="btn btn-primary pull-right">More infos</button> 
-				</div>
-			</div>
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h3 class="panel-title">Demand 2</h3>
-				</div>
-				<div class="panel-body">
-					<div class="pull-left">Louvain-la-Neuve</div>
-					<div class="pull-right">Kim Mens</div>
-					<div class="text-center"><b>Monday 17 November 2014</b></div>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-					Sed mattis, leo nec tempor molestie, diam nulla congue felis, 
-					et ultricies justo lectus eu lectus. Integer in placerat magna. 
-					Pellentesque vehicula sapien a eros vulputate commodo. 
-					Vestibulum mauris leo, condimentum dapibus ipsum ut, 
-					commodo imperdiet ex. Praesent ornare imperdiet convallis.<br/>
-					<button type="button" class="btn btn-primary pull-right">More infos</button> 
-				</div>
-			</div>
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h3 class="panel-title">Demand 3</h3>
-				</div>
-				<div class="panel-body">
-					<div class="pull-left">Louvain-la-Neuve</div>
-					<div class="pull-right">Kim Mens</div>
-					<div class="text-center"><b>Monday 17 November 2014</b></div>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-					Sed mattis, leo nec tempor molestie, diam nulla congue felis, 
-					et ultricies justo lectus eu lectus. Integer in placerat magna. 
-					Pellentesque vehicula sapien a eros vulputate commodo. 
-					Vestibulum mauris leo, condimentum dapibus ipsum ut, 
-					commodo imperdiet ex. Praesent ornare imperdiet convallis.<br/>
-					<button type="button" class="btn btn-primary pull-right">More infos</button> 
-				</div>
-			</div>
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h3 class="panel-title">Demand 4</h3>
-				</div>
-				<div class="panel-body">
-					<div class="pull-left">Louvain-la-Neuve</div>
-					<div class="pull-right">Kim Mens</div>
-					<div class="text-center"><b>Monday 17 November 2014</b></div>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-					Sed mattis, leo nec tempor molestie, diam nulla congue felis, 
-					et ultricies justo lectus eu lectus. Integer in placerat magna. 
-					Pellentesque vehicula sapien a eros vulputate commodo. 
-					Vestibulum mauris leo, condimentum dapibus ipsum ut, 
-					commodo imperdiet ex. Praesent ornare imperdiet convallis.<br/>
-					<button type="button" class="btn btn-primary pull-right">More infos</button> 
-				</div>
-			</div>
-		</div>
-	</div>
+        {% endif %}
+        
+    {% endfor %}
+    </div>    
+{% endif %}
 {% endblock content %}

@@ -23,7 +23,7 @@
 
     {% if viewer.pk == c4cuser.pk %}
         <br/>
-        <p>You can <a href={% url 'c4c:user_edit' c4cuser.user.pk %}>edit your profile</a>.</p>
+        <p>You can <a href={% url 'c4c:user_edit' c4cuser.user.pk %}>edit your user profile</a>.</p>
     {% endif %}
 
     <h2> C4C details: </h2>
@@ -35,6 +35,6 @@
 
     {% if viewer.pk == c4cuser.pk %}
         <br/>
-        <p>You can <a href={% url 'c4c:c4cuser_edit' c4cuser.user.pk %}>edit your profile</a>.</p>
+        <p>You can <a href={% url 'c4c:c4cuser_edit' c4cuser.user.pk %}>edit your C4C profile</a>.</p>
     {% endif %}
 {% endblock content %}

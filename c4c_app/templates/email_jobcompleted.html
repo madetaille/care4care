@@ -1,8 +1,11 @@
-Hello {{ c4cjob.created_by }} ! <br>
+Hello {{ c4cjob.asked_by }} ! <br>
 {% if c4cjob.offer == True %}
-Your offer({{ c4cjob.title }}) is now completed ! It has been accepted by the user : {{ c4cjob.asked_by }}:<br>
+The offer({{ c4cjob.title }}) you accepted is now completed ! It has been completed by the user : {{ c4cjob.done_by }}:<br>
 {% elif c4cjob.offer == False %}
 The demand({{ c4cjob.title }}) you asked for has been completed ! It has been completed by the user : {{ c4cjob.done_by }}.<br>
 {% endif %} <br>
 His duration was : {{ c4cjob.duration }} <br>
-You can now check it and verify it on the website !
+You can now check it and verify it on the website ! <br>
+<br>
+Best regards, <br>
+The C4C Organisation.
