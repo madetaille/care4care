@@ -152,7 +152,6 @@ class C4CNews(models.Model):
     user = models.ForeignKey(User)
     description = models.CharField(max_length=1000)
 
-
     def __str__(self):
         """ Allows to clearly see the events in the administration """
         return "{} - {}".format(str(self.date), self.title)

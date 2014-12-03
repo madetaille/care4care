@@ -15,7 +15,7 @@ class DonationCreation(CreateView):
     fields = [ 'receiver', 'message', 'amount']
     model = C4CDonation
     template_name = 'donation_form.html'
-
+        
     def form_valid(self, form):
         self.object = form.save(commit=False)
         self.donation_bool = False

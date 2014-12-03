@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 
-{% block title %}Care4Care - Donation Form{% endblock %}
+{% block title %}Care4Care - News{% endblock %}
 
 
 {% block content %}
-<a class="btn btn-default" href="{% url 'c4c:donation_list_M' %}"> All Donation Made </a>
-<a class="btn btn-default" href="{% url 'c4c:donation_list_R' %}"> All Donation Received </a>
+<a class="btn btn-default" href="{% url 'c4c:all_news_list_Branch' %}"> All branch news </a>
+<a class="btn btn-default" href="{% url 'c4c:all_news_list' %}"> All News </a>
         <fieldset >
-            <legend > Donation  </legend>
+            <legend > News  </legend>
 	<form action="" method="post" role="form" class="form-horizontal">{% csrf_token %}
         {{ form.as_p }}
         <div class="form-group">
