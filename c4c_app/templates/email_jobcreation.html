@@ -1,0 +1,11 @@
+Hello {{ c4cjob.created_by }} ! <br>
+{% if c4cjob.offer == True %}
+You created an offer : {{ c4cjob.title }}<br>
+{% elif c4cjob.offer == False %}
+You created a demand : {{ c4cjob.title }}<br>
+{% endif %} <br>
+Here are its specifications : <br>
+<li>Location : {{c4cjob.location}}</li>
+<li>Description : {{c4cjob.description}}</li>
+<li>Your job begins on : {{c4cjob.start_date}}</li>
+<li><p> Ongoing </p></li>
