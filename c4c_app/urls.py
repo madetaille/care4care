@@ -25,6 +25,7 @@ urlpatterns = patterns('',
     url(r'^donation_detail/(?P<pk>\d+)/$', views.DonationDetail.as_view(), name='donation_detail'),
     url(r'^alldonationMade/$', views.AllDonation_made.as_view(), name='donation_list_M'),
     url(r'^alldonationReceived/$', views.AllDonation_received.as_view(), name='donation_list_R'),
+    url(r'^error/$', login_required(views.DonationError), name='donation_error'),
     #User
     url(r'^userdetail/(?P<pk>\d+)/$', views.UserDetail.as_view(), name='user_detail'),
     url(r'^useredit/(?P<pk>\d+)/$', views.UserEdit.as_view(), name='user_edit'),
