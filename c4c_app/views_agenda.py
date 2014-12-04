@@ -9,9 +9,12 @@ from django.utils import timezone
 import calendar
 import time
 
+from django.utils import translation
+from django.utils.translation import ugettext as _
+
 from c4c_app.models import C4CEvent, C4CUser
 
-mnames = "January February March April May June July August September October November December"
+mnames = _("January February March April May June July August September October November December")
 mnames = mnames.split()
 
 def year(request, member_pk=None, year=None):

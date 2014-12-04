@@ -10,6 +10,9 @@ from django.contrib.admin import widgets
 from django import forms
 from django.contrib.auth import authenticate, login
 
+from django.utils import translation
+from django.utils.translation import ugettext as _
+
 from c4c_app.models import C4CUser
 
 class UserDetail(generic.DetailView):
@@ -65,8 +68,8 @@ class C4CUserEdit(generic.edit.UpdateView):
         return HttpResponseRedirect(reverse('c4c:user_detail', args=(self.object.pk,)))
 
 class PasswordForm(forms.Form):
-    pass1 = forms.CharField(label='Password', max_length=10,widget=forms.PasswordInput)
-    pass2 = forms.CharField(label='Confirm Password', max_length=10,widget=forms.PasswordInput)
+    pass1 = forms.CharField(label=_('Password'), max_length=10,widget=forms.PasswordInput)
+    pass2 = forms.CharField(label=_('Confirm Password'), max_length=10,widget=forms.PasswordInput)
 
     def clean(self):
         cleaned_data = super(PasswordForm,self).clean()
@@ -74,7 +77,7 @@ class PasswordForm(forms.Form):
         cpassword = cleaned_data.get('pass2')
 
         if password != cpassword:
-            raise forms.ValidationError('The two typed passwords are different.')
+            raise forms.ValidationError(_('The two typed passwords are different.'))
 
 def chPassword(request,pk):
     template_name = 'change_password.html'

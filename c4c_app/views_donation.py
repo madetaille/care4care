@@ -9,6 +9,7 @@ from django.views import generic
 from django.views.generic.edit import CreateView
 from datetime import *
 from django.views.generic.edit import UpdateView
+
 #from c4c_app.forms import ContactForm
 
 class DonationCreation(CreateView):
