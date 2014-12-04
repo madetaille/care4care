@@ -65,6 +65,17 @@ class JobUpdate(UpdateView):
 
         self.object.save()
         return HttpResponseRedirect(reverse('c4c:job_detail', args=(self.object.id,)))
+    
+    def render_to_response(self, context, **response_kwargs):
+        job = get_object_or_404(C4CJob, id = self.object.id)
+        if job.offer:
+            if job.done_by != self.request.user or job.end_date != None or job.complete==True :
+                return error403(self.request)
+        else:
+            if job.asked_by != self.request.user or job.end_date != None or job.complete==True :
+                return error403(self.request)
+                
+        return UpdateView.render_to_response(self, context, **response_kwargs)
 
 
 class JobDetail(generic.DetailView):
