@@ -3,6 +3,9 @@ from django.contrib.auth import authenticate, login
 from django.shortcuts import render,render_to_response,get_object_or_404
 from django.contrib.auth import logout
 
+from django.utils import translation
+from django.utils.translation import ugettext as _
+
 def user_login(request):
     template_name = 'user_login.html'
 
@@ -29,7 +32,7 @@ def user_login(request):
                 return HttpResponseRedirect('/')
             else:
                 # An inactive account was used - no logging in!
-                return HttpResponse("Your account is disabled.")
+                return HttpResponse(_("Your account is disabled."))
         else:
             # Bad login details were provided. So we can't log the user in.
             return render(request, template_name, {'invalid':True})

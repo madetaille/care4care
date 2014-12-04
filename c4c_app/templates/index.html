@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load i18n %}
 
 {% block title %}Care4Care{% endblock %}
 
@@ -9,21 +10,20 @@
 				<img width="100" height="100" src="{{ STATIC_URL }}img/unknown_user.png" alt="Profile photo">
 			</a>
 			<div class="media-body">
-				<h4 class="media-heading">Welcome, Guillaume</h4>
-				Balance of your account: -8000 hours
+                <h4 class="media-heading">{% trans "Welcome!"%}</h4>
 			</div>
 		</div>
 	</div>
 	<div>
-<button type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:job_creation' %}'">I NEED HELP!</button> 
-<button type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:job_creation' %}'">I WANT TO HELP!</button> 
+        <button type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:job_creation' %}'">{% trans "I NEED HELP!"%}</button>
+        <button type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:job_creation' %}'">{% trans "I WANT TO HELP!"%}</button>
 </div>
 {% if all_jobs_list %}
 	<div class="row">
     {% for kind in all_jobs_list %}
         {% if forloop.counter == 1 %}
             <div class="col-md-6">
-				<h3 class="text-center">Demands</h3>
+                <h3 class="text-center">{% trans "Demands"%}</h3>
 			{% for job in kind %}
 				<div class="panel panel-default" onclick="location.href='{% url 'c4c:job_detail' job.id %}'">
 					<div class="panel-heading">
@@ -34,14 +34,14 @@
 						<div class="pull-right">{{job.asked_by}}</div>
 						<div class="text-center"><b>{{job.start_date}}</b></div>
 						{{job.description}}<br/>
-						<button type="button" class="btn btn-primary pull-right" onclick="location.href='{% url 'c4c:job_detail' job.id %}'">More Infos</button> 
+                        <button type="button" class="btn btn-primary pull-right" onclick="location.href='{% url 'c4c:job_detail' job.id %}'">{% trans "More Infos"%}</button>
 					</div>
 				</div>
 			{% endfor %}
 			</div>
         {% elif forloop.counter == 2 %}
             <div class="col-md-6">
-				<h3 class="text-center">Offers</h3>
+                <h3 class="text-center">{% trans "Offers"%}</h3>
 			{% for job in kind %}
 				<div class="panel panel-default" onclick="location.href='{% url 'c4c:job_detail' job.id %}'">
 					<div class="panel-heading">
@@ -52,7 +52,7 @@
 						<div class="pull-right">{{job.done_by}}</div>
 						<div class="text-center"><b>{{job.start_date}}</b></div>
 						{{job.description}}<br/>
-						<button type="button" class="btn btn-primary pull-right" onclick="location.href='{% url 'c4c:job_detail' job.id %}'">More Infos</button> 
+                        <button type="button" class="btn btn-primary pull-right" onclick="location.href='{% url 'c4c:job_detail' job.id %}'">{% trans "More Infos"%}</button>
 					</div>
 				</div>
 			{% endfor %}

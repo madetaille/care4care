@@ -29,6 +29,7 @@ urlpatterns = patterns('',
                        url(r'^userdetail/(?P<pk>\d+)/$', views.UserDetail.as_view(), name='user_detail'),
                        url(r'^useredit/(?P<pk>\d+)/$', views.UserEdit.as_view(), name='user_edit'),
                        url(r'^c4cedit/(?P<pk>\d+)/$', views.C4CUserEdit.as_view(), name='c4cuser_edit'),
+                       url(r'^chpassword/(?P<pk>\d+)/$', views.chPassword, name='chPassword'),
                        url(r'^network/$', views.PersonalNetwork.as_view(), name='network'),
                        url(r'^(?P<c4cuser_pk>\d+)/addnetwork', views.addNetwork, name='add_network'),
                        url(r'^registration/$', views.view_registration, name='registration'),
@@ -44,14 +45,14 @@ urlpatterns = patterns('',
                        # Branch
                        url(r'^branchdetail/(?P<pk>\d+)/$', views.BranchDetail.as_view(), name='branch_detail'),
                        # Agenda
-                       url(r'^agenda/$', login_required(views.year), name='agenda'),
-                       url(r'^agenda/(\d+)/$', login_required(views.year), name='agenda'),
-                       url(r'^agenda/(\d+)/(\d+)/$', login_required(views.year), name='agenda'),
-                       url(r'^month/(\d+)/(\d+)/(\d+)/$', login_required(views.month), name='month'),
-                       url(r'^month/(\d+)/(\d+)/(\d+)/(prev|next)/$', login_required(views.month), name='month'),
-                       url(r'^day/(\d+)/(\d+)/(\d+)/(\d+)/$', login_required(views.day), name='day'),
-                       url(r'^editevent/(\d+)/$', login_required(views.edit_event), name='editevent'),
-                       url(r'^event/(\d+)/$', login_required(views.event), name='event'),
+                       url(r'^agenda/$', login_required(views.AgendaYear), name='agenda'),
+                       url(r'^agenda/(\d+)/$', login_required(views.AgendaYear), name='agenda'),
+                       url(r'^agenda/(\d+)/(\d+)/$', login_required(views.AgendaYear), name='agenda'),
+                       url(r'^month/(\d+)/(\d+)/(\d+)/$', login_required(views.AgendaMonth), name='month'),
+                       url(r'^month/(\d+)/(\d+)/(\d+)/(prev|next)/$', login_required(views.AgendaMonth), name='month'),
+                       url(r'^day/(\d+)/(\d+)/(\d+)/(\d+)/$', login_required(views.AgendaDay), name='day'),
+                       url(r'^editevent/(\d+)/$', login_required(views.AgendaEditEvent), name='editevent'),
+                       url(r'^event/(\d+)/$', login_required(views.AgendaEvent), name='event'),
                        # Stat
                        url(r'^stat/$', views.stat, name='stat'),
                        # News
@@ -59,8 +60,4 @@ urlpatterns = patterns('',
                        # What is Care 4 Care ?
                        url(r'^whatisc4c/$', views.whatisc4c, name='whatisc4c'),
                        url(r'^aboutus/$', views.aboutus, name='aboutus')
-
-
-
-
                        )

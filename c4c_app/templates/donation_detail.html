@@ -1,21 +1,21 @@
 {% extends "base.html" %}
 
-{% block title %}Care4Care - Donation detail{% endblock %}
+{% block title %}Care4Care - {% trans "Donation detail"%}{% endblock %}
 
 {% block content %}
 
-<a class="btn btn-default" href="{% url 'c4c:donation_list_M' %}"> All Donation Made </a>
-<a class="btn btn-default" href="{% url 'c4c:donation_list_R' %}"> All Donation Received </a>
-<a class="btn btn-default" href="{% url 'c4c:donation_creation' %}"> New Donation </a>
+<a class="btn btn-default" href="{% url 'c4c:donation_list_M' %}"> {% trans "All Donation Made"%} </a>
+<a class="btn btn-default" href="{% url 'c4c:donation_list_R' %}"> {% trans "All Donation Received"%} </a>
+<a class="btn btn-default" href="{% url 'c4c:donation_creation' %}"> {% trans "New Donation"%} </a>
 
-<h1> Detail de la Donation </h1>
+<h1> {% trans "Donation Detail"%} </h1>
 
 <ul>
-    <li> sender : {{ c4cdonation.sender }}</li>
-    <li> receiver : {{ c4cdonation.receiver }}</li>
-    <li> Transfert date : {{ c4cdonation.date }}</li>
-    <li> Amount : {{ c4cdonation.amount }}</li>
-    <li> Message : {{ c4cdonation.message }}</li>
+    <li> {% trans "sender"%} : {{ c4cdonation.sender }}</li>
+    <li> {% trans "receiver"%} : {{ c4cdonation.receiver }}</li>
+    <li> {% trans "Transfert date"%} : {{ c4cdonation.date }}</li>
+    <li> {% trans "Amount"%} : {{ c4cdonation.amount }}</li>
+    <li> {% trans "Message"%} : {{ c4cdonation.message }}</li>
 </ul>
 
 

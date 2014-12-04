@@ -1,10 +1,11 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block title %}Care4Care - Jobs{% endblock %}
+{% block title %}Care4Care - {% trans "Jobs"%}{% endblock %}
 {% block content %}
 <div>
-<button type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:job_creation' %}'">I NEED HELP!</button> 
-<button type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:job_creation' %}'">I WANT TO HELP!</button> 
+<button id="button_need" type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:job_creation' %}'">{% trans "I NEED HELP!"%}</button> 
+<button id="button_want" type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:job_creation' %}'">{% trans "I WANT TO HELP!"%}</button> 
 </div>
 {% if all_jobs_list %}
 	<div class="row">

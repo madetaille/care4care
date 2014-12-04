@@ -8,9 +8,10 @@ from django.core.urlresolvers import reverse
 from django.forms import ModelForm
 from django.http import HttpResponseRedirect, HttpResponseNotFound
 from django.shortcuts import get_object_or_404, render
+from django.utils.translation import ugettext as _
 
 from c4c_app.models import C4CEvent, C4CUser
-mnames = "January February March April May June July August September October November December"
+mnames = _("January February March April May June July August September October November December")
 mnames = mnames.split()
 
 
@@ -29,7 +30,7 @@ def _get_monthes_for_year(member, year):
     return mlst
 
 
-def year(request, member_pk=None, year=None):
+def AgendaYear(request, member_pk=None, year=None):
     """Main listing, years and months; three years per page."""
     # prev / next years
     member = None
@@ -59,7 +60,7 @@ def year(request, member_pk=None, year=None):
     return render(request, "agenda.html", context)
 
 
-def month(request, member_pk, year, month, change=None):
+def AgendaMonth(request, member_pk, year, month, change=None):
     """Listing of days in `month`."""
 
     member = None
@@ -112,7 +113,7 @@ def month(request, member_pk, year, month, change=None):
     return render(request, "month.html", context)
 
 
-def day(request, member_pk, year, month, day):
+def AgendaDay(request, member_pk, year, month, day):
     member = None
     if member_pk:
         member = get_object_or_404(C4CUser, pk=member_pk)
@@ -132,7 +133,7 @@ def day(request, member_pk, year, month, day):
     return render(request, "day.html", context)
 
 
-def event(request, event_pk):
+def AgendaEvent(request, event_pk):
     event = get_object_or_404(C4CEvent, pk=event_pk)
     if event.user != request.user and not event.user.c4cuser.network.filter(pk=request.user.pk).exists():
         return HttpResponseNotFound('<h1>Page not found</h1>')
@@ -140,7 +141,7 @@ def event(request, event_pk):
     return render(request, "event.html", context)
 
 
-def edit_event(request, event_pk=None):
+def AgendaEditEvent(request, event_pk=None):
     """ Edit/add an event """
     if event_pk is not None:
         event = get_object_or_404(C4CEvent, pk=event_pk)
