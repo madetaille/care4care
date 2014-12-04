@@ -33,7 +33,7 @@
                 {% endfor %}
             </table>
                 {% else %}
-                    <p>You have received no donation yet !</p>
+                    <p></p>
                 {% endif %}
             {% elif forloop.counter == 2 %}
                 {% if objectBlock %}
@@ -63,7 +63,6 @@
                 <table class="table table-hover" >
                      <tr>
                         <th>title</th>
-                        <th>description</th>
                         <th>duration</th>
                         <th>location</th>
                         <th>complete</th>
@@ -72,7 +71,6 @@
                {% for object in objectBlock %}
                      <tr>
                         <td>{{ object.title }}</td>
-                        <td>{{ object.description }}</td>
                         <td>{{ object.duration }}</td>
                         <td>{{ object.location }}</td>
                         {% if object.complete == False %}
@@ -93,7 +91,6 @@
                <table class="table table-hover" >
                      <tr>
                         <th>title</th>
-                        <th>description</th>
                         <th>duration</th>
                         <th>location</th>
                         <th>complete</th>
@@ -102,7 +99,6 @@
                {% for object in objectBlock %}
                      <tr>
                         <td>{{ object.title }}</td>
-                        <td>{{ object.description }}</td>
                         <td>{{ object.duration }}</td>
                         <td>{{ object.location }}</td>
                          {% if object.complete == False %}
