@@ -21,3 +21,7 @@
         <br/>
         <p>If you do not have an account, <a href={% url "c4c:registration" %}>click here to create one</a>.</p>
 {% endblock %}
+
+{% block help %}
+{% trans "This is the login page. Type your username and password to log in." %}
+{% endblock help %}
