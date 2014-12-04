@@ -3,7 +3,7 @@ from django.core.mail import EmailMultiAlternatives
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, HttpResponseForbidden, HttpResponse
 from django.shortcuts import get_object_or_404, render
-from django.template import Context
+from django.template import Context, RequestContext
 from django.template.loader import get_template
 from django.utils import timezone
 from django.views import generic
@@ -13,6 +13,9 @@ import datetime
 
 from c4c import settings
 from c4c_app.models import C4CUser, C4CJob, C4CEvent, C4CBranch
+
+template403 = get_template('error403.html')
+
 class JobCreation(CreateView):
     model = C4CJob
     template_name = 'c4cjob_form.html'
@@ -109,7 +112,8 @@ def doneJob(request, c4cjob_id):
     job = get_object_or_404(C4CJob, pk=c4cjob_id)
     
     if job.asked_by == None or job.done_by == None or job.done_by != request.user:
-        return HttpResponseForbidden()
+        context = RequestContext(request, {})
+        return HttpResponseForbidden(template403.render(context))
     
     job.duration = request.POST['Duration']
     job.end_date = timezone.now()
@@ -137,14 +141,14 @@ def confirmJob(request, c4cjob_id):
 def reportJob(request, c4cjob_id):
     # TODO: envoie d un email a l admin
     job = get_object_or_404(C4CJob, pk=c4cjob_id)
-    branch_user = request.user.get_branches()
+    user = get_object_or_404(C4CUser, user = request.user)
+    branch_user = set()
+    for branch in user.get_branches():
+        branch_user = set(branch.get_admins()).union(branch_user)
+    branch_user = [u.email for u in branch_user]
     
-    branch_admins = get_object_or_404(C4CBranch, name = branch_user.name)
-    officers = branch_admins.officers_group.users.all()
-    
-    send_email_report_admin(job, officers)
+    send_email_report_admin(job, branch_user)
     return HttpResponseRedirect(reverse('c4c:job_detail', args=(c4cjob_id,)))
-
 
 @login_required
 def cancelJob(request, c4cjob_id):
@@ -282,14 +286,14 @@ def send_email_confirm(job):
     msg.attach_alternative(html_content, "text/html")
     msg.send()
     
-def send_email_report_admin(job, admins):
+def send_email_report_admin(job, emails):
     subject, from_email,= 'Care4Care : there is a conflict between two members !', settings.EMAIL_HOST_USER
     
-    for users in admins:
-        to = users.email
+    for email in emails:
+        to = email
         htmly = get_template('email_jobreported.html')
         text_content = ''
-
+        
         d = Context({'c4cjob': job})
         html_content = htmly.render(d)
         msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
