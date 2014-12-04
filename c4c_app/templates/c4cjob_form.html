@@ -5,9 +5,9 @@
 
 {% block content %}
 	<form method="post">{% csrf_token %}
-		<input id="offer" type="radio" name="kind" value="offer">{% trans "Offer"%}
+		<input type="radio" name="kind" value="offer">{% trans "Offer"%}
 	    <br/>
-	    <input id="demand" type="radio" name="kind" value="demand" checked>{% trans "Demand"%}
+	    <input type="radio" name="kind" value="demand" checked>{% trans "Demand"%}
 		<br/>
         {% trans "Title" %} :
         <input type="text" name="title" maxlength="100" value = {{c4cjob.title}}>

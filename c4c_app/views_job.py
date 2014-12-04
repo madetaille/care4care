@@ -92,7 +92,7 @@ def acceptJob(request, c4cjob_id):
         if user_site == job.asked_by or job.end_date != None or job.complete==True or job.done_by != None:
             return error403(request)
         else:
-            job.done_by = user_site.user
+            job.done_by = user_site
             job.save()
             event1 = C4CEvent(name=job.title, date=job.start_date, job=job, user=job.asked_by, description=job.description)
             event2 = C4CEvent(name=job.title, date=job.start_date, job=job, user=job.done_by, description=job.description)
