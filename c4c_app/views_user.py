@@ -21,6 +21,10 @@ class UserDetail(generic.DetailView):
         context = super(UserDetail, self).get_context_data(**kwargs)
         viewer = get_object_or_404(C4CUser, user=self.request.user)
         context['viewer'] = viewer
+
+        # get branches
+        context['branches'] = self.object.get_branches()
+        context['not_empty_br'] = len(self.object.get_branches()) != 0
         return context
 
 class UserEdit(generic.edit.UpdateView):
@@ -47,11 +51,12 @@ class C4CUserEdit(generic.edit.UpdateView):
     fields = ['address','birthday']
 
     def get_context_data(self, **kwargs):
-        # Call the base implementation first to get a context
         context = super(C4CUserEdit, self).get_context_data(**kwargs)
         viewer = get_object_or_404(C4CUser, user=self.request.user)
         context['viewerpk'] = viewer.user.pk
         context['ownerpk'] = int(self.kwargs.get('pk'))
+
+        # branches
         return context
 
     def form_valid(self, form):

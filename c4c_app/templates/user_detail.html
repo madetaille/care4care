@@ -31,6 +31,17 @@
         <li>Account balance: {{ c4cuser.time_account }}</li>
     </ul>
 
+    <h3>Branches: </h3>
+    {% if not_empty_br %}
+        <ul>
+            {% for branch in branches %}
+                <li>{{ branch }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>This user is not affiliated with any branch.</p>
+    {% endif %}
+
     {% if viewer.pk == c4cuser.pk %}
         <br/>
         <p>You can <a href={% url 'c4c:c4cuser_edit' c4cuser.user.pk %}>edit your C4C profile</a>.</p>
