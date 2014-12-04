@@ -34,7 +34,6 @@ class DonationCreation(CreateView):
             self.donation_bool = True
         else:
             self.donation_bool = False
-            #return HttpResponseRedirect(reverse('c4c:user_jobs'))
             return HttpResponseRedirect(reverse('c4c:donation_error'))
 
         return HttpResponseRedirect(reverse("c4c:donation_detail", args=(self.object.id,)))
