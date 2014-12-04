@@ -1,34 +1,35 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
 {% block content %}
         <div>
              <div>
-                <h2> Your history</h2>
+                 <h2> {% trans "Your history"%}</h2>
             </div>
         </div>
         <div>
-            <button type="button" style="margin-left:50px; margin-right:50px;" class="btn btn-primary" style="text-align:left" onclick="location.href='{% url 'c4c:donation_creation' %}'">Make a donation</button>
-            <button type="button" class="btn btn-primary" style="margin-left:50px; margin-right:50px;" onclick="location.href='{% url 'c4c:job_creation' %}'">Ask fo help</button>
-            <button type="button" class="btn btn-primary"  style="margin-left:50px; margin-right:50px;" onclick="location.href='{% url 'c4c:user_jobs' %}'">Job offer</button>
+            <button type="button" style="margin-left:50px; margin-right:50px;" class="btn btn-primary" style="text-align:left" onclick="location.href='{% url 'c4c:donation_creation' %}'">{% trans "Make a donation"%}</button>
+            <button type="button" class="btn btn-primary" style="margin-left:50px; margin-right:50px;" onclick="location.href='{% url 'c4c:job_creation' %}'">{% trans "Ask fo help"%}</button>
+            <button type="button" class="btn btn-primary"  style="margin-left:50px; margin-right:50px;" onclick="location.href='{% url 'c4c:user_jobs' %}'">{% trans "Job offer"%}</button>
         </div>
     {% if history %}
         {% for objectBlock in history %}
             {% if forloop.counter == 1 %}
                 {% if objectBlock %}
-                <h3 style="text-align:center"> Donation received </h3>
+<h3 style="text-align:center"> {% trans "Donation received"%} </h3>
             <table class="table table-hover" >
                     <tr>
-                        <th>Date</th>
-                        <th>Message</th>
-                        <th>Amount</th>
-                        <th>Details</th>
+                        <th>{% trans "Date"%}</th>
+                        <th>{% trans "Message"%}</th>
+                        <th>{% trans "Amount"%}</th>
+                        <th>{% trans "Details"%}</th>
                      </tr>
                 {% for object in objectBlock %}
                     <tr>
                         <td>{{ object.date }}</td>
                         <td>{{ object.message }}</td>
                         <td>{{ object.amount}}</td>
-                        <td><button type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:donation_detail' object.id %}'">Details</button></td>
+                        <td><button type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:donation_detail' object.id %}'">{% trans "Details"%}</button></td>
                      </tr>
                 {% endfor %}
             </table>
@@ -37,20 +38,20 @@
                 {% endif %}
             {% elif forloop.counter == 2 %}
                 {% if objectBlock %}
-                <h3 style="text-align:center" > Donation made </h3>
+<h3 style="text-align:center" > {% trans "Donation made"%} </h3>
                <table class="table table-hover" >
                     <tr>
-                        <th>Date</th>
-                        <th>Message</th>
-                        <th>Amount</th>
-                        <th>Details</th>
+                        <th>{% trans "Date"%}</th>
+                        <th>{% trans "Message"%}</th>
+                        <th>{% trans "Amount"%}</th>
+                        <th>{% trans "Details"%}</th>
                      </tr>
                 {% for object in objectBlock %}
                     <tr>
                         <td>{{ object.date }}</td>
                         <td>{{ object.message }}</td>
                         <td>{{ object.amount}}</td>
-                        <td><button type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:donation_detail' object.id %}'">Details</button></td>
+                        <td><button type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:donation_detail' object.id %}'">{% trans "Details"%}</button></td>
                      </tr>
                 {% endfor %}
             </table>
@@ -59,14 +60,14 @@
                 {% endif %}
             {% elif forloop.counter == 3 %}
                 {% if objectBlock %}
-                <h3 style="text-align:center" > Job you asked for </h3>
+<h3 style="text-align:center" > {% trans "Job you asked for"%} </h3>
                 <table class="table table-hover" >
                      <tr>
-                        <th>title</th>
-                        <th>duration</th>
-                        <th>location</th>
-                        <th>complete</th>
-                        <th> more details</th>
+                         <th>{% trans "title"%}</th>
+                         <th>{% trans "duration"%}</th>
+                         <th>{% trans "location"%}</th>
+                         <th>{% trans "complete"%}</th>
+                         <th> {% trans "more details"%}</th>
                      </tr>
                {% for object in objectBlock %}
                      <tr>
@@ -74,27 +75,27 @@
                         <td>{{ object.duration }}</td>
                         <td>{{ object.location }}</td>
                         {% if object.complete == False %}
-                        <td> NO </td>
+                        <td> {% trans "NO"%} </td>
                          {% else %}
-                        <td>YES</td>
+                         <td>{% trans "YES"%}</td>
                          {% endif %}
-                         <td><button type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:job_detail' object.id %}'">Details</button></td>
+                         <td><button type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:job_detail' object.id %}'">{% trans "Details"%}</button></td>
                      </tr>
                {% endfor %}
                </table>
                 {% else %}
-                    <p>You have no job asked !</p>
+<p>{% trans "You have no job asked !"%}</p>
                 {% endif %}
             {% elif forloop.counter == 4 %}
                 {% if objectBlock %}
-                <h3 style="text-align:center" > Job you have done </h3>
+<h3 style="text-align:center" > {% trans "Job you have done"%} </h3>
                <table class="table table-hover" >
                      <tr>
-                        <th>title</th>
-                        <th>duration</th>
-                        <th>location</th>
-                        <th>complete</th>
-                        <th> more details</th>
+                         <th>{% trans "title"%}</th>
+                         <th>{% trans "duration"%}</th>
+                         <th>{% trans "location"%}</th>
+                         <th>{% trans "complete"%}</th>
+                         <th>{% trans "more details"%}</th>
                      </tr>
                {% for object in objectBlock %}
                      <tr>
@@ -102,11 +103,11 @@
                         <td>{{ object.duration }}</td>
                         <td>{{ object.location }}</td>
                          {% if object.complete == False %}
-                        <td> NO </td>
+                         <td> {% trans "NO"%} </td>
                          {% else %}
-                        <td>YES</td>
+                         <td>{% trans "YES"%}</td>
                          {% endif %}
-                         <th><button type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:job_detail' object.id %}'">Details</button></th>
+                         <th><button type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:job_detail' object.id %}'">{% trans "Details"%}</button></th>
                      </tr>
                {% endfor %}
                </table>

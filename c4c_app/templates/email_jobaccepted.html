@@ -1,16 +1,17 @@
+{% load i18n %}
 {% if c4cjob.offer == True %}
-Hello {{ c4cjob.done_by }} ! <br>
-An offer({{ c4cjob.title }}) you made has been accepted by {{ c4cjob.asked_by }}. <br>
-Best regards, <br>
-The C4C Organisation.
+{% trans "Hello"%} {{ c4cjob.done_by }} ! <br>
+{% trans "An offer"%}({{ c4cjob.title }}) {% trans "you made has been accepted by"%} {{ c4cjob.asked_by }}. <br>
+{% trans "Best regards"%}, <br>
+{% trans "The C4C Organisation"%}.
 {% elif c4cjob.offer == False %}
-Hello {{ c4cjob.asked_by }} ! <br>
-A demand({{ c4cjob.title }}) you made has been accepted by {{ c4cjob.done_by }}. <br>
-Its specifications were : <br>
-<li>Location : {{c4cjob.location}}</li>
-<li>Description : {{c4cjob.description}}</li>
+{% trans "Hello"%} {{ c4cjob.asked_by }} ! <br>
+{% trans "A demand"%}({{ c4cjob.title }}) {% trans "you made has been accepted by"%} {{ c4cjob.done_by }}. <br>
+{% trans "Its specifications were"%} : <br>
+<li>{% trans "Location"%} : {{c4cjob.location}}</li>
+<li>{% trans "Description"%} : {{c4cjob.description}}</li>
 <br>
 <br>
-Best regards, <br>
-The C4C Organisation.
+{% trans "Best regards"%}, <br>
+{% trans "The C4C Organisation"%}.
 {% endif %}

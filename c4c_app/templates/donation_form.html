@@ -1,19 +1,20 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block title %}Care4Care - Donation Form{% endblock %}
+{% block title %}Care4Care - {% trans "Donation Form"%}{% endblock %}
 
 
 {% block content %}
-<a class="btn btn-default" href="{% url 'c4c:donation_list_M' %}"> All Donation Made </a>
-<a class="btn btn-default" href="{% url 'c4c:donation_list_R' %}"> All Donation Received </a>
+<a class="btn btn-default" href="{% url 'c4c:donation_list_M' %}"> {% trans "All Donation Made"%} </a>
+<a class="btn btn-default" href="{% url 'c4c:donation_list_R' %}"> {% trans "All Donation Received"%} </a>
         <fieldset >
-            <legend > Donation  </legend>
+            <legend > {% trans "Donation"%}  </legend>
 	<form action="" method="post" role="form" class="form-horizontal">{% csrf_token %}
         {{ form.as_p }}
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-             <button type="submit" class="btn btn-default">Submit</button>
-             <button type="reset" class="btn btn-default">reset</button>
+                <button type="submit" class="btn btn-default">{% trans "Submit"%}</button>
+                <button type="reset" class="btn btn-default">{% trans "reset"%}</button>
             </div>
         </div>
 	</form>
