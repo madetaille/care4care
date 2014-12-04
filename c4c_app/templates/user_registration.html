@@ -8,7 +8,8 @@
 <form action="{% url 'c4c:registration' %}" method="post">
     {% csrf_token %}
     {{ form }}
-    <input type="submit" value={% trans "Submit" %} />
+    <input id="registration_submit" type="submit" value={% trans "Submit" %}  />
+
 </form>
 
 
