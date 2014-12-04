@@ -45,7 +45,7 @@ class DonationCreation(CreateView):
 def DonationError(request):
     request.user
     user = get_object_or_404(C4CUser, user = request.user)
-    context = {"user":user}
+    context = {"member":user}
     request.C4CUser = user
     return render(request,'error.html', context)
 
