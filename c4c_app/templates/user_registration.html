@@ -1,12 +1,14 @@
 {% extends "base.html" %}
-{% block title %}Care4Care - Registration{% endblock %}
+{% load i18n %}
+
+{% block title %}Care4Care - {% trans "Registration" %} {% endblock %}
 
 {% block content %}
 
 <form action="{% url 'c4c:registration' %}" method="post">
     {% csrf_token %}
     {{ form }}
-    <input type="submit" value="Submit" />
+    <input type="submit" value={% trans "Submit" %} />
 </form>
 
 

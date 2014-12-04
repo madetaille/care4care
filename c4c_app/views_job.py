@@ -14,8 +14,10 @@ import datetime
 
 from c4c import settings
 from c4c_app.models import C4CUser, C4CJob, C4CEvent
+
 from django.utils import translation
 from django.utils.translation import ugettext as _
+
 from c4c_app.views_error403 import error403
 
 """user_language = 'fr'
