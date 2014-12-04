@@ -82,6 +82,8 @@
 	           {% endfor %}
 	        {% endfor %}
         </table>
-	    <div class="clear"></div>
+	    {% if user.pk == member.user.pk %}
+	       <a href="{% url 'c4c:editevent' %}" class="btn btn-primary btn-block">{% trans "Create new event" %}</a>
+	    {% endif %} 
 	</div>
 {% endblock content %}

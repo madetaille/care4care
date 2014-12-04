@@ -6,8 +6,12 @@
 {% block content %}
     <h2>{{ user.first_name }} {{ user.last_name }}{% trans "'s Agenda"%}</h2>
     <h3>{% trans "Add/edit event"%}</h3>
-    <a href="{% url 'c4c:month' event.user.pk event.date.year event.date.month %}">{% trans "Return to calendar"%}</a> - <a href="{% url 'c4c:event' event.pk %}">{% trans "Return to event"%}</a>
-	<form action="{% url 'c4c:editevent' event.pk %}" method="POST"> {% csrf_token %}
+    {%if event %}
+        <a href="{% url 'c4c:month' event.user.pk event.date.year event.date.month %}">{% trans "Return to calendar"%}</a> - <a href="{% url 'c4c:event' event.pk %}">{% trans "Return to event"%}</a>
+    {%else%}
+        <a href="{% url 'c4c:agenda' %}">{% trans "Return to calendar"%}</a>
+    {%endif%}
+	<form action="{%if event %}{% url 'c4c:editevent' event.pk %}{% else %}{% url 'c4c:editevent' %}{% endif %}" method="POST"> {% csrf_token %}
         <table>{{ form }}</table>
 		<button type="submit" class="btn btn-primary">{% trans "Save"%}</button>
 	</form>

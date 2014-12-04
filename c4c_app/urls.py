@@ -51,6 +51,7 @@ urlpatterns = patterns('',
                        url(r'^month/(\d+)/(\d+)/(\d+)/$', login_required(views.AgendaMonth), name='month'),
                        url(r'^month/(\d+)/(\d+)/(\d+)/(prev|next)/$', login_required(views.AgendaMonth), name='month'),
                        url(r'^day/(\d+)/(\d+)/(\d+)/(\d+)/$', login_required(views.AgendaDay), name='day'),
+                       url(r'^editevent/$', login_required(views.AgendaEditEvent), name='editevent'),
                        url(r'^editevent/(\d+)/$', login_required(views.AgendaEditEvent), name='editevent'),
                        url(r'^event/(\d+)/$', login_required(views.AgendaEvent), name='event'),
                        # Stat
