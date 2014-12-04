@@ -35,6 +35,8 @@ urlpatterns = patterns('',
     url(r'^registration/$', views.view_registration, name='registration'),
     url(r'^login/$', views.user_login, name='login'),
     url(r'^logout/$', views.user_logout, name='logout'),
+    #history
+    url(r'^history/$', views.History.as_view(), name='history'),
     #News
     url(r'^News/$', views.NewsCreation.as_view(), name='news_creation'),
     url(r'^news_detail/(?P<pk>\d+)/$', views.NewsDetail.as_view(), name='news_detail'),
