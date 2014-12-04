@@ -35,6 +35,8 @@ urlpatterns = patterns('',
                        url(r'^registration/$', views.view_registration, name='registration'),
                        url(r'^login/$', views.user_login, name='login'),
                        url(r'^logout/$', views.user_logout, name='logout'),
+                       #Reset password
+                        url(r'^resetpass/$', views.resetpassword, name='resetpass'),
                        # history
                        url(r'^history/$', views.History.as_view(), name='history'),
                        # News

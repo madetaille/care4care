@@ -2,10 +2,11 @@ from django.shortcuts import get_object_or_404, render
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.core.urlresolvers import reverse
+from django.core.exceptions import ObjectDoesNotExist
 from django.views import generic
 from django.utils import timezone
 from django.contrib.auth.models import User
-from django.forms.fields import DateField
+from django.forms.fields import DateField, EmailField
 from django.contrib.admin import widgets
 from django import forms
 from django.contrib.auth import authenticate, login
@@ -14,6 +15,7 @@ from django.utils import translation
 from django.utils.translation import ugettext as _
 
 from c4c_app.models import C4CUser
+from c4c_app.views_error403 import error403
 
 class UserDetail(generic.DetailView):
     model = C4CUser
@@ -81,11 +83,13 @@ class PasswordForm(forms.Form):
 
 def chPassword(request,pk):
     template_name = 'change_password.html'
-    # if this is a POST request we need to process the form data
+
+    # check access permission
+    if int(pk) != request.user.pk:
+        return error403(request)
+
     if request.method == 'POST':
-        # create a form instance and populate it with data from the request:
         form = PasswordForm(request.POST)
-        # check whether it's valid:
         if form.is_valid():
 
             username = str(request.user.username)
@@ -96,12 +100,46 @@ def chPassword(request,pk):
             user = authenticate(username=username,password=formpass)
             login(request,user)
             return HttpResponseRedirect(reverse('c4c:user_detail', args=(user.pk,)))
-
-    # if a GET (or any other method) we'll create a blank form
     else:
         form = PasswordForm()
 
-    return render(request, template_name, {'form': form.as_p(), 'ownerpk': int(pk), 'viewerpk': request.user.pk})
+    return render(request, template_name, {'form': form.as_p()})
+
+class ResetPassForm(forms.Form):
+    email = EmailField(label=_('Email'), max_length=50)
+
+    def clean(self):
+        cleaned_data = super(ResetPassForm,self).clean()
+        mailaddr = cleaned_data.get('email')
+
+        try:
+            user = User.objects.get(email=mailaddr)
+        except ObjectDoesNotExist:
+            raise forms.ValidationError(_('There is no account with this email address.'))
+
+def resetpassword(request):
+    template_name = 'resetpassword.html'
+    if request.method == 'POST':
+        form = ResetPassForm(request.POST)
+
+
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            password = User.objects.make_random_password()
+            user = get_object_or_404(User, email=email)
+            user.set_password(password)
+            user.save()
+            # print(password)
+
+            # send email here. The password to send is the variable
+            # 'password'
+            # ...
+            return HttpResponseRedirect(reverse('c4c:login'))
+
+    else:
+        form = ResetPassForm()
+
+    return render(request, template_name, {'form': form})
 
 class PersonalNetwork(generic.ListView):
     template_name = 'network.html'

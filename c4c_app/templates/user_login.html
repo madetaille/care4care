@@ -3,16 +3,21 @@
 
 {% block content %}
 <form id="login_form" method="post" action="{% url 'c4c:login' %}">
-            {% csrf_token %}
-            {% trans "Username" %} : <input type="text" name="username" value="" size="50" />
-            <br />
-            {% trans "Password" %} : <input type="password" name="password" value="" size="50" />
-            <br />
+    {% csrf_token %}
+    {% trans "Username" %} : <input type="text" name="username" value="" size="50" />
+    <br />
+    {% trans "Password" %} : <input type="password" name="password" value="" size="50" />
+    <br />
 
-            {% if invalid %}
-            {% trans "Your email and password are incorrect." %}
-            {% endif %}
+    {% if invalid %}
+    {% trans "Your email and password are incorrect." %}
+    {% endif %}
 
-            <input id="login_submit" type="submit" value={% trans "submit" %}  />
-        </form>
+    <input id="login_submit" type="submit" value={% trans "submit" %}  />
+</form>
+
+        <br/>
+        <p>If you have forgotten your password, <a href={% url "c4c:resetpass" %}>click here</a>.</p>
+        <br/>
+        <p>If you do not have an account, <a href={% url "c4c:registration" %}>click here to create one</a>.</p>
 {% endblock %}
