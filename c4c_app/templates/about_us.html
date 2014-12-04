@@ -1,24 +1,25 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block title %}Care4Care - About Us {% endblock %}
+{% block title %}Care4Care - {% trans "About Us"%} {% endblock %}
 
 {% block content %}
 
-<h1> About Us </h1>
+<h1> {% trans "About Us"%} </h1>
 
 <body>
 <p>
 Kenniscentrum Woonzorg Brussel vzw<br />
 Lakensestraat 76 <br />
 1000 Brussels<br />
-Telephone: 02/211 02 40<br />
-Fax: 070/42.08.03
+{% trans "Phone"%}: 02/211 02 40<br />
+{% trans "Fax"%}: 070/42.08.03
 </p>
 <p>
-Contact: Katleen Deruytter <br />
-Mobile: 0486/247.246 <br />
-E-mail: katleen.deruytter@woonzorgbrussel.be<br />
-Web: www.woonzorgbrussel.be
+{% trans "Contact"%}: Katleen Deruytter <br />
+{% trans "Mobile"%}: 0486/247.246 <br />
+{% trans "E-mail"%}: katleen.deruytter@woonzorgbrussel.be<br />
+{% trans "Web"%}: www.woonzorgbrussel.be
 </p>
 </body>
 

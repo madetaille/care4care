@@ -1,0 +1,653 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-12-04 15:43+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: templates/c4cjob_form.html:4
+msgid "Job Creation"
+msgstr ""
+
+#: templates/c4cjob_form.html:12 templates/c4cjob_update_form.html:9
+msgid "Title"
+msgstr ""
+
+#: templates/c4cjob_form.html:16 templates/c4cjob_update_form.html:13
+#: templates/email_jobcanceled.html:7 templates/email_jobcreation.html:10
+#: templates/email_jobdeleted.html:7 templates/email_jobdeleted.html.py:17
+#: templates/job_detail.html:18
+msgid "Description"
+msgstr ""
+
+#: templates/c4cjob_form.html:20 templates/c4cjob_update_form.html:17
+#: templates/email_jobcanceled.html:6 templates/email_jobcanceled.html:16
+#: templates/email_jobcreation.html:9 templates/email_jobdeleted.html:6
+#: templates/email_jobdeleted.html.py:16
+msgid "Location"
+msgstr ""
+
+#: templates/c4cjob_form.html:24 templates/c4cjob_update_form.html:21
+msgid "Day when the job begin"
+msgstr ""
+
+#: templates/c4cjob_form.html:26 templates/c4cjob_update_form.html:23
+msgid "month"
+msgstr ""
+
+#: templates/c4cjob_form.html:26 templates/c4cjob_update_form.html:23
+msgid "day"
+msgstr ""
+
+#: templates/c4cjob_form.html:26 templates/c4cjob_update_form.html:23
+msgid "year"
+msgstr ""
+
+#: templates/c4cjob_form.html:26 templates/c4cjob_update_form.html:23
+msgid "hour"
+msgstr ""
+
+#: templates/c4cjob_form.html:26 templates/c4cjob_update_form.html:23
+#: templates/email_jobconfirmed.html:3 templates/email_jobreported.html:4
+msgid "minutes"
+msgstr ""
+
+#: templates/c4cjob_form.html:30 templates/news_form.html:16
+#: templates/user_registration.html:11
+msgid "Submit"
+msgstr ""
+
+#: templates/c4cjob_update_form.html:4
+msgid "Job Update"
+msgstr ""
+
+#: templates/c4cjob_update_form.html:26
+msgid "Save changes"
+msgstr ""
+
+#: templates/email_jobcanceled.html:3 templates/email_jobcanceled.html:13
+#: templates/email_jobcompleted.html:2 templates/email_jobconfirmed.html:2
+#: templates/email_jobcreation.html:2 templates/email_jobdeleted.html:3
+#: templates/email_jobdeleted.html.py:13
+msgid "Hello"
+msgstr ""
+
+#: templates/email_jobcanceled.html:4
+msgid "An offer that you made has been canceled by"
+msgstr ""
+
+#: templates/email_jobcanceled.html:5 templates/email_jobcanceled.html:15
+#: templates/email_jobdeleted.html:15
+msgid "Its specifications were"
+msgstr ""
+
+#: templates/email_jobcanceled.html:10 templates/email_jobcompleted.html:11
+#: templates/email_jobconfirmed.html:5 templates/email_jobcreation.html:15
+#: templates/email_jobdeleted.html:10 templates/email_jobdeleted.html.py:20
+msgid "Best regards"
+msgstr ""
+
+#: templates/email_jobcanceled.html:11
+msgid "The Gros Cons Organisation"
+msgstr ""
+
+#: templates/email_jobcanceled.html:14
+msgid "A demand that you asked for has been canceled by"
+msgstr ""
+
+#: templates/email_jobcompleted.html:4
+msgid "The offer"
+msgstr ""
+
+#: templates/email_jobcompleted.html:4
+msgid "you accepted is now completed ! It has been completed by the user"
+msgstr ""
+
+#: templates/email_jobcompleted.html:6
+msgid "The demand"
+msgstr ""
+
+#: templates/email_jobcompleted.html:6
+msgid "you asked for has been completed ! It has been completed by the user"
+msgstr ""
+
+#: templates/email_jobcompleted.html:8
+msgid "His duration was"
+msgstr ""
+
+#: templates/email_jobcompleted.html:9
+msgid "You can now check it and verify it on the website"
+msgstr ""
+
+#: templates/email_jobcompleted.html:12 templates/email_jobconfirmed.html:6
+#: templates/email_jobcreation.html:16 templates/email_jobdeleted.html:21
+msgid "The C4C Organisation"
+msgstr ""
+
+#: templates/email_jobconfirmed.html:3
+msgid "The job you did has been confirmed by"
+msgstr ""
+
+#: templates/email_jobconfirmed.html:3
+msgid "Your account has been credited of"
+msgstr ""
+
+#: templates/email_jobcreation.html:4
+msgid "You created an offer"
+msgstr ""
+
+#: templates/email_jobcreation.html:6
+msgid "You created a demand"
+msgstr ""
+
+#: templates/email_jobcreation.html:8
+msgid "Here are its specifications"
+msgstr ""
+
+#: templates/email_jobcreation.html:11
+msgid "Your job begins on"
+msgstr ""
+
+#: templates/email_jobcreation.html:12
+msgid "Status : Ongoing"
+msgstr ""
+
+#: templates/email_jobdeleted.html:4
+msgid "An offer you accepted has been deleted by"
+msgstr ""
+
+#: templates/email_jobdeleted.html:5
+msgid "Its specifications were :"
+msgstr ""
+
+#: templates/email_jobdeleted.html:11 templates/email_jobreported.html:12
+msgid "The C4C Organisation."
+msgstr ""
+
+#: templates/email_jobdeleted.html:14
+msgid "A demand you accepted has been deleted by"
+msgstr ""
+
+#: templates/email_jobreported.html:2
+msgid "Hello branch admin !"
+msgstr ""
+
+#: templates/email_jobreported.html:3
+msgid "A member"
+msgstr ""
+
+#: templates/email_jobreported.html:3
+msgid ""
+"is requiring your help to solve a conflict ! He doesn't agree with the time"
+msgstr ""
+
+#: templates/email_jobreported.html:4
+msgid "credit"
+msgstr ""
+
+#: templates/email_jobreported.html:4
+msgid "that the member"
+msgstr ""
+
+#: templates/email_jobreported.html:4
+msgid "has set for this job."
+msgstr ""
+
+#: templates/email_jobreported.html:6
+msgid "Here are its specifications :"
+msgstr ""
+
+#: templates/email_jobreported.html:7
+msgid "Location :"
+msgstr ""
+
+#: templates/email_jobreported.html:8
+msgid "Description :"
+msgstr ""
+
+#: templates/email_jobreported.html:11
+msgid "Best regards,"
+msgstr ""
+
+#: templates/error.html:3 templates/news_form.html:4
+#: templates/news_form.html.py:11
+msgid "News"
+msgstr ""
+
+#: templates/error.html:6 templates/news_detail.html:8
+#: templates/news_form.html:8
+msgid "All branch news"
+msgstr ""
+
+#: templates/error.html:7
+msgid "All news"
+msgstr ""
+
+#: templates/error.html:8
+msgid "Create News"
+msgstr ""
+
+#: templates/error.html:14
+msgid "Error processing"
+msgstr ""
+
+#: templates/error403.html:9
+msgid "Error 403"
+msgstr ""
+
+#: templates/error403.html:12
+msgid "You are not authorized to access this page"
+msgstr ""
+
+#: templates/history.html:7
+msgid "Your history"
+msgstr ""
+
+#: templates/history.html:11
+msgid "Make a donation"
+msgstr ""
+
+#: templates/history.html:12
+msgid "Ask fo help"
+msgstr ""
+
+#: templates/history.html:13
+msgid "Job offer"
+msgstr ""
+
+#: templates/history.html:19
+msgid "Donation received"
+msgstr ""
+
+#: templates/history.html:22 templates/history.html.py:44
+msgid "Date"
+msgstr ""
+
+#: templates/history.html:23 templates/history.html.py:45
+msgid "Message"
+msgstr ""
+
+#: templates/history.html:24 templates/history.html.py:46
+msgid "Amount"
+msgstr ""
+
+#: templates/history.html:25 templates/history.html.py:32
+#: templates/history.html:47 templates/history.html.py:54
+#: templates/history.html:82 templates/history.html.py:110
+msgid "Details"
+msgstr ""
+
+#: templates/history.html:41
+msgid "Donation made"
+msgstr ""
+
+#: templates/history.html:63
+msgid "Job you asked for"
+msgstr ""
+
+#: templates/history.html:66 templates/history.html.py:94
+msgid "title"
+msgstr ""
+
+#: templates/history.html:67 templates/history.html.py:95
+msgid "duration"
+msgstr ""
+
+#: templates/history.html:68 templates/history.html.py:96
+msgid "location"
+msgstr ""
+
+#: templates/history.html:69 templates/history.html.py:97
+msgid "complete"
+msgstr ""
+
+#: templates/history.html:70 templates/history.html.py:98
+msgid "more details"
+msgstr ""
+
+#: templates/history.html:78 templates/history.html.py:106
+msgid "NO"
+msgstr ""
+
+#: templates/history.html:80 templates/history.html.py:108
+msgid "YES"
+msgstr ""
+
+#: templates/history.html:87
+msgid "You have no job asked !"
+msgstr ""
+
+#: templates/history.html:91
+msgid "Job you have done"
+msgstr ""
+
+#: templates/index.html:13
+msgid "Welcome!"
+msgstr ""
+
+#: templates/index.html:18
+msgid "I NEED HELP!"
+msgstr ""
+
+#: templates/index.html:19
+msgid "I WANT TO HELP!"
+msgstr ""
+
+#: templates/index.html:26
+msgid "Demands"
+msgstr ""
+
+#: templates/index.html:37 templates/index.html.py:55
+#: templates/user_job.html:20 templates/user_job.html.py:36
+#: templates/user_job.html:52 templates/user_job.html.py:68
+#: templates/user_job.html:84
+msgid "More Infos"
+msgstr ""
+
+#: templates/index.html:44
+msgid "Offers"
+msgstr ""
+
+#: templates/job_detail.html:4
+msgid "Job detail"
+msgstr ""
+
+#: templates/job_detail.html:10
+msgid "Created by"
+msgstr ""
+
+#: templates/job_detail.html:12
+msgid "Asked by"
+msgstr ""
+
+#: templates/job_detail.html:15
+msgid "Done by"
+msgstr ""
+
+#: templates/job_detail.html:17
+msgid "Address"
+msgstr ""
+
+#: templates/job_detail.html:19
+msgid "Due for"
+msgstr ""
+
+#: templates/job_detail.html:21
+msgid "Finished at"
+msgstr ""
+
+#: templates/job_detail.html:22
+msgid "Credit"
+msgstr ""
+
+#: templates/job_detail.html:25
+msgid "Completed"
+msgstr ""
+
+#: templates/job_detail.html:27 templates/user_job.html:9
+msgid "Ongoing"
+msgstr ""
+
+#: templates/job_detail.html:33 templates/job_detail.html.py:36
+msgid "Accept"
+msgstr ""
+
+#: templates/job_detail.html:42
+msgid "Done"
+msgstr ""
+
+#: templates/job_detail.html:46
+msgid "Confirm"
+msgstr ""
+
+#: templates/job_detail.html:47
+msgid "Report"
+msgstr ""
+
+#: templates/job_detail.html:53 templates/job_detail.html.py:56
+msgid "Cancel"
+msgstr ""
+
+#: templates/job_detail.html:62 templates/job_detail.html.py:66
+msgid "Delete"
+msgstr ""
+
+#: templates/job_detail.html:63 templates/job_detail.html.py:67
+msgid "Update"
+msgstr ""
+
+#: templates/network.html:4
+msgid "Network"
+msgstr ""
+
+#: templates/news_detail.html:6
+msgid "News detail"
+msgstr ""
+
+#: templates/news_detail.html:9 templates/news_form.html:9
+msgid "All News"
+msgstr ""
+
+#: templates/news_detail.html:14
+msgid "by"
+msgstr ""
+
+#: templates/news_detail.html:21
+msgid "Related branch : "
+msgstr ""
+
+#: templates/news_form.html:17
+msgid "reset"
+msgstr ""
+
+#: templates/user_detail.html:8
+msgid "My profile"
+msgstr ""
+
+#: templates/user_detail.html:10
+msgid "'s profile"
+msgstr ""
+
+#: templates/user_detail.html:14
+msgid "User details: "
+msgstr ""
+
+#: templates/user_detail.html:16
+msgid "Username: "
+msgstr ""
+
+#: templates/user_detail.html:17
+msgid "First name: "
+msgstr ""
+
+#: templates/user_detail.html:18
+msgid "Last name: "
+msgstr ""
+
+#: templates/user_detail.html:19
+msgid "Email: "
+msgstr ""
+
+#: templates/user_detail.html:21
+msgid "Password: ... "
+msgstr ""
+
+#: templates/user_detail.html:27 templates/user_detail.html.py:39
+msgid "You can "
+msgstr ""
+
+#: templates/user_detail.html:27
+msgid "edit your user profile"
+msgstr ""
+
+#: templates/user_detail.html:30
+msgid "details: "
+msgstr ""
+
+#: templates/user_detail.html:32
+msgid "Address: "
+msgstr ""
+
+#: templates/user_detail.html:33
+msgid "Birthday: "
+msgstr ""
+
+#: templates/user_detail.html:34
+msgid "Account balance: "
+msgstr ""
+
+#: templates/user_detail.html:39
+msgid "edit your C4C profile"
+msgstr ""
+
+#: templates/user_job.html:4
+msgid "User jobs"
+msgstr ""
+
+#: templates/user_job.html:25
+msgid "Outdated"
+msgstr ""
+
+#: templates/user_job.html:41
+msgid "My Demands"
+msgstr ""
+
+#: templates/user_job.html:57
+msgid "My Offers"
+msgstr ""
+
+#: templates/user_job.html:73
+msgid "Created jobs"
+msgstr ""
+
+#: templates/user_login.html:7
+msgid "Username"
+msgstr ""
+
+#: templates/user_login.html:9
+msgid "Password"
+msgstr ""
+
+#: templates/user_login.html:13
+msgid "Your email and password are incorrect."
+msgstr ""
+
+#: templates/user_login.html:16
+msgid "submit"
+msgstr ""
+
+#: templates/user_registration.html:4
+msgid "Registration"
+msgstr ""
+
+#: templates/what_is_c4c.html:4 templates/what_is_c4c.html.py:8
+msgid "What is Care 4 Care"
+msgstr ""
+
+#: templates/what_is_c4c.html:12
+msgid ""
+"“Het BuurtPensioen”, “Pens(i)onsVoisins”, or in English “Care4Care” is a "
+"membership organization where members support other members in their local "
+"community, and in return build up their own “care pension”. For ease of "
+"writing we will abbreviate the organization’s name to “BP” in the remainder "
+"of this document."
+msgstr ""
+
+#: templates/what_is_c4c.html:15
+msgid ""
+"The idea is to provide support for people in need (elderly, handicapped, "
+"sick) through a system of exchange : the time a member invests in supporting "
+"some other person now, will be returned to him later in life when that "
+"member himself is in need."
+msgstr ""
+
+#: templates/what_is_c4c.html:18
+msgid ""
+"The time credit gained by helping others is deposited on a kind of savings "
+"account. The account owner can save these credits for his or her own old "
+"age, or can transfer (part of) it to the account of another member (for "
+"example, out of social considerations), or return it to the organization as "
+"a gift(so that the organization can distribute it to people in need with "
+"insufficient remaining credits)"
+msgstr ""
+
+#: templates/what_is_c4c.html:21
+msgid ""
+"The concept is designed to tackle the growing demand for support and care at "
+"home, in the context of Belgium’s ageing population and a frightening "
+"decrease of government funds for care. Professional services are becoming "
+"too expensive for many people, and do not provide for what is most "
+"demanded : friendship, a helping hand, or a chat around a cup of coffee"
+msgstr ""
+
+#: templates/what_is_c4c.html:24
+msgid ""
+"People are generally very willing to help but are sometimes too shy to offer "
+"help. And people in need are shy to ask for help. This project wants to link "
+"and match demand and offer. It also wants to make people aware of the big "
+"need for such informal care, and wants to reward, value and support the "
+"volunteers who take the step to get involved"
+msgstr ""
+
+#: templates/what_is_c4c.html:27
+msgid ""
+"A pilot of this project has been running since November 2013 in the city of "
+"Neder-over-Heembeek and has been a success so far. In view of expanding the "
+"member community in Neder-over-Heembeek, as well as a possible start-up of "
+"other branches in or around Brussels, we are currently in need of better "
+"tool support for BP’s operational activities. Due to this expansion, we will "
+"also face more complex security issues than the current approach can handle."
+msgstr ""
+
+#: views_job.py:285
+msgid "you created a job"
+msgstr ""
+
+#: views_job.py:298
+msgid "a job is waiting for you to be completed"
+msgstr ""
+
+#: views_job.py:311
+msgid "a job you did has been confirmed"
+msgstr ""
+
+#: views_job.py:323
+msgid "there is a conflict between two members"
+msgstr ""
+
+#: views_job.py:337
+msgid "a demand you asked for has been canceled"
+msgstr ""
+
+#: views_job.py:349
+msgid "an offer you made has been canceled"
+msgstr ""
+
+#: views_job.py:361
+msgid "an offer you accepted has been deleted"
+msgstr ""
+
+#: views_job.py:373
+msgid "a demand you accepted has been deleted"
+msgstr ""
+
+#: views_job.py:385
+msgid "a demand you made has been accepted"
+msgstr ""
+
+#: views_job.py:397
+msgid "an offer you made has been accepted"
+msgstr ""

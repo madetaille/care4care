@@ -1,3 +1,4 @@
+{% load i18n %}
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -30,7 +31,7 @@
             <div class="container-fluid">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                        <span class="sr-only">Toggle navigation</span>
+                        <span class="sr-only">{% trans "Toggle navigation"%}</span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
@@ -40,12 +41,12 @@
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right">
                         {% if user.is_authenticated %}
-                        <li><a href="{% url 'c4c:logout'  %}">Logout : {{ user.username }}</a></li>
+                        <li><a href="{% url 'c4c:logout'  %}">{% trans "Logout"%} : {{ user.username }}</a></li>
                         {% else %}
-                        <li><a href="{% url 'c4c:login'  %}">Login</a></li>
-                        <li><a href="{% url 'c4c:registration'  %}">Register</a></li>
+                        <li><a href="{% url 'c4c:login'  %}">{% trans "Login"%}</a></li>
+                        <li><a href="{% url 'c4c:registration'  %}">{% trans "Register"%}</a></li>
                         {% endif %}
-                        <li><a href="{% url 'c4c:stat'  %}">Stat</a></li>
+                        <li><a href="{% url 'c4c:stat'  %}">{% trans "Stat"%}</a></li>
 
                     </ul>
                 </div><!--/.navbar-collapse -->
@@ -56,21 +57,21 @@
             <div class="row">
                 <div class="col-sm-3">
                     <ul class="nav nav-pills nav-stacked">
-                        <li role="presentation"><a href="{% url 'c4c:feeds' %}">Feeds</a></li>
+                        <li role="presentation"><a href="{% url 'c4c:feeds' %}">{% trans "Feeds"%}</a></li>
                         {% if user.is_authenticated %}
-                        <li role="presentation"><a href="{% url 'c4c:user_detail' user.pk %}">My profile</a></li>
-                        <li role="presentation"><a href="{% url 'c4c:user_jobs'  %}">My Jobs</a></li>
-                        <li role="presentation"><a href="{% url 'c4c:agenda'  %}">My agenda</a></li>
-                        <li role="presentation"><a href="{% url 'c4c:network'  %}">Personal Network</a></li>
-                        <li role="presentation"><a href="{% url 'c4c:donation_creation' %}"> Make Donation </a></li>
-                        <li role="presentation"><a href="{% url 'c4c:history' %}">History</a></li>
+                        <li role="presentation"><a href="{% url 'c4c:user_detail' user.pk %}">{% trans "My Profile"%}</a></li>
+                        <li role="presentation"><a href="{% url 'c4c:user_jobs'  %}">{% trans "My Jobs"%}</a></li>
+                        <li role="presentation"><a href="{% url 'c4c:agenda'  %}">{% trans "My Agenda"%}</a></li>
+                        <li role="presentation"><a href="{% url 'c4c:network'  %}">{% trans "Personal Network"%}</a></li>
+                        <li role="presentation"><a href="{% url 'c4c:donation_creation' %}"> {% trans "Make Donation"%} </a></li>
+                        <li role="presentation"><a href="{% url 'c4c:history' %}">{% trans "History"%}</a></li>
                         {% endif %}
                     </ul>
                     <hr/>
                     <ul class="nav nav-pills nav-stacked">
-                        <li role="presentation"><a href="{% url 'c4c:all_news_list' %}"> News </a></li>
-                        <li role="presentation"><a href="{% url 'c4c:whatisc4c' %}">What is Care4Care?</a></li>
-                        <li role="presentation"><a href="{% url 'c4c:aboutus' %}">About us</a></li>
+                        <li role="presentation"><a href="{% url 'c4c:all_news_list' %}"> {% trans "News"%} </a></li>
+                        <li role="presentation"><a href="{% url 'c4c:whatisc4c' %}">{% trans "What is Care4Care?"%}</a></li>
+                        <li role="presentation"><a href="{% url 'c4c:aboutus' %}">{% trans "About us"%}</a></li>
                         <li role="presentation"><a href="#">Help</a></li>
                     </ul>
                 </div>

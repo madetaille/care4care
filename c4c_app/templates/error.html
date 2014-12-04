@@ -1,20 +1,21 @@
 {% extends 'base.html' %}
-        {% block title %}Care4Care - News{% endblock %}
+{% load i18n %}
+{% block title %}Care4Care - {% trans "News"%}{% endblock %}
         {% block content %}
 {% if user.is_authenticated %}
-<a class="btn btn-default" href="{% url 'c4c:all_news_list_Branch' %}"> All branch news </a>
-<a class="btn btn-default" href="{% url 'c4c:all_news_list' %}"> All news </a>
-<a class="btn btn-default" href="{% url 'c4c:news_creation' %}"> Create News </a>
+<a class="btn btn-default" href="{% url 'c4c:all_news_list_Branch' %}"> {% trans "All branch news"%} </a>
+<a class="btn btn-default" href="{% url 'c4c:all_news_list' %}"> {% trans "All news"%} </a>
+<a class="btn btn-default" href="{% url 'c4c:news_creation' %}"> {% trans "Create News"%} </a>
 {% endif %}
 
 <div class="panel panel-danger" style="margin-top:10px">
 
     <div class="panel-heading">
-    <h3 class="panel-title">Error processing</h3>
+        <h3 class="panel-title">{% trans "Error processing"%}</h3>
     </div>
     <div class="panel-body">
-    <p>Vous ne possedez pas les fonds necessaire pour effectuer cette donation</p>
-    <p>Votre solde est de : {{ member.time_account }} minutes</p>
+        <p>Your credits are not sufficient enough to accomplish this donation</p>
+        <p>Your credits amount to : {{ member.time_account }} minutes</p>
     </div>
 </div>
 

@@ -1,15 +1,16 @@
-Hello {{ c4cjob.created_by }} ! <br>
+{% load i18n %}
+{% trans "Hello"%} {{ c4cjob.created_by }} ! <br>
 {% if c4cjob.offer == True %}
-You created an offer : {{ c4cjob.title }}<br>
+{% trans "You created an offer"%} : {{ c4cjob.title }}<br>
 {% elif c4cjob.offer == False %}
-You created a demand : {{ c4cjob.title }}<br>
+{% trans "You created a demand"%} : {{ c4cjob.title }}<br>
 {% endif %} <br>
-Here are its specifications : <br>
-<li>Location : {{c4cjob.location}}</li>
-<li>Description : {{c4cjob.description}}</li>
-<li>Your job begins on : {{c4cjob.start_date}}</li>
-<li><p> Status : Ongoing </p></li>
+{% trans "Here are its specifications"%} : <br>
+<li>{% trans "Location"%} : {{c4cjob.location}}</li>
+<li>{% trans "Description"%} : {{c4cjob.description}}</li>
+<li>{% trans "Your job begins on"%} : {{c4cjob.start_date}}</li>
+<li><p> {% trans "Status : Ongoing"%} </p></li>
 <br>
 <br>
-Best regards, <br>
-The C4C Organisation.
+{% trans "Best regards"%}, <br>
+{% trans "The C4C Organisation"%}.

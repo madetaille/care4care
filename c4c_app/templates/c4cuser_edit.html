@@ -1,6 +1,7 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block title %}Care4Care - Update profile (C4C) {% endblock %}
+{% block title %}Care4Care - {% trans "Update profile"%} (C4C) {% endblock %}
 
 {% block content %}
 {% if viewerpk == ownerpk %}
@@ -10,6 +11,6 @@
         <input type="submit" value="Update C4C details" />
     </form>
 {% else %}
-    <p>You cannot modify another user's profile.</p>
+<p>{% trans "You cannot modify another user's profile"%}.</p>
 {% endif %}
 {% endblock content %}

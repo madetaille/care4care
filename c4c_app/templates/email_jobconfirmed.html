@@ -1,5 +1,6 @@
-Hello {{ c4cjob.done_by }} ! <br>
-The job you did has been confirmed by {{ c4cjob.asked_by }}. Your account has been credited of {{ c4cjob.duration }} minutes !<br>
+{% load i18n %}
+{% trans "Hello"%} {{ c4cjob.done_by }} ! <br>
+{% trans "The job you did has been confirmed by"%} {{ c4cjob.asked_by }}. {% trans "Your account has been credited of"%} {{ c4cjob.duration }} {% trans "minutes"%} !<br>
 <br>
-Best regards, <br>
-The C4C Organisation.
+{% trans "Best regards"%}, <br>
+{% trans "The C4C Organisation"%}.

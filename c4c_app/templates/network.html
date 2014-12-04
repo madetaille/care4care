@@ -1,6 +1,7 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block title %}Care4Care - Network{% endblock %}
+{% block title %}Care4Care - {% trans "Network"%}{% endblock %}
 
 {% block content %}
 	{% if network_list %}
