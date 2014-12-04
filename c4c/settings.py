@@ -87,6 +87,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+# For the languages
+STATIC_ROOT = '/var/www/example.com/static/'
+
 # Login url
 LOGIN_URL = '/login/'
 

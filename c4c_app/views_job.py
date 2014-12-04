@@ -12,13 +12,19 @@ from django.views.generic.edit import UpdateView
 import datetime
 
 from c4c import settings
-from c4c_app.models import C4CUser, C4CJob, C4CEvent, C4CBranch
+from c4c_app.models import C4CUser, C4CJob, C4CEvent
+from django.utils import translation
+from django.utils.translation import ugettext as _
+
+user_language = 'fr'
+translation.activate(user_language)
+
 class JobCreation(CreateView):
     model = C4CJob
-    template_name = 'c4cjob_form.html'
-
+    template_name = 'c4cjob_form.html'    
+    
     fields = ['title', 'description', 'location', 'start_date']
-
+    
     def form_valid(self, form):
         self.object = form.save(commit=False)
         maker = get_object_or_404(C4CUser, user=self.request.user)
@@ -76,11 +82,11 @@ class JobDetail(generic.DetailView):
 @login_required
 def acceptJob(request, c4cjob_id):
     job = get_object_or_404(C4CJob, pk=c4cjob_id)
-    user_site = get_object_or_404(C4CUser, user=request.user)
+    user_site = request.user
 
     if job.offer == False:
-        if user_site.user == job.asked_by:
-            return HttpResponse('Unauthorized', status=401)
+        if user_site == job.asked_by or job.end_date != None or job.complete==True or job.done_by != None:
+            return error403(request)
         else:
             job.done_by = user_site.user
             job.save()
@@ -91,10 +97,10 @@ def acceptJob(request, c4cjob_id):
             send_email_accepted_offer(job)
             return HttpResponseRedirect(reverse('c4c:job_detail', args=(job.id,)))
     else:
-        if user_site.user == job.done_by:
-            return HttpResponse('Unauthorized', status=401)
+        if user_site == job.done_by or job.end_date != None or job.complete==True or job.asked_by != None:
+            return error403(request)
         else:
-            job.asked_by = user_site.user
+            job.asked_by = user_site
             job.save()
             event1 = C4CEvent(name=job.title, date=job.start_date, job=job, user=job.asked_by, description=job.description)
             event2 = C4CEvent(name=job.title, date=job.start_date, job=job, user=job.done_by, description=job.description)
@@ -108,8 +114,8 @@ def acceptJob(request, c4cjob_id):
 def doneJob(request, c4cjob_id):
     job = get_object_or_404(C4CJob, pk=c4cjob_id)
     
-    if job.asked_by == None or job.done_by == None or job.done_by != request.user:
-        return HttpResponseForbidden()
+    if job.asked_by == None or job.done_by == None or job.done_by != request.user or job.end_date != None or job.complete==True:
+        return error403(request)
     
     job.duration = request.POST['Duration']
     job.end_date = timezone.now()
@@ -124,6 +130,10 @@ def doneJob(request, c4cjob_id):
 @login_required
 def confirmJob(request, c4cjob_id):
     job = get_object_or_404(C4CJob, pk=c4cjob_id)
+    
+    if job.asked_by == None or job.done_by == None or job.asked_by != request.user or job.end_date == None or job.complete==True:
+        return error403(request)
+    
     job.complete = True
     job.save()
 
@@ -137,6 +147,10 @@ def confirmJob(request, c4cjob_id):
 def reportJob(request, c4cjob_id):
     # TODO: envoie d un email a l admin
     job = get_object_or_404(C4CJob, pk=c4cjob_id)
+    
+    if job.asked_by == None or job.done_by == None or job.asked_by != request.user or job.end_date == None or job.complete==True:
+        return error403(request)
+    
     user = get_object_or_404(C4CUser, user = request.user)
     branch_user = set()
     for branch in user.get_branches():
@@ -151,6 +165,10 @@ def cancelJob(request, c4cjob_id):
     job = get_object_or_404(C4CJob, pk=c4cjob_id)
 
     if job.offer == False:
+        
+        if job.asked_by == None or job.done_by == None or job.done_by != request.user or job.end_date != None or job.complete==True:
+            return error403(request)
+        
         send_email_canceled_demand(job)
         event1 = get_object_or_404(C4CEvent, job=job, user=job.done_by)
         event2 = get_object_or_404(C4CEvent, job=job, user=job.asked_by)
@@ -158,6 +176,10 @@ def cancelJob(request, c4cjob_id):
         event2.delete()
         job.done_by = None
     else:
+        
+        if job.asked_by == None or job.done_by == None or job.asked_by != request.user or job.end_date != None or job.complete==True:
+            return error403(request)
+        
         send_email_canceled_offer(job)
         event1 = get_object_or_404(C4CEvent, job=job, user=job.done_by)
         event2 = get_object_or_404(C4CEvent, job=job, user=job.asked_by)
@@ -174,8 +196,15 @@ def deleteJob(request, c4cjob_id):
     job = get_object_or_404(C4CJob, pk=c4cjob_id)
 
     if job.offer == False:
+        if job.asked_by != request.user or job.end_date != None or job.complete==True:
+            return error403(request)
+        
         send_email_delete_demand(job)
     elif job.offer == True:
+        
+        if job.done_by != request.user or job.end_date != None or job.complete==True:
+            return error403(request)
+        
         send_email_delete_offer(job)
         
     if(job.asked_by is not None and job.done_by is not None):
@@ -197,11 +226,15 @@ def userJobs(request, member_pk=None):
         member = get_object_or_404(C4CUser, user=request.user)
 
     res = []
-    res.append(member.user.jobs_asked.filter(complete=False).order_by("-start_date"))
-    res.append(member.user.jobs_accepted.filter(complete=False).order_by("-start_date"))
-    res.append(member.user.jobs_created.all().order_by("-start_date"))
+    l1 = member.user.jobs_asked.filter(complete=False,start_date__gte=datetime.date.today()).order_by("-start_date")
+    l2 = member.user.jobs_accepted.filter(complete=False,start_date__gte=datetime.date.today()).order_by("-start_date")
+    l3 = member.user.jobs_asked.filter(complete=False,start_date__lte=datetime.date.today()).order_by("-start_date")
+    l4 = member.user.jobs_accepted.filter(complete=False,start_date__lte=datetime.date.today()).order_by("-start_date")
+    res.append(list(chain(l1,l2)))
+    res.append(list(chain(l3,l4)))
     res.append(member.user.jobs_asked.all().order_by("-start_date"))
     res.append(member.user.jobs_accepted.all().order_by("-start_date"))
+    res.append(member.user.jobs_created.all().order_by("-start_date"))
 
     context = {'user_job_list': res}
 

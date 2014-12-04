@@ -1,27 +1,28 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block title %}Care4Care - Job detail{% endblock %}
+{% block title %}Care4Care - {% trans "Job Update" %} {% endblock %}
 
 {% block content %}
 
 <form action="" method="post">{% csrf_token %}
-        Title :
+        {% trans "Title" %} :
         <input type="text" name="title" maxlength="100" value = {{c4cjob.title}}>
             <br>
             <br>
-        Description :
+        {% trans "Description" %} : :
             <input type="text" name="description" maxlength="1000" value = {{c4cjob.description}}>
             <br>
             <br>
-        Location :
+        {% trans "Location" %} :
             <input type="text" name="location" maxlength="300" value = {{c4cjob.location}}>
             <br>
             <br>
-        Start date :
+        {% trans "Day when the job begin" %}
             <input type="datetime-local" name="start_date" value = {{c4cjob.start_date|date:"d/m/Y"}}>
-                (month/day/year hour:minutes)
+                ({% trans "month" %}/{% trans "day" %}/{% trans "year" %} {% trans "hour" %}:{% trans "minutes" %})
             <br>
             <br>
-    <input type="submit" value="Save changes" />
+            <input type="submit" value= {% trans "Save changes" %} />
 </form>
 {% endblock content %}
