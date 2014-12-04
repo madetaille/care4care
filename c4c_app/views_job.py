@@ -13,16 +13,22 @@ from itertools import chain
 import datetime
 
 from c4c import settings
-from c4c_app.models import C4CUser, C4CJob, C4CEvent, C4CBranch
+from c4c_app.models import C4CUser, C4CJob, C4CEvent
+
+from django.utils import translation
+from django.utils.translation import ugettext as _
 
 from c4c_app.views_error403 import error403
 
+"""user_language = 'fr'
+translation.activate(user_language)"""
+
 class JobCreation(CreateView):
     model = C4CJob
-    template_name = 'c4cjob_form.html'
-
+    template_name = 'c4cjob_form.html'    
+    
     fields = ['title', 'description', 'location', 'start_date']
-
+    
     def form_valid(self, form):
         self.object = form.save(commit=False)
         maker = get_object_or_404(C4CUser, user=self.request.user)
@@ -276,7 +282,7 @@ class Feeds(generic.ListView):
 
 
 def send_email_creation_job(job, maker):
-        subject, from_email, to = 'Care4Care : you created a job !', settings.EMAIL_HOST_USER, maker.user.email
+        subject, from_email, to = 'Care4Care : '+_('you created a job')+' !', settings.EMAIL_HOST_USER, maker.user.email
         text_content = ''
         htmly = get_template('email_jobcreation.html')
         
@@ -289,7 +295,7 @@ def send_email_creation_job(job, maker):
 
 
 def send_email_done_job(job):
-    subject, from_email, to = 'Care4Care : a job is waiting for you to be completed !', settings.EMAIL_HOST_USER, job.asked_by.email
+    subject, from_email, to = 'Care4Care : '+_('a job is waiting for you to be completed')+' !', settings.EMAIL_HOST_USER, job.asked_by.email
     
     
     htmly = get_template('email_jobcompleted.html')
@@ -302,7 +308,7 @@ def send_email_done_job(job):
     msg.send()
     
 def send_email_confirm(job):
-    subject, from_email, to = 'Care4Care : a job you did has been confirmed !', settings.EMAIL_HOST_USER, job.done_by.email
+    subject, from_email, to = 'Care4Care : '+_('a job you did has been confirmed')+' !', settings.EMAIL_HOST_USER, job.done_by.email
     
     htmly = get_template('email_jobconfirmed.html')
     text_content = ''
@@ -314,7 +320,7 @@ def send_email_confirm(job):
     msg.send()
     
 def send_email_report_admin(job, emails):
-    subject, from_email,= 'Care4Care : there is a conflict between two members !', settings.EMAIL_HOST_USER
+    subject, from_email,= 'Care4Care : '+ _('there is a conflict between two members')+' !', settings.EMAIL_HOST_USER
     
     for email in emails:
         to = email
@@ -328,7 +334,7 @@ def send_email_report_admin(job, emails):
         msg.send()
     
 def send_email_canceled_demand(job):
-    subject, from_email, to = 'Care4Care : a demand you asked for has been canceled !', settings.EMAIL_HOST_USER, job.asked_by.email
+    subject, from_email, to = 'Care4Care : '+_('a demand you asked for has been canceled')+' !', settings.EMAIL_HOST_USER, job.asked_by.email
     
     htmly = get_template('email_jobcanceled.html')
     text_content = ''
@@ -340,7 +346,7 @@ def send_email_canceled_demand(job):
     msg.send()
 
 def send_email_canceled_offer(job):
-    subject, from_email, to = 'Care4Care : an offer you made has been canceled !', settings.EMAIL_HOST_USER, job.done_by.email
+    subject, from_email, to = 'Care4Care : '+_('an offer you made has been canceled')+' !', settings.EMAIL_HOST_USER, job.done_by.email
     
     htmly = get_template('email_jobcanceled.html')
     text_content = ''
@@ -352,7 +358,7 @@ def send_email_canceled_offer(job):
     msg.send()
     
 def send_email_delete_offer(job):
-    subject, from_email, to = 'Care4Care : an offer you accepted has been deleted !', settings.EMAIL_HOST_USER, job.asked_by.email
+    subject, from_email, to = 'Care4Care : '+_('an offer you accepted has been deleted')+' !', settings.EMAIL_HOST_USER, job.asked_by.email
     
     htmly = get_template('email_jobdeleted.html')
     text_content = ''
@@ -364,7 +370,7 @@ def send_email_delete_offer(job):
     msg.send()
     
 def send_email_delete_demand(job):
-    subject, from_email, to = 'Care4Care : a demand you accepted has been deleted !', settings.EMAIL_HOST_USER, job.done_by.email
+    subject, from_email, to = 'Care4Care : ' + _('a demand you accepted has been deleted')+' !', settings.EMAIL_HOST_USER, job.done_by.email
     
     htmly = get_template('email_jobdeleted.html')
     text_content = ''
@@ -376,7 +382,7 @@ def send_email_delete_demand(job):
     msg.send()
     
 def send_email_accepted_offer(job):
-    subject, from_email, to = 'Care4Care : a demand you made has been accepted !', settings.EMAIL_HOST_USER, job.done_by.email
+    subject, from_email, to = 'Care4Care : '+_('a demand you made has been accepted')+' !', settings.EMAIL_HOST_USER, job.done_by.email
     
     htmly = get_template('email_jobaccepted.html')
     text_content = ''
@@ -388,7 +394,7 @@ def send_email_accepted_offer(job):
     msg.send()
     
 def send_email_accepted_demand(job):
-    subject, from_email, to = 'Care4Care : an offer you made has been accepted !', settings.EMAIL_HOST_USER, job.asked_by.email
+    subject, from_email, to = 'Care4Care : '+_('an offer you made has been accepted')+' !', settings.EMAIL_HOST_USER, job.asked_by.email
     
     htmly = get_template('email_jobaccepted.html')
     text_content = ''

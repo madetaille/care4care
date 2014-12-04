@@ -16,14 +16,12 @@
         <li>First name: {{ c4cuser.user.first_name }}</li>
         <li>Last name: {{ c4cuser.user.last_name }}</li>
         <li>Email: {{ c4cuser.user.email }}</li>
-        {% if viewer.pk == c4cuser.pk %}
-            <li>Password: ... </li>
-        {% endif %}
     </ul>
 
     {% if viewer.pk == c4cuser.pk %}
         <br/>
         <p>You can <a href={% url 'c4c:user_edit' c4cuser.user.pk %}>edit your user profile</a>.</p>
+        <p>You can also change your <a href={% url 'c4c:chPassword' c4cuser.user.pk %}>password</a>.</p>
     {% endif %}
 
     <h2> C4C details: </h2>
@@ -32,6 +30,17 @@
         <li>Birthday: {{ c4cuser.birthday }}</li>
         <li>Account balance: {{ c4cuser.time_account }}</li>
     </ul>
+
+    <h3>Branches: </h3>
+    {% if not_empty_br %}
+        <ul>
+            {% for branch in branches %}
+                <li>{{ branch }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>This user is not affiliated with any branch.</p>
+    {% endif %}
 
     {% if viewer.pk == c4cuser.pk %}
         <br/>

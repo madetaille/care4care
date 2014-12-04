@@ -1,46 +1,30 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block title %}Care4Care - What is Care 4 Care ?{% endblock %}
+{% block title %}Care4Care - {% trans "What is Care 4 Care" %} ?{% endblock %}
 
 {% block content %}
 
-<h1> What is Care 4 Care ? </h1>
+<h1> {% trans "What is Care 4 Care" %} ? </h1>
 
 <body>
 <p>
-“Het BuurtPensioen”, “Pens(i)onsVoisins”, or in English “Care4Care” is a membership organization where members
-support other members in their local community, and in return build up their own “care pension”.
-For ease of writing we will abbreviate the organization’s name to “BP” in the remainder of this document.
+{% trans "“Het BuurtPensioen”, “Pens(i)onsVoisins”, or in English “Care4Care” is a membership organization where members support other members in their local community, and in return build up their own “care pension”. For ease of writing we will abbreviate the organization’s name to “BP” in the remainder of this document." %}
 </p>
 <p>
-The idea is to provide support for people in need (elderly, handicapped, sick) through a system of exchange:
-the time a member invests in supporting some other person now,
-will be returned to him later in life when that member himself is in need.
+{% trans "The idea is to provide support for people in need (elderly, handicapped, sick) through a system of exchange : the time a member invests in supporting some other person now, will be returned to him later in life when that member himself is in need." %}
 </p>
 <p>
-The time credit gained by helping others is deposited on a kind of savings account.
-The account owner can save these credits for his or her own old age, or can transfer (part of) it
-to the account of another member (for example, out of social considerations), or return it to the organization as a gift
-(so that the organization can distribute it to people in need with insufficient remaining credits)
+{% trans "The time credit gained by helping others is deposited on a kind of savings account. The account owner can save these credits for his or her own old age, or can transfer (part of) it to the account of another member (for example, out of social considerations), or return it to the organization as a gift(so that the organization can distribute it to people in need with insufficient remaining credits)" %}
 </p>
 <p>
-The concept is designed to tackle the growing demand for support and care at home, in the context of Belgium’s
-ageing population and a frightening decrease of government funds for care.
-Professional services are becoming too expensive for many people, and do not provide for what is most demanded:
-friendship, a helping hand, or a chat around a cup of coffee
+{% trans "The concept is designed to tackle the growing demand for support and care at home, in the context of Belgium’s ageing population and a frightening decrease of government funds for care. Professional services are becoming too expensive for many people, and do not provide for what is most demanded : friendship, a helping hand, or a chat around a cup of coffee" %}
 </p>
 <p>
-People are generally very willing to help but are sometimes too shy to offer help.
-And people in need are shy to ask for help. This project wants to link and match demand and offer.
-It also wants to make people aware of the big need for such informal care, and wants to reward,
-value and support the volunteers who take the step to get involved
+{% trans "People are generally very willing to help but are sometimes too shy to offer help. And people in need are shy to ask for help. This project wants to link and match demand and offer. It also wants to make people aware of the big need for such informal care, and wants to reward, value and support the volunteers who take the step to get involved" %}
 </p>
-<p>A pilot of this project has been running since November 2013 in the city of Neder-over-Heembeek and has been a success
-so far. In view of expanding the member community in Neder-over-Heembeek, as well as a possible start-up of other branches
-in or around Brussels, we are currently in need of better tool support for BP’s operational activities.
-Due to this expansion, we will also face more complex security issues than the current approach can handle.
-Moreover, the increasing volume of transactions will also demand more automation of actions that are now still performed
-manually
+<p>
+{% trans "A pilot of this project has been running since November 2013 in the city of Neder-over-Heembeek and has been a success so far. In view of expanding the member community in Neder-over-Heembeek, as well as a possible start-up of other branches in or around Brussels, we are currently in need of better tool support for BP’s operational activities. Due to this expansion, we will also face more complex security issues than the current approach can handle." %}
 </p>
 </body>
 
