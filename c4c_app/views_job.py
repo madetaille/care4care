@@ -3,21 +3,23 @@ from django.core.mail import EmailMultiAlternatives
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, HttpResponseForbidden, HttpResponse
 from django.shortcuts import get_object_or_404, render
-from django.template import Context
+from django.template import Context, RequestContext
 from django.template.loader import get_template
 from django.utils import timezone
 from django.views import generic
 from django.views.generic.edit import CreateView
 from django.views.generic.edit import UpdateView
+from itertools import chain
 import datetime
 
 from c4c import settings
 from c4c_app.models import C4CUser, C4CJob, C4CEvent
 from django.utils import translation
 from django.utils.translation import ugettext as _
+from c4c_app.views_error403 import error403
 
-user_language = 'fr'
-translation.activate(user_language)
+"""user_language = 'fr'
+translation.activate(user_language)"""
 
 class JobCreation(CreateView):
     model = C4CJob
