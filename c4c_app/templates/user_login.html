@@ -1,17 +1,18 @@
 {% extends "base.html" %}
+{% load i18n %}
 
 {% block content %}
 <form id="login_form" method="post" action="{% url 'c4c:login' %}">
-    {% csrf_token %}
-    Username: <input type="text" name="username" value="" size="50" />
-    <br />
-    Password: <input type="password" name="password" value="" size="50" />
-    <br />
+            {% csrf_token %}
+            {% trans "Username" %} : <input type="text" name="username" value="" size="50" />
+            <br />
+            {% trans "Password" %} : <input type="password" name="password" value="" size="50" />
+            <br />
 
-    {% if invalid %}
-        Your email and password are incorrect
-    {% endif %}
+            {% if invalid %}
+            {% trans "Your email and password are incorrect." %}
+            {% endif %}
 
-    <input type="submit" value="submit" />
-</form>
+        <input type="submit" value={% trans "submit" %} />
+        </form>
 {% endblock %}

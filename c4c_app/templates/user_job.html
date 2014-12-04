@@ -1,11 +1,12 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block title %}Care4Care - User jobs{% endblock %}
+{% block title %}Care4Care - {% trans "User jobs" %}{% endblock %}
 {% block content %}
 	{% if user_job_list %}
 	    {% for kind in user_job_list %}
 			{% if forloop.counter == 1%}
-				<h3 class="text-center">Ongoing</h3>
+            <h3 class="text-center">{% trans "Ongoing" %}</h3>
 				{% for job in kind %}
 				<div class="panel panel-default" onclick="location.href='{% url 'c4c:job_detail' job.id %}'">
 					<div class="panel-heading">
@@ -16,12 +17,12 @@
 						<div class="pull-right">{{job.created_by}}</div>
 						<div class="text-center"><b>{{job.start_date}}</b></div>
 						{{job.description}}<br/>
-						<button type="button" class="btn btn-primary pull-right" onclick="location.href='{% url 'c4c:job_detail' job.id %}'">More Infos</button> 
+                        <button type="button" class="btn btn-primary pull-right" onclick="location.href='{% url 'c4c:job_detail' job.id %}'">{% trans "More Infos" %}</button>
 					</div>
 				</div>
 				{% endfor %}
 			{% elif forloop.counter == 2%}
-				<h3 class="text-center">Outdated</h3>
+            <h3 class="text-center">{% trans "Outdated" %}</h3>
 				{% for job in kind %}
 				<div class="panel panel-default" onclick="location.href='{% url 'c4c:job_detail' job.id %}'">
 					<div class="panel-heading">
@@ -32,12 +33,12 @@
 						<div class="pull-right">{{job.created_by}}</div>
 						<div class="text-center"><b>{{job.start_date}}</b></div>
 						{{job.description}}<br/>
-						<button type="button" class="btn btn-primary pull-right" onclick="location.href='{% url 'c4c:job_detail' job.id %}'">More Infos</button> 
+                        <button type="button" class="btn btn-primary pull-right" onclick="location.href='{% url 'c4c:job_detail' job.id %}'">{% trans "More Infos" %}</button>
 					</div>
 				</div>
 				{% endfor %}
 			{% elif forloop.counter == 3 %}
-				<h3 class="text-center">My Demands</h3>
+            <h3 class="text-center">{% trans "My Demands" %}</h3>
 				{% for job in kind %}
 				<div class="panel panel-default" onclick="location.href='{% url 'c4c:job_detail' job.id %}'">
 					<div class="panel-heading">
@@ -48,12 +49,12 @@
 						<div class="pull-right">{{job.asked_by}}</div>
 						<div class="text-center"><b>{{job.start_date}}</b></div>
 						{{job.description}}<br/>
-						<button type="button" class="btn btn-primary pull-right" onclick="location.href='{% url 'c4c:job_detail' job.id %}'">More Infos</button> 
+                        <button type="button" class="btn btn-primary pull-right" onclick="location.href='{% url 'c4c:job_detail' job.id %}'">{% trans "More Infos" %}</button>
 					</div>
 				</div>
 	        {% endfor %}
 			{% elif forloop.counter == 4 %}
-				<h3 class="text-center">My Offers</h3>
+            <h3 class="text-center">{% trans "My Offers" %}</h3>
 				{% for job in kind %}
 				<div class="panel panel-default" onclick="location.href='{% url 'c4c:job_detail' job.id %}'">
 					<div class="panel-heading">
@@ -64,12 +65,12 @@
 						<div class="pull-right">{{job.done_by}}</div>
 						<div class="text-center"><b>{{job.start_date}}</b></div>
 						{{job.description}}<br/>
-						<button type="button" class="btn btn-primary pull-right" onclick="location.href='{% url 'c4c:job_detail' job.id %}'">More Infos</button> 
+                        <button type="button" class="btn btn-primary pull-right" onclick="location.href='{% url 'c4c:job_detail' job.id %}'">{% trans "More Infos" %}</button>
 					</div>
 				</div>
 				{% endfor %}
 			{% elif forloop.counter == 5 %}
-				<h3 class="text-center">Created jobs</h3>
+            <h3 class="text-center">{% trans "Created jobs" %}</h3>
 				{% for job in kind %}
 				<div class="panel panel-default" onclick="location.href='{% url 'c4c:job_detail' job.id %}'">
 					<div class="panel-heading">
@@ -80,7 +81,7 @@
 						<div class="pull-right">{{job.created_by}}</div>
 						<div class="text-center"><b>{{job.start_date}}</b></div>
 						{{job.description}}<br/>
-						<button type="button" class="btn btn-primary pull-right" onclick="location.href='{% url 'c4c:job_detail' job.id %}'">More Infos</button> 
+                        <button type="button" class="btn btn-primary pull-right" onclick="location.href='{% url 'c4c:job_detail' job.id %}'"> {% trans "More Infos" %}</button>
 					</div>
 				</div>
 				{% endfor %}
