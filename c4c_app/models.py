@@ -131,7 +131,10 @@ class C4CBranch(models.Model):
     def get_users(self):
         """ Returns a queryset that will list all users contained in this branch """
         return User.objects.filter(groups__in=(self.group, self.officers_group))
-
+    
+    def get_admins(self):
+        """ Returns a queryset that will list all admin users contained in this branch """
+        return User.objects.filter(groups__in=(self.officers_group,))
 
 class C4CEvent(models.Model):
 
