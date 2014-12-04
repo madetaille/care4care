@@ -39,7 +39,7 @@
 		<form action="{% url 'c4c:done_job' c4cjob.id %}" method="post">
 		{% csrf_token %}
 		<input type="number" name="Duration" />
-        <button type="submit" class="btn btn-primary">{% trans "Done" %}</button>
+        <button id="done" type="submit" class="btn btn-primary">{% trans "Done" %}</button>
 		</form>
 
 	{% elif c4cjob.complete == False and c4cjob.asked_by.pk == member.pk and c4cjob.end_date != None %}
