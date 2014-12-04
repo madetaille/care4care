@@ -1,24 +1,26 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block title %}Care4Care{% endblock %}
+{% block title %}Care4Care - {{ member.user.first_name }} {{ member.user.last_name }}{% trans "'s Agenda"%}{% endblock %}
 
 {% block content %}
-	<h4>My Event</h4>
-	<form action="{% url 'c4c:day' user.pk year month day %}" method="POST"> {% csrf_token %}
-	
-	{{ entries.management_form }}
-	
-	{% for entry in entries.forms %}
-	    {{ entry.id }}
-	    <div class="entry">
-	        <div class="del">Delete {{ entry.DELETE }}</a></div>
-	        <div id="inp1">
-	            <p>Title: {{ entry.name }}</p>
-	            <p>Job: {{ entry.job }}</p>
-	        </div>
-	        {{ entry.description }}
-	    </div>
-	{% endfor %}
-	
-	<input type="submit" value="Save" /> </form>
+    <h2>{{ member.user.first_name }} {{ member.user.last_name }}{% trans "'s Agenda"%}</h2>
+    <h3>{{ day_name }} {{ day }} {{ month_name }} {{ year }}</h3>
+    <a href="{% url 'c4c:month' member.pk year month %}">{% trans "Return to calendar"%}</a>
+	<table class="table table-bordered table-hover">
+        <tr>
+            <th>{% trans "Date"%}</th>
+            <th>{% trans "Name"%}</th>
+        </tr>
+        {% if entries|length == 0 %}
+            <tr><td colspan="2">{% trans "There is not any event on this day"%}</td></tr>
+        {% else %}
+	        {% for entry in entries %}
+	            <tr>
+	                 <td><a href="{% url 'c4c:event' entry.pk %}">{{ entry.date }}</a></td>
+	                 <td><a href="{% url 'c4c:event' entry.pk %}">{{ entry.name }}</a></td>
+	             </tr>
+	        {% endfor %}
+	    {% endif %}
+    </table>
 {% endblock content %}

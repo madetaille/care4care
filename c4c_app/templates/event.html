@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}Care4Care - {{ event.user.first_name }} {{ event.user.last_name }}{% trans "'s Agenda"%}{% endblock %}
+
+{% block content %}
+    <h2>{{ event.user.first_name }} {{ event.user.last_name }}{% trans "'s Agenda"%}</h2>
+    <h3>{{ event.name }}</h3>
+    <a href="{% url 'c4c:month' event.user.pk event.date.year event.date.month %}">{% trans "Return to calendar"%}</a>
+    
+    <table class="table table-bordered">
+        <tr>
+            <th>{% trans "Date"%}</th>
+            <th>{% trans "Job linked"%}</th>
+        </tr>
+        <tr>
+            <td>{{ event.date }}</td>
+            <td>{{ event.job }}</td>
+        </tr>
+        <tr>
+            <th colspan="2">{% trans "Description"%}</th>
+        </tr>
+        <tr>
+            <td colspan="2">{{ event.description }}</td>
+        </tr>
+    </table>
+    
+    {% if event.user.pk == user.pk %}
+        <a class="btn btn-primary" href="{% url 'c4c:editevent' event.pk %}">{% trans "Edit"%}</a>
+    {% endif %}
+{% endblock content %}
