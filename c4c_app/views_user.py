@@ -8,7 +8,7 @@ from django.contrib.auth.models import User
 from django.forms.fields import DateField
 from django.contrib.admin import widgets
 from django import forms
-from django.contrib.auth.hashers import make_password
+from django.contrib.auth import authenticate, login
 
 from c4c_app.models import C4CUser
 
@@ -58,6 +58,42 @@ class C4CUserEdit(generic.edit.UpdateView):
         self.object = form.save(commit=False)
         self.object.save()
         return HttpResponseRedirect(reverse('c4c:user_detail', args=(self.object.pk,)))
+
+class PasswordForm(forms.Form):
+    pass1 = forms.CharField(label='Password', max_length=10,widget=forms.PasswordInput)
+    pass2 = forms.CharField(label='Confirm Password', max_length=10,widget=forms.PasswordInput)
+
+    def clean(self):
+        cleaned_data = super(PasswordForm,self).clean()
+        password = cleaned_data.get('pass1')
+        cpassword = cleaned_data.get('pass2')
+
+        if password != cpassword:
+            raise forms.ValidationError('The two typed passwords are different.')
+
+def chPassword(request,pk):
+    template_name = 'change_password.html'
+    # if this is a POST request we need to process the form data
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form = PasswordForm(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+
+            username = str(request.user.username)
+            formpass = form.cleaned_data['pass1']
+            request.user.set_password(formpass)
+            request.user.save()
+
+            user = authenticate(username=username,password=formpass)
+            login(request,user)
+            return HttpResponseRedirect(reverse('c4c:user_detail', args=(user.pk,)))
+
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        form = PasswordForm()
+
+    return render(request, template_name, {'form': form.as_p(), 'ownerpk': int(pk), 'viewerpk': request.user.pk})
 
 class PersonalNetwork(generic.ListView):
     template_name = 'network.html'

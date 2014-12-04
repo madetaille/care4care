@@ -30,6 +30,7 @@ urlpatterns = patterns('',
     url(r'^userdetail/(?P<pk>\d+)/$', views.UserDetail.as_view(), name='user_detail'),
     url(r'^useredit/(?P<pk>\d+)/$', views.UserEdit.as_view(), name='user_edit'),
     url(r'^c4cedit/(?P<pk>\d+)/$', views.C4CUserEdit.as_view(), name='c4cuser_edit'),
+    url(r'^chpassword/(?P<pk>\d+)/$', views.chPassword, name='chPassword'),
     url(r'^network/$', views.PersonalNetwork.as_view(), name='network'),
     url(r'^(?P<c4cuser_pk>\d+)/addnetwork', views.addNetwork, name='add_network'),
     url(r'^registration/$', views.view_registration, name='registration'),
@@ -58,8 +59,8 @@ urlpatterns = patterns('',
     #What is Care 4 Care ?
     url(r'^whatisc4c/$', views.whatisc4c, name = 'whatisc4c'),
     url(r'^aboutus/$', views.aboutus, name = 'aboutus')
-    
-    
+
+
 
 
 )
