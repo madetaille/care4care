@@ -1,11 +1,21 @@
 {% extends 'base.html' %}
 
 {% block content %}
+        <div class="navbar navbar-primary" >
+             <div class="navbar-inner" style="text-align:center">
+                <h1> Your history</h1>
+            </div>
+        </div>
+        <div style="text-align:center">
+        <button type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:donation_creation' %}'">Make a donation</button>
+        <button type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:job_creation' %}'">Ask fo help</button>
+        <button type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:user_jobs' %}'">Job offer</button>
+        </div>
     {% if history %}
         {% for objectBlock in history %}
             {% if forloop.counter == 1 %}
                 {% if objectBlock %}
-                <h3> Donation received </h3>
+                <h3 style="text-align:center"> Donation received </h3>
             <table class="table table-hover" >
                     <tr>
                         <th>Date</th>
@@ -18,7 +28,7 @@
                         <td>{{ object.date }}</td>
                         <td>{{ object.message }}</td>
                         <td>{{ object.amount}}</td>
-                        <td><a href="{% url 'c4c:donation_detail' object.id %}"> details </a></td>
+                        <td><button type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:donation_detail' object.id %}'">Details</button></td>
                      </tr>
                 {% endfor %}
             </table>
@@ -27,7 +37,7 @@
                 {% endif %}
             {% elif forloop.counter == 2 %}
                 {% if objectBlock %}
-                <h3> Donation made </h3>
+                <h3 style="text-align:center" > Donation made </h3>
                <table class="table table-hover" >
                     <tr>
                         <th>Date</th>
@@ -40,7 +50,7 @@
                         <td>{{ object.date }}</td>
                         <td>{{ object.message }}</td>
                         <td>{{ object.amount}}</td>
-                        <td><a href="{% url 'c4c:donation_detail' object.id %}"> details </a></td>
+                        <td><button type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:donation_detail' object.id %}'">Details</button></td>
                      </tr>
                 {% endfor %}
             </table>
@@ -49,7 +59,7 @@
                 {% endif %}
             {% elif forloop.counter == 3 %}
                 {% if objectBlock %}
-                <h3> Job you asked for </h3>
+                <h3 style="text-align:center" > Job you asked for </h3>
                 <table class="table table-hover" >
                      <tr>
                         <th>title</th>
@@ -70,7 +80,7 @@
                          {% else %}
                         <td>YES</td>
                          {% endif %}
-                         <td><a href="{% url 'c4c:job_detail' object.id %}"> details </a></td>
+                         <td><button type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:job_detail' object.id %}'">Details</button></td>
                      </tr>
                {% endfor %}
                </table>
@@ -79,7 +89,7 @@
                 {% endif %}
             {% elif forloop.counter == 4 %}
                 {% if objectBlock %}
-                <h3> Job you have done </h3>
+                <h3 style="text-align:center" > Job you have done </h3>
                <table class="table table-hover" >
                      <tr>
                         <th>title</th>
@@ -100,7 +110,7 @@
                          {% else %}
                         <td>YES</td>
                          {% endif %}
-                         <th><a href="{% url 'c4c:job_detail' object.id %}"> details </a></th>
+                         <th><button type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:job_detail' object.id %}'">Details</button></th>
                      </tr>
                {% endfor %}
                </table>
