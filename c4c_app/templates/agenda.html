@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 
-{% block title %}Care4Care - Agenda{% endblock %}
+{% block title %}Care4Care - {% trans "Agenda"%}{% endblock %}
 
 {% block content %}
-	<a href="{% url 'c4c:agenda' user.pk year|add:'-1' %}">&lt;&lt; Prev</a>
-	<a href="{% url 'c4c:agenda' user.pk year|add:'1' %}">Next &gt;&gt;</a>
+	<a href="{% url 'c4c:agenda' user.pk year|add:'-1' %}">&lt;&lt; {% trans "Prev"%}</a>
+	<a href="{% url 'c4c:agenda' user.pk year|add:'1' %}">{% trans "Next"%} &gt;&gt;</a>
 	
 	{% for year, months in years %}
 		<div class="clear"></div>
