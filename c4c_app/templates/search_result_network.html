@@ -17,7 +17,7 @@
 	                                 <tr>
 	                                     <td>{% display_username object %}</td>
 	                                     <th><a class="btn btn-primary" href="{% url 'c4c:user_detail' object.id %}">{% trans "Details"%}</a></th>
-	                                     <th><a class="btn btn-primary" href="{% url 'c4c:add_user_to_network' object.id %}">{% trans "Add to Personal Network"%}</a></th>
+	                                     <th><a id="add_net" class="btn btn-primary" href="{% url 'c4c:add_user_to_network' object.id %}">{% trans "Add to Personal Network"%}</a></th>
 	                                 </tr>
 	                           {% endfor %}
                         </table>

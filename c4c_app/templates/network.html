@@ -20,9 +20,9 @@
 <h3>{% trans "Add a new user to Personal Network"%}</h3>
 <form action="{% url 'c4c:search_network' %}"  role="search" method="get">
                         <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Search User" name="search">
+                            <input id="id_search" type="text" class="form-control" placeholder="Search User" name="search">
                          </div>
-                         <button type="submit" class="btn btn-primary">{% trans "Search" %}</button>
+                         <button id="search_submit" type="submit" class="btn btn-primary">{% trans "Search" %}</button>
                     </form>
 {% endblock content %}
 
