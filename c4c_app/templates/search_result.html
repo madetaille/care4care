@@ -2,10 +2,11 @@
 {% load i18n %}
         {% block content %}
 
-
-        {% if result %}
-            {% for objectBlock in result %}
-                <p>You searched for: <strong>{{ word  }}</strong></p>
+    {% if result %}
+        {% for objectBlock in result %}
+            {% if forloop.counter == 1 %}
+                {% if objectBlock %}
+            <h3> Matches for Job</h3>
                 <table class="table table-hover" >
                      <tr>
                          <th>{% trans "title"%}</th>
@@ -28,9 +29,29 @@
                      </tr>
                {% endfor %}
                </table>
-            {% endfor %}
+               {% endif %}
+        {% elif forloop.counter == 2 %}
+            {% if objectBlock %}
+        <h3> Matches for user</h3>
+            <table class="table table-hover" >
+                     <tr>
+                         <th>{% trans "name"%}</th>
+                         <th>{% trans "last name"%}</th>
+                         <th>{% trans "more details"%}</th>
+                     </tr>
+               {% for object in objectBlock %}
+                     <tr>
+                        <td>{{ object.first_name }}</td>
+                        <td>{{ object.last_name }}</td>
+                         <th><button type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:user_detail' object.id %}'">{% trans "Details"%}</button></th>
+                     </tr>
+               {% endfor %}
+               </table>
+        {% endif %}
+        {% endif %}
+        {% endfor %}
         {% else %}
-            <p>You searched for: <strong> Nothing</strong>.</p>
+            <p>Your search didn't match any user or Job</p>
         {% endif %}
 
         {% endblock content %}
