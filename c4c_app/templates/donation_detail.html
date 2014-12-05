@@ -1,16 +1,16 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% load display_username %}
+
 {% block title %}Care4Care - {% trans "Donation detail" %} {% endblock %}
 
 {% block content %}
 
-<a class="btn btn-default btn-block" href="{% url 'c4c:donation_creation' %}"> {% trans "New Donation"%} </a>
-
-<h1> {% trans "Donation Detail"%} </h1>
+<h2>{% trans "Donation Detail"%}</h2>
 
 <ul>
-    <li> {% trans "sender"%} : {{ c4cdonation.sender }}</li>
-    <li> {% trans "receiver"%} : {{ c4cdonation.receiver }}</li>
+    <li> {% trans "sender"%} : {% display_username c4cdonation.sender %}</li>
+    <li> {% trans "receiver"%} : {% display_username c4cdonation.receiver %}</li>
     <li> {% trans "Transfert date"%} : {{ c4cdonation.date }}</li>
     <li> {% trans "Amount"%} : {{ c4cdonation.amount }}</li>
     <li> {% trans "Message"%} : {{ c4cdonation.message }}</li>

@@ -1,13 +1,14 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% load display_username %}
 
-{% block title %}{% if viewer.pk == c4cuser.pk %} Care4Care - {% trans "My profile"%} {% else %} Care4Care - {{ c4cuser.user.username }}{% trans "'s profile"%} {% endif %}{% endblock %}
+{% block title %}{% if viewer.pk == c4cuser.pk %} Care4Care - {% trans "My profile"%} {% else %} Care4Care - {{ c4cuser.user.first_name }} {{ c4cuser.user.last_name }}{% trans "'s profile"%} {% endif %}{% endblock %}
 
 {% block content %}
     {% if viewer.pk == c4cuser.pk %}
         <h2>{% trans "My profile" %}</h2>
     {% else %}
-        <h2>{{ c4cuser.user.username }}{% trans "'s profile" %}</h2>
+        <h2>{% display_username c4cuser.user %}{% trans "'s profile" %}</h2>
     {% endif %}
     <br/>
 
@@ -17,7 +18,7 @@
                 <img style="max-width: 200px; max-height:200px;" src="{%if user.c4cuser.avatar %}/media/{{ user.c4cuser.avatar.url }}{%else%}{{ STATIC_URL }}img/unknown_user.png{%endif%}" alt="Profile photo">
             </a>
             <div class="media-body">
-                <h4 class="media-heading">{{ c4cuser.user.first_name }} {{ c4cuser.user.last_name }}</h4>
+                <h4 class="media-heading">{% display_username c4cuser.user %}</h4>
                 {% if viewer.pk == c4cuser.pk %}
                     {% trans "Username: " %} {{ c4cuser.user.username }}<br/>
                     {% trans "Account balance: "%} {{ c4cuser.time_account }}<br/>

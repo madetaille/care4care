@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% load display_username %}
 
 {% block title %}Care4Care - {% trans "Job detail" %}{% endblock %}
 
@@ -20,8 +21,8 @@
            <th>{% trans "Done by"%}</th>
        </tr>
        <tr>
-           <td>{%if c4cjob.asked_by != None %}{{ c4cjob.asked_by }}{%else%}Nobody (yet){%endif%}</td>
-           <td>{%if c4cjob.done_by != None %}{{ c4cjob.done_by }}{%else%}Nobody (yet){%endif%}</td>
+           <td>{%if c4cjob.asked_by != None %}{% display_username c4cjob.asked_by %}{%else%}Nobody (yet){%endif%}</td>
+           <td>{%if c4cjob.done_by != None %}{% display_username c4cjob.done_by %}{%else%}Nobody (yet){%endif%}</td>
        </tr>
        <tr>
            <th>Time credit {%if not c4cjob.complete %}estimated{% endif %}</th>

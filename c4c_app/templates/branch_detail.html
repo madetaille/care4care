@@ -1,17 +1,18 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% load display_username %}
 
 {% block title %}Care4Care - {% trans "Branch detail"%}{% endblock %}
 
 {% block content %}
     <h2>{{ c4cbranch.name }} {% trans "details" %}</h2>
     <p>{% trans "Address" %}: {{ c4cbranch.address }}</p>
-    <p>{% trans "Main user" %}: <a href="{% url "c4c:user_detail" c4cbranch.main_user.pk %}">{{ c4cbranch.main_user.first_name }} {{ c4cbranch.main_user.last_name }}</a></p>
+    <p>{% trans "Main user" %}: <a href="{% url "c4c:user_detail" c4cbranch.main_user.pk %}">{% display_username c4cbranch.main_user %}</a></p>
 
     <h3>{% trans "List of branch administrators" %}</h3>
     <ul>
         {% for user in c4cbranch.get_admins %}
-        <li><a href="{% url "c4c:user_detail" user.pk %}">{{ user.first_name }} {{ user.last_name }}</a></li>
+        <li><a href="{% url "c4c:user_detail" user.pk %}">{% display_username user %}</a></li>
         {% empty %}
         <li>{% trans "There are no users in this branch." %}</li>
         {% endfor %}

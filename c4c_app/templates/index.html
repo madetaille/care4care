@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% load display_username %}
 
 {% block title %}Care4Care{% endblock %}
 
@@ -12,7 +13,7 @@
 	            </a>
 	            
 	            <div class="media-body">
-	                <h4 class="media-heading">{% trans "Welcome"%}, {{ user.first_name }}!</h4>
+	                <h4 class="media-heading">{% trans "Welcome"%}, {% display_username user %}!</h4>
 	                Your time account: {{ user.c4cuser.time_account }} minutes
 				</div>
 			</div>
@@ -40,7 +41,7 @@
 						</div>
 						<div class="panel-body">
 							<div class="pull-left">{% if job.offer %}Offer{%else%}Demand{%endif%}</div>
-							<div class="pull-right">{{job.asked_by}}</div>
+							<div class="pull-right">{% display_username job.asked_by %}</div>
 							<div class="text-center"><b>{{job.start_date}}</b></div>
 							{{job.description}}<br/>
 	                        <a type="button" class="btn btn-primary pull-right" href="{% url 'c4c:job_detail' job.id %}">{% trans "More Infos"%}</a>
@@ -58,7 +59,7 @@
 						</div>
 						<div class="panel-body">
 							<div class="pull-left">{% if job.offer %}Offer{%else%}Demand{%endif%}</div>
-							<div class="pull-right">{{job.done_by}}</div>
+							<div class="pull-right">{% display_username job.done_by %}</div>
 							<div class="text-center"><b>{{job.start_date}}</b></div>
 							{{job.description}}<br/>
 	                        <a type="button" class="btn btn-primary pull-right" href="{% url 'c4c:job_detail' job.id %}">{% trans "More Infos"%}</a>

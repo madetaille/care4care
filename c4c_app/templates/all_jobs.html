@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% load display_username %}
 
 {% block title %}Care4Care - {% trans "Jobs"%}{% endblock %}
 {% block content %}
@@ -20,7 +21,7 @@
                         </div>
                         <div class="panel-body">
                             <div class="pull-left">{% if job.offer %}Offer{%else%}Demand{%endif%}</div>
-                            <div class="pull-right">{{job.asked_by}}</div>
+                            <div class="pull-right">{% display_username job.asked_by %}</div>
                             <div class="text-center"><b>{{job.start_date}}</b></div>
                             {{job.description}}<br/>
                             <a type="button" class="btn btn-primary pull-right" href="{% url 'c4c:job_detail' job.id %}">More Infos</a>
@@ -38,7 +39,7 @@
                         </div>
                         <div class="panel-body">
                             <div class="pull-left">{% if job.offer %}Offer{%else%}Demand{%endif%}</div>
-                            <div class="pull-right">{{job.done_by}}</div>
+                            <div class="pull-right">{% display_username job.done_by %}</div>
                             <div class="text-center"><b>{{job.start_date}}</b></div>
                             {{job.description}}<br/>
                             <a type="button" class="btn btn-primary pull-right" href="{% url 'c4c:job_detail' job.id %}">More Infos</a>
