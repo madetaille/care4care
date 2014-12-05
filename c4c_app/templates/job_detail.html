@@ -30,41 +30,41 @@
 	
 {% if user.is_authenticated %}		
 	{% if c4cjob.done_by == None and c4cjob.asked_by.pk != member.pk %}
-<button type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:accept_job' c4cjob.id %}'">{% trans "Accept" %}</button>
+<button id="accept" type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:accept_job' c4cjob.id %}'">{% trans "Accept" %}</button>
 
 	{% elif c4cjob.asked_by == None and c4cjob.done_by.pk != member.pk %}
-<button type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:accept_job' c4cjob.id %}'">{% trans "Accept" %}</button>
+<button id="accept" type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:accept_job' c4cjob.id %}'">{% trans "Accept" %}</button>
 
 	{% elif c4cjob.end_date == None and c4cjob.done_by.pk == member.pk and c4cjob.done_by != None and c4cjob.asked_by != None %}
 		<form action="{% url 'c4c:done_job' c4cjob.id %}" method="post">
 		{% csrf_token %}
 		<input type="number" name="Duration" />
-        <button type="submit" class="btn btn-primary">{% trans "Done" %}</button>
+        <button id="done" type="submit" class="btn btn-primary">{% trans "Done" %}</button>
 		</form>
 
 	{% elif c4cjob.complete == False and c4cjob.asked_by.pk == member.pk and c4cjob.end_date != None %}
-<button type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:confirm_job' c4cjob.id %}'">{% trans "Confirm" %}</button>
-<button type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:report_job' c4cjob.id %}'">{% trans "Report" %}</button>
+<button id="confirm" type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:confirm_job' c4cjob.id %}'">{% trans "Confirm" %}</button>
+<button id="report" type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:report_job' c4cjob.id %}'">{% trans "Report" %}</button>
 		</form>
 	{% endif %}
 	
 	{% if c4cjob.end_date == None and c4cjob.done_by != None and c4cjob.asked_by != None %}
 		{% if c4cjob.offer == True and c4cjob.asked_by.pk == member.pk  %}
-<button type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:cancel_job' c4cjob.id %}'">{% trans "Cancel" %}</button>
+<button id="cancel" type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:cancel_job' c4cjob.id %}'">{% trans "Cancel" %}</button>
 
 		{% elif c4cjob.offer == False and c4cjob.done_by.pk == member.pk %}
-<button type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:cancel_job' c4cjob.id %}'">{% trans "Cancel" %}</button>
+<button id="cancel" type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:cancel_job' c4cjob.id %}'">{% trans "Cancel" %}</button>
 		{% endif %}
 	{% endif %}
 	
 	{% if c4cjob.complete == False and c4cjob.end_date == None %}
 		{% if c4cjob.offer == True and c4cjob.done_by.pk == member.pk  %}
-<button type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:delete_job' c4cjob.id %}'">{% trans "Delete" %}</button>
-<button type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:job_update' c4cjob.pk %}'">{% trans "Update" %}</button>
+<button id="delete" type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:delete_job' c4cjob.id %}'">{% trans "Delete" %}</button>
+<button id="update" type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:job_update' c4cjob.pk %}'">{% trans "Update" %}</button>
 
 		{% elif c4cjob.offer == False and c4cjob.asked_by.pk == member.pk %}
-<button type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:delete_job' c4cjob.id %}'">{% trans "Delete" %}</button>
-<button type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:job_update' c4cjob.pk %}'">{% trans "Update" %}</button>
+<button id="delete" type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:delete_job' c4cjob.id %}'">{% trans "Delete" %}</button>
+<button id="update" type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:job_update' c4cjob.pk %}'">{% trans "Update" %}</button>
 		{% endif %}
 	{% endif %}
 {% endif %}

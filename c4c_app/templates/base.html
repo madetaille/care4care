@@ -72,7 +72,7 @@
                         <li role="presentation"><a href="{% url 'c4c:all_news_list' %}"> {% trans "News"%} </a></li>
                         <li role="presentation"><a href="{% url 'c4c:whatisc4c' %}">{% trans "What is Care4Care?"%}</a></li>
                         <li role="presentation"><a href="{% url 'c4c:aboutus' %}">{% trans "About us"%}</a></li>
-                        <li role="presentation"><a href="#">Help</a></li>
+                        <li role="presentation"><a data-toggle="tooltip" data-placement="right" title="{% block help %}This is a test message.{% endblock help %}" container="body">{% trans "Help" %}</a></li>
                     </ul>
                 </div>
                 <div class="col-sm-9">
@@ -89,6 +89,11 @@
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
         <script src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
+        <script type="text/javascript">
+            $(function () {
+              $('[data-toggle="tooltip"]').tooltip()
+            })
+        </script>
         {% block add_script_footer %}
         {% endblock add_script_footer %}
     </body>

@@ -2,10 +2,11 @@ from django.shortcuts import get_object_or_404, render
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.core.urlresolvers import reverse
+from django.core.exceptions import ObjectDoesNotExist
 from django.views import generic
 from django.utils import timezone
 from django.contrib.auth.models import User
-from django.forms.fields import DateField
+from django.forms.fields import DateField, EmailField
 from django.contrib.admin import widgets
 from django import forms
 from django.contrib.auth import authenticate, login
@@ -14,6 +15,11 @@ from django.utils import translation
 from django.utils.translation import ugettext as _
 
 from c4c_app.models import C4CUser
+from c4c_app.views_error403 import error403
+from django.shortcuts import get_object_or_404
+from c4c import settings
+from django.template.loader import get_template
+from django.core.mail import EmailMultiAlternatives
 
 class UserDetail(generic.DetailView):
     model = C4CUser
@@ -35,13 +41,27 @@ class UserEdit(generic.edit.UpdateView):
     model = User
     fields = ['username','first_name','last_name','email']
 
-    def get_context_data(self, **kwargs):
-        # Call the base implementation first to get a context
-        context = super(UserEdit, self).get_context_data(**kwargs)
+    def post(self, request, **kwargs):
+        ret = super(UserEdit, self).post(request, **kwargs)
+        ownerpk = int(self.kwargs.get('pk'))
         viewer = get_object_or_404(User, pk=self.request.user.pk)
-        context['viewerpk'] = viewer.pk
-        context['ownerpk'] = int(self.kwargs.get('pk'))
-        return context
+        viewerpk = viewer.pk
+
+        if viewerpk != ownerpk:
+            return error403(self.request)
+        else:
+            return ret
+
+    def get(self, request, **kwargs):
+        ret = super(UserEdit, self).get(request, **kwargs)
+        ownerpk = int(self.kwargs.get('pk'))
+        viewer = get_object_or_404(User, pk=self.request.user.pk)
+        viewerpk = viewer.pk
+
+        if viewerpk != ownerpk:
+            return error403(self.request)
+        else:
+            return ret
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
@@ -53,14 +73,27 @@ class C4CUserEdit(generic.edit.UpdateView):
     model = C4CUser
     fields = ['address','birthday']
 
-    def get_context_data(self, **kwargs):
-        context = super(C4CUserEdit, self).get_context_data(**kwargs)
-        viewer = get_object_or_404(C4CUser, user=self.request.user)
-        context['viewerpk'] = viewer.user.pk
-        context['ownerpk'] = int(self.kwargs.get('pk'))
+    def post(self, request, **kwargs):
+        ret = super(C4CUserEdit, self).post(request, **kwargs)
+        ownerpk = int(self.kwargs.get('pk'))
+        viewer = get_object_or_404(User, pk=self.request.user.pk)
+        viewerpk = viewer.pk
 
-        # branches
-        return context
+        if viewerpk != ownerpk:
+            return error403(self.request)
+        else:
+            return ret
+
+    def get(self, request, **kwargs):
+        ret = super(C4CUserEdit, self).get(request, **kwargs)
+        ownerpk = int(self.kwargs.get('pk'))
+        viewer = get_object_or_404(User, pk=self.request.user.pk)
+        viewerpk = viewer.pk
+
+        if viewerpk != ownerpk:
+            return error403(self.request)
+        else:
+            return ret
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
@@ -81,11 +114,13 @@ class PasswordForm(forms.Form):
 
 def chPassword(request,pk):
     template_name = 'change_password.html'
-    # if this is a POST request we need to process the form data
+
+    # check access permission
+    if int(pk) != request.user.pk:
+        return error403(request)
+
     if request.method == 'POST':
-        # create a form instance and populate it with data from the request:
         form = PasswordForm(request.POST)
-        # check whether it's valid:
         if form.is_valid():
 
             username = str(request.user.username)
@@ -96,12 +131,59 @@ def chPassword(request,pk):
             user = authenticate(username=username,password=formpass)
             login(request,user)
             return HttpResponseRedirect(reverse('c4c:user_detail', args=(user.pk,)))
-
-    # if a GET (or any other method) we'll create a blank form
     else:
         form = PasswordForm()
 
-    return render(request, template_name, {'form': form.as_p(), 'ownerpk': int(pk), 'viewerpk': request.user.pk})
+    return render(request, template_name, {'form': form.as_p()})
+
+class ResetPassForm(forms.Form):
+    email = EmailField(label=_('Email'), max_length=50)
+
+    def clean(self):
+        cleaned_data = super(ResetPassForm,self).clean()
+        mailaddr = cleaned_data.get('email')
+
+        try:
+            user = User.objects.get(email=mailaddr)
+        except ObjectDoesNotExist:
+            raise forms.ValidationError(_('There is no account with this email address.'))
+
+def resetpassword(request):
+    template_name = 'resetpassword.html'
+
+    # check access permission
+    if request.user.is_authenticated():
+        return error403(request)
+
+    if request.method == 'POST':
+        form = ResetPassForm(request.POST)
+
+
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            password = User.objects.make_random_password()
+            user = get_object_or_404(User, email=email)
+            user.set_password(password)
+            user.save()
+            
+            user_email = get_object_or_404(C4CUser, user = request.user)
+            subject = 'Reset of your password !'
+            from_email, to = settings.EMAIL_HOST_USER, user_email.user.email
+    
+            htmly = get_template('email_reset_password.html')
+
+            d = Context({'password' : password, 'user_email' : user_email})
+            html_content = htmly.render(d)
+            msg = EmailMultiAlternatives(subject, '', from_email, [to])
+            msg.attach_alternative(html_content, "text/html")
+            msg.send()
+    
+            return HttpResponseRedirect(reverse('c4c:login'))
+
+    else:
+        form = ResetPassForm()
+
+    return render(request, template_name, {'form': form})
 
 class PersonalNetwork(generic.ListView):
     template_name = 'network.html'

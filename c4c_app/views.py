@@ -21,5 +21,7 @@ from c4c_app.views_whatisc4c import *
 from c4c_app.views_aboutus import *
 from c4c_app.views_network import *
 
+from c4c_app.views_send_email import *
+
 def home(request):
     return render(request,'index.html')
