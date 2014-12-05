@@ -76,7 +76,7 @@
                         <a id="delete" type="button" class="btn btn-primary btn-block" href="{% url 'c4c:delete_job' c4cjob.id %}">{% trans "Delete" %}</a>
                      </div>
                      <div class="col-sm-6">
-                        <a id="update" type="button" class="btn btn-primary btn-block" href="{% url 'c4c:job_update' c4cjob.pk %}">{% trans "Update" %}</a>
+                        <a id="updatejob" type="button" class="btn btn-primary btn-block" href="{% url 'c4c:job_update' c4cjob.pk %}">{% trans "Update" %}</a>
                      </div>
                  </div>
             {% elif c4cjob.offer == False and c4cjob.asked_by.pk == member.pk %}
@@ -85,7 +85,7 @@
                         <a id="delete" type="button" class="btn btn-primary btn-block" href="{% url 'c4c:delete_job' c4cjob.id %}">{% trans "Delete" %}</a>
                      </div>
                      <div class="col-sm-6">
-                        <a id="update" type="button" class="btn btn-primary btn-block" href="{% url 'c4c:job_update' c4cjob.pk %}">{% trans "Update" %}</a>
+                        <a id="updatejob" type="button" class="btn btn-primary btn-block" href="{% url 'c4c:job_update' c4cjob.pk %}">{% trans "Update" %}</a>
                      </div>
                  </div>
             {% endif %}
