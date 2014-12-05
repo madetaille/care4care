@@ -16,7 +16,6 @@ from django.template.loader import get_template
 from django.utils import timezone
 from django.utils.translation import ugettext as _
 from django.views import generic
-from django.views.generic.edit import UpdateView
 
 from c4c import settings
 from c4c_app.models import C4CUser, C4CJob, C4CEvent

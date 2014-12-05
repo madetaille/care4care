@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.conf.urls import patterns, url
 from django.contrib.auth.decorators import login_required
 
@@ -6,6 +7,8 @@ urlpatterns = patterns('',
 
                        # Home
                        url(r'^$', views.Feeds.as_view(template_name='index.html'), name='home'),
+                       # Media
+                       url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
                        # Jobs
                        url(r'^feeds/$', views.Feeds.as_view(), name='feeds'),
                        url(r'^jobdetail/(?P<pk>\d+)/$', views.JobDetail.as_view(), name='job_detail'),
@@ -33,14 +36,14 @@ urlpatterns = patterns('',
                        url(r'^useredit/(?P<pk>\d+)/$', views.UserEdit.as_view(), name='user_edit'),
                        url(r'^c4cedit/(?P<pk>\d+)/$', views.C4CUserEdit.as_view(), name='c4cuser_edit'),
                        url(r'^chpassword/(?P<pk>\d+)/$', views.chPassword, name='chPassword'),
-                       url(r'^network/$', login_required(views.network), name='network'),#views.PersonalNetwork.as_view(), name='network'),
+                       url(r'^network/$', login_required(views.network), name='network'),  # views.PersonalNetwork.as_view(), name='network'),
                        url(r'^add_user_to_network/$', login_required(views.add_user_to_network), name='add_user_to_network'),
                        url(r'^(?P<c4cuser_pk>\d+)/addnetwork', views.addNetwork, name='add_network'),
                        url(r'^registration/$', views.view_registration, name='registration'),
                        url(r'^login/$', views.user_login, name='login'),
                        url(r'^logout/$', views.user_logout, name='logout'),
-                       #Reset password
-                        url(r'^resetpass/$', views.resetpassword, name='resetpass'),
+                       # Reset password
+                       url(r'^resetpass/$', views.resetpassword, name='resetpass'),
                        # history
                        url(r'^history/$', views.History.as_view(), name='history'),
                        # News
@@ -67,6 +70,6 @@ urlpatterns = patterns('',
                        # What is Care 4 Care ?
                        url(r'^whatisc4c/$', views.whatisc4c, name='whatisc4c'),
                        url(r'^aboutus/$', views.aboutus, name='aboutus'),
-                       url(r'^sendemail/(?P<pk>\d+)/$', login_required(views.send_email),name = 'send_email'),
-                       url(r'^sendemailuser/(?P<pk>\d+)/$', login_required(views.send_email_user),name = 'send_user_email')
+                       url(r'^sendemail/(?P<pk>\d+)/$', login_required(views.send_email), name='send_email'),
+                       url(r'^sendemailuser/(?P<pk>\d+)/$', login_required(views.send_email_user), name='send_user_email')
                        )
