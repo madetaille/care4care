@@ -33,7 +33,7 @@ class UserForm(forms.Form):
     def clean(self):
         """ Verify birthday """
         cleaned_data = super(UserForm, self).clean()
-        if cleaned_data["birthday"] > datetime.date(datetime.date.today().year - 16, datetime.date.today().month, datetime.date.today().day):
+        if "birthday" in cleaned_data and cleaned_data["birthday"] > datetime.date(datetime.date.today().year - 16, datetime.date.today().month, datetime.date.today().day):
             raise forms.ValidationError(_("You must be older than 16 years old!"))
         return cleaned_data
 
