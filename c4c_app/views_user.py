@@ -1,4 +1,5 @@
 import datetime
+from smtplib import *
 
 from django import forms
 from django.contrib.admin import widgets
@@ -18,9 +19,6 @@ from django.views import generic
 from c4c import settings
 from c4c_app.models import C4CUser, C4CBranch
 from c4c_app.views_error403 import error403
-
-from smtplib import *
-
 class UserDetail(generic.DetailView):
     model = C4CUser
     template_name = 'user_detail.html'

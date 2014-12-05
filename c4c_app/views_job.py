@@ -3,6 +3,7 @@ translation.activate(user_language)"""
 
 import datetime
 from itertools import chain
+from smtplib import *
 
 from django.contrib.auth.decorators import login_required
 from django.core.context_processors import csrf
@@ -20,9 +21,6 @@ from django.views import generic
 from c4c import settings
 from c4c_app.models import C4CUser, C4CJob, C4CEvent
 from c4c_app.views_error403 import error403
-
-from smtplib import *
-
 def JobCreation(request, job_pk=None, offer=True):
     """ Edit/add a job. Offer is only used when job_pk is None. """
     if job_pk is not None:
@@ -84,6 +82,7 @@ def add_csrf(request, ** kwargs):
 
 
 class JobDetail(generic.DetailView):
+
     """ Display the details of a job """
     model = C4CJob
     template_name = 'job_detail.html'
@@ -143,7 +142,7 @@ def doneJob(request, c4cjob_id):
     job.duration = request.POST['Duration']
     job.end_date = timezone.now()
     job.save()
-    
+
     if C4CEvent.objects.filter(job=job, user=request.user).exists():
         event = C4CEvent.objects.get(job=job, user=request.user)
         event.delete()
@@ -166,7 +165,7 @@ def confirmJob(request, c4cjob_id):
     if C4CEvent.objects.filter(job=job, user=request.user).exists():
         event = C4CEvent.objects.get(job=job, user=request.user)
         event.delete()
-        
+
     send_email_confirm(job)
     return HttpResponseRedirect(reverse('c4c:job_detail', args=(job.id,)))
 
@@ -200,14 +199,14 @@ def cancelJob(request, c4cjob_id):
             return error403(request)
 
         send_email_canceled_demand(job)
-        
+
         if C4CEvent.objects.filter(job=job, user=job.done_by).exists():
             event1 = get_object_or_404(C4CEvent, job=job, user=job.done_by)
             event1.delete()
         if C4CEvent.objects.filter(job=job, user=job.asked_by).exists():
             event2 = get_object_or_404(C4CEvent, job=job, user=job.asked_by)
             event2.delete()
-            
+
         job.done_by = None
     else:
 
@@ -215,14 +214,14 @@ def cancelJob(request, c4cjob_id):
             return error403(request)
 
         send_email_canceled_offer(job)
-        
+
         if C4CEvent.objects.filter(job=job, user=job.done_by).exists():
             event1 = get_object_or_404(C4CEvent, job=job, user=job.done_by)
             event1.delete()
         if C4CEvent.objects.filter(job=job, user=job.asked_by).exists():
             event2 = get_object_or_404(C4CEvent, job=job, user=job.asked_by)
             event2.delete()
-            
+
         job.asked_by = None
     job.save()
 
@@ -239,12 +238,12 @@ def deleteJob(request, c4cjob_id):
             return error403(request)
         if job.done_by:
             send_email_delete_demand(job)
-            
+
     elif job.offer:
 
         if job.done_by != request.user or job.end_date is not None or job.complete:
             return error403(request)
-        
+
         if job.asked_by:
             send_email_delete_offer(job)
 
@@ -254,7 +253,7 @@ def deleteJob(request, c4cjob_id):
     if C4CEvent.objects.filter(job=job, user=job.asked_by).exists():
         event2 = get_object_or_404(C4CEvent, job=job, user=job.asked_by)
         event2.delete()
-            
+
     job.delete()
     return HttpResponseRedirect(reverse('c4c:user_jobs'))
 
@@ -285,6 +284,7 @@ def userJobs(request, member_pk=None):
 
 
 class Feeds(generic.ListView):
+
     """ In order to find all jobs that are in a special branch """
     template_name = 'all_jobs.html'
     context_object_name = 'all_jobs_list'
@@ -308,14 +308,14 @@ class Feeds(generic.ListView):
                     jobs.append(C4CJob.objects.filter(created_by=usr.user, complete=False, start_date__gte=datetime.date.today()))
             else:
                 jobs.append(C4CJob.objects.filter(created_by=usr.user, complete=False, start_date__gte=datetime.date.today()))
-               
+
         demands = []
         offers = []
         for jobs_usr in jobs:
             for job in jobs_usr:
-                if(job.offer and job.asked_by==None):
+                if(job.offer and job.asked_by is None):
                     offers.append(job)
-                elif(not job.offer and job.done_by==None):
+                elif(not job.offer and job.done_by is None):
                     demands.append(job)
 
         demands.sort(key=lambda x: x.start_date, reverse=True)

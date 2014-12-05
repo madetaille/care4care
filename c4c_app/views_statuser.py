@@ -1,50 +1,45 @@
-from django.shortcuts import render_to_response
-from django.template import RequestContext
-from django.http import HttpResponseRedirect
-from django.http import HttpResponse
-from matplotlib.backends.backend_agg import FigureCanvasAgg
-from django.contrib.auth.models import User
-from c4c_app.models import C4CJob, C4CUser, C4CBranch
 import datetime
 
-
+from django.contrib.auth.models import User
+from django.http import HttpResponse
+from django.http import HttpResponseRedirect
+from django.shortcuts import render_to_response
+from django.template import RequestContext
 import matplotlib
-import matplotlib.pyplot as plt
-import numpy as np
+from matplotlib.backends.backend_agg import FigureCanvasAgg
 from matplotlib.dates import date2num
 
-
+from c4c_app.models import C4CJob, C4CUser, C4CBranch
+import matplotlib.pyplot as plt
+import numpy as np
 def GraphsView(request):
     template_name = 'admin/stat.html'
 
-
     q1 = C4CJob.objects.values_list('duration')
 
-    number=q1.count()
+    number = q1.count()
 
-    times=list(q1)
+    times = list(q1)
 
     y = np.zeros(len(times))
 
-    for x in range (0,len(times)):
+    for x in range(0, len(times)):
         y[x] += times[x]
     y_sum = np.cumsum(y)
 
-    z=0
-    for x in range (0,len(y_sum)):
+    z = 0
+    for x in range(0, len(y_sum)):
         z += y[x]
 
+    averagetime = z / number
 
-    averagetime=z/number
+    return render_to_response(template_name, {'averagetime': averagetime, }, context_instance=RequestContext(request))
 
-
-
-    return render_to_response(template_name, {'averagetime':averagetime, }, context_instance=RequestContext(request))
 
 def GraphsViewBar(request):
 
     datetimes = User.objects.values_list('date_joined', flat=True) \
-                                .order_by('date_joined')
+        .order_by('date_joined')
     dates = list(map(lambda d: d.date(), datetimes))
 
     # Get some auxilliary values
@@ -84,21 +79,20 @@ def GraphsViewBar(request):
     canvas = FigureCanvasAgg(f)
     response = HttpResponse(content_type='image/png')
     canvas.print_png(response)
-    matplotlib.pyplot.close(f)   
+    matplotlib.pyplot.close(f)
     return response
+
 
 def GraphsTimeworked(request):
 
-
     q2 = C4CJob.objects.values_list('duration')\
-                                .order_by('start_date')
-
+        .order_by('start_date')
 
     q3 = C4CJob.objects.values_list('start_date')\
-                                .order_by('start_date')
+        .order_by('start_date')
 
     q4 = C4CJob.objects.values_list('start_date', flat=True) \
-                                .order_by('start_date')
+        .order_by('start_date')
 
     times = list(q2)
     dates = list(map(lambda d: d.date(), q4))
@@ -113,7 +107,7 @@ def GraphsTimeworked(request):
     y = np.zeros(days)
 
     # Iterate over dates, increase registration array
-    count=0
+    count = 0
     for date in dates:
         index = int(date2num(date) - min_date)
         y[index] += times[count]
@@ -133,14 +127,14 @@ def GraphsTimeworked(request):
     matplotlib.pyplot.close(f)
     return response
 
+
 def GraphsTimeJobs(request):
 
     q2 = C4CJob.objects.values_list('duration')\
-                                .order_by('start_date')
+        .order_by('start_date')
 
     q4 = C4CJob.objects.values_list('start_date', flat=True) \
-                                .order_by('start_date')
-
+        .order_by('start_date')
 
     times = list(q2)
     dates = list(map(lambda d: d.date(), q4))
@@ -173,44 +167,83 @@ def GraphsTimeJobs(request):
     matplotlib.pyplot.close(f)
     return response
 
+
 def ActivePie(request):
 
     useractive = User.objects.filter(is_active=True)
-    nuseractive=len(useractive)
-    userstot= User.objects.count()
+    nuseractive = len(useractive)
+    userstot = User.objects.count()
 
-    x= [nuseractive,userstot-nuseractive]
+    x = [nuseractive, userstot - nuseractive]
     explode = (0, 0.1)
 
     # Plot
     f = plt.figure()
-    line1 = plt.pie(x, explode=explode, labels=['Active', 'Inactive'], colors=('b', 'g', 'r', 'c', 'm', 'y', 'k', 'w'), autopct='%1.1f%%', pctdistance=0.6, shadow=True, labeldistance=1.1, startangle=None, radius=None)
+    line1 = plt.pie(
+        x,
+        explode=explode,
+        labels=[
+            'Active',
+            'Inactive'],
+        colors=(
+            'b',
+            'g',
+            'r',
+            'c',
+            'm',
+            'y',
+            'k',
+            'w'),
+        autopct='%1.1f%%',
+        pctdistance=0.6,
+        shadow=True,
+        labeldistance=1.1,
+        startangle=None,
+        radius=None)
     plt.rc('font', size=18)
     plt.axis('equal')
-
 
     canvas = FigureCanvasAgg(f)
     response = HttpResponse(content_type='image/png')
     canvas.print_png(response)
     matplotlib.pyplot.close(f)
     return response
+
 
 def JobPie(request):
 
     jobs = C4CJob.objects.filter(complete=False)
 
-    q1=jobs.filter(done_by=None)
+    q1 = jobs.filter(done_by=None)
 
-
-    x= [len(q1),len(jobs)-len(q1)]
+    x = [len(q1), len(jobs) - len(q1)]
     explode = (0, 0.1)
 
     # Plot
     f = plt.figure()
-    line1 = plt.pie(x, explode=explode, labels=['Asked', 'Accepted'], colors=('b', 'g', 'r', 'c', 'm', 'y', 'k', 'w'), autopct='%1.1f%%', pctdistance=0.6, shadow=True, labeldistance=1.1, startangle=None, radius=None)
+    line1 = plt.pie(
+        x,
+        explode=explode,
+        labels=[
+            'Asked',
+            'Accepted'],
+        colors=(
+            'b',
+            'g',
+            'r',
+            'c',
+            'm',
+            'y',
+            'k',
+            'w'),
+        autopct='%1.1f%%',
+        pctdistance=0.6,
+        shadow=True,
+        labeldistance=1.1,
+        startangle=None,
+        radius=None)
     plt.rc('font', size=18)
     plt.axis('equal')
-
 
     canvas = FigureCanvasAgg(f)
     response = HttpResponse(content_type='image/png')
@@ -218,38 +251,37 @@ def JobPie(request):
     matplotlib.pyplot.close(f)
     return response
 
+
 def UserByBranch(request):
 
-    userbybranchs=[]
+    userbybranchs = []
 
-    q1=C4CBranch.objects.values_list('group')\
-                                .order_by('group')
-    max=0
+    q1 = C4CBranch.objects.values_list('group')\
+        .order_by('group')
+    max = 0
     for x in q1:
-        q2=User.objects.filter(groups__in=(x))
+        q2 = User.objects.filter(groups__in=(x))
         userbybranchs.append(len(q2))
         if max < len(q2):
             max = len(q2)
 
-    namebranchs=[]
-    q3=C4CBranch.objects.values_list('name')\
-                                .order_by('group')
+    namebranchs = []
+    q3 = C4CBranch.objects.values_list('name')\
+        .order_by('group')
     for x in q3:
         namebranchs.append(x)
 
     f = plt.figure()
     x = np.arange(len(q1))
-    width=0.5
+    width = 0.5
     plt.xlim(0, len(q1))
-    plt.ylim(0, max+2)
+    plt.ylim(0, max + 2)
     plt.title('Number of users by branch')
     plt.xlabel('branch name')
     plt.ylabel('number of users')
-    bar1 = plt.bar(x,userbybranchs, width, bottom=0, color='Green', alpha=0.65, label='Legend')
-    plt.xticks(x+width/2., namebranchs)
+    bar1 = plt.bar(x, userbybranchs, width, bottom=0, color='Green', alpha=0.65, label='Legend')
+    plt.xticks(x + width / 2., namebranchs)
     plt.rc('font', size=12)
-
-
 
     canvas = FigureCanvasAgg(f)
     response = HttpResponse(content_type='image/png')

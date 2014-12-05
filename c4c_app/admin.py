@@ -7,8 +7,6 @@ from django.forms import ModelForm
 from django.utils.translation import ugettext_lazy
 
 from c4c_app.models import C4CBranch, C4CDonation, C4CEvent, C4CJob, C4CUser, C4CNews
-
-
 admin.site.site_title = 'Care4Care Administration'
 admin.site.site_header = 'Care4Care Administration'
 

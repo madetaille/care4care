@@ -1,12 +1,11 @@
-from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login
-from django.shortcuts import render,render_to_response,get_object_or_404
 from django.contrib.auth import logout
-
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, render_to_response, get_object_or_404
 from django.utils import translation
 from django.utils.translation import ugettext as _
-from c4c_app.views_error403 import error403
 
+from c4c_app.views_error403 import error403
 def user_login(request):
     template_name = 'user_login.html'
 
@@ -40,7 +39,7 @@ def user_login(request):
                 return HttpResponse(_("Your account is disabled."))
         else:
             # Bad login details were provided. So we can't log the user in.
-            return render(request, template_name, {'invalid':True})
+            return render(request, template_name, {'invalid': True})
 
     # The request is not a HTTP POST, so display the login form.
     # This scenario would most likely be a HTTP GET.

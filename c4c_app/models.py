@@ -9,6 +9,7 @@ from model_utils import FieldTracker
 
 
 class C4CUser(models.Model):
+
     """ Add additionnal interesting fields to the default Django's users """
 
     class Meta:
@@ -68,6 +69,7 @@ class C4CUser(models.Model):
 
 
 class C4CJob(models.Model):
+
     """ Represents a job """
 
     class Meta:
@@ -103,6 +105,7 @@ class C4CJob(models.Model):
 
 
 class C4CDonation(models.Model):
+
     """ Represents a donation """
 
     class Meta:
@@ -124,6 +127,7 @@ class C4CDonation(models.Model):
 
 
 class C4CBranch(models.Model):
+
     """ Represents a branch """
 
     class Meta:
@@ -152,6 +156,7 @@ class C4CBranch(models.Model):
 
 
 class C4CEvent(models.Model):
+
     """ Represents an event """
 
     class Meta:
@@ -174,6 +179,7 @@ class C4CEvent(models.Model):
 
 
 class C4CNews(models.Model):
+
     """ Represent a News written by an admin or a branch admin"""
     class Meta:
         verbose_name = 'News'

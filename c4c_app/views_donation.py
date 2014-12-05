@@ -12,6 +12,8 @@ from django.views.generic.edit import UpdateView
 from c4c_app.models import C4CDonation
 from c4c_app.models import C4CUser
 #from c4c_app.forms import ContactForm
+
+
 class DonationCreation(CreateView):
 
     fields = ['receiver', 'message', 'amount']

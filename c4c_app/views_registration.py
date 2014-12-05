@@ -1,4 +1,5 @@
 import datetime
+from smtplib import *
 
 from django import forms
 from django.contrib.admin import widgets
@@ -13,9 +14,6 @@ from django.utils.translation import ugettext as _
 
 from c4c import settings
 from c4c_app.models import C4CUser, C4CBranch
-
-from smtplib import *
-
 class UserForm(forms.Form):
     username = forms.CharField(label=_('Username'), max_length=100)
     password = forms.CharField(label=_('Password'), max_length=10, widget=forms.PasswordInput)
@@ -40,9 +38,9 @@ class UserForm(forms.Form):
 
         if "password" in cleaned_data and "password_confirm" in cleaned_data and cleaned_data["password"] != cleaned_data["password_confirm"]:
             raise forms.ValidationError(_("Passwords do not match"))
-        if User.objects.filter(username = cleaned_data["username"]):
+        if User.objects.filter(username=cleaned_data["username"]):
             raise forms.ValidationError(_("Username already exists"))
-        #if get_object_or_404(C4CUser, user.username=cleaned_data["username"])
+        # if get_object_or_404(C4CUser, user.username=cleaned_data["username"])
          #   raise forms.ValidationError(_("Username already exists"))
         return cleaned_data
 
