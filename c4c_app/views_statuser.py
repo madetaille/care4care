@@ -89,22 +89,16 @@ def GraphsViewBar(request):
 
 def GraphsTimeworked(request):
 
-    test =datetime.datetime.now()
-    test2=test.year
 
-    q1 = C4CJob.objects.values_list('duration')\
+    q2 = C4CJob.objects.values_list('duration')\
                                 .order_by('start_date')
 
-    q2=q1.filter(start_date__year=test2)
 
     q3 = C4CJob.objects.values_list('start_date')\
                                 .order_by('start_date')
 
-    datetimes = C4CJob.objects.values_list('start_date', flat=True) \
+    q4 = C4CJob.objects.values_list('start_date', flat=True) \
                                 .order_by('start_date')
-
-    q4=datetimes.filter(start_date__year=test2)
-
 
     times = list(q2)
     dates = list(map(lambda d: d.date(), q4))
@@ -139,6 +133,46 @@ def GraphsTimeworked(request):
     matplotlib.pyplot.close(f)
     return response
 
+def GraphsTimeJobs(request):
+
+    q2 = C4CJob.objects.values_list('duration')\
+                                .order_by('start_date')
+
+    q4 = C4CJob.objects.values_list('start_date', flat=True) \
+                                .order_by('start_date')
+
+
+    times = list(q2)
+    dates = list(map(lambda d: d.date(), q4))
+
+    # Get some auxilliary values
+    min_date = date2num(dates[0])
+    max_date = date2num(dates[-1])
+    days = max_date - min_date + 1
+
+    # Initialize X and Y axes
+    x = np.arange(min_date, max_date + 1)
+    y = np.zeros(days)
+
+    # Iterate over dates, increase registration array
+    for date in dates:
+        index = int(date2num(date) - min_date)
+        y[index] += 1
+    y_sum = np.cumsum(y)
+
+    # Plot
+    f = plt.figure()
+    line1 = plt.plot_date(x, y_sum, xdate=True, ydate=False, ls='-', ms=0, color='#16171E')
+    plt.fill_between(x, 0, y_sum, facecolor='#D0F3FF')
+    plt.title('Jobs done')
+    plt.rc('font', size=10)
+
+    canvas = FigureCanvasAgg(f)
+    response = HttpResponse(content_type='image/png')
+    canvas.print_png(response)
+    matplotlib.pyplot.close(f)
+    return response
+
 def ActivePie(request):
 
     useractive = User.objects.filter(is_active=True)
@@ -151,7 +185,7 @@ def ActivePie(request):
     f = plt.figure()
     line1 = plt.pie(x, explode=None, labels=['Active', 'Inactive'], colors=('b', 'g', 'r', 'c', 'm', 'y', 'k', 'w'), autopct=None, pctdistance=0.6, shadow=False, labeldistance=1.1, startangle=None, radius=None)
     plt.title('Active and inactive users')
-    plt.rc('font', size=20)
+    plt.rc('font', size=18)
 
 
     canvas = FigureCanvasAgg(f)
@@ -189,6 +223,8 @@ def UserByBranch(request):
     plt.ylabel('number of users')
     bar1 = plt.bar(x,userbybranchs, width, bottom=0, color='Green', alpha=0.65, label='Legend')
     plt.xticks(x+width/2., namebranchs)
+    plt.rc('font', size=12)
+
 
 
     canvas = FigureCanvasAgg(f)

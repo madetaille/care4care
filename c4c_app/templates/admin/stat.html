@@ -3,7 +3,8 @@
 {% block content%}
     <h3>Statistics and important informations</h3>
     <p><a href={% url "c4c:statuserbar" %}>Number of Users over time</a></p>
-    <p><a href={% url "c4c:stattime" %}>Number of hours worked since the start of the jobs this year</a></p>
+    <p><a href={% url "c4c:stattime" %}>Number of hours worked since the start of the jobs </a></p>
+    <p><a href={% url "c4c:stattimejobs" %}>Number of jobs done since the start of the jobs</a></p>
     <p><a href={% url "c4c:statpie" %}>Percentage of actives users</a></p>
     <p><a href={% url "c4c:statUserBranch" %}>Number of Users by branch</a></p>
     <p> Average duration of a job : {{ averagetime }}</p>
