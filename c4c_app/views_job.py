@@ -301,9 +301,9 @@ class Feeds(generic.ListView):
         offers = []
         for jobs_usr in jobs:
             for job in jobs_usr:
-                if(job.offer):
+                if(job.offer and job.asked_by==None):
                     offers.append(job)
-                else:
+                elif(not job.offer and job.done_by==None):
                     demands.append(job)
 
         demands.sort(key=lambda x: x.start_date, reverse=True)
