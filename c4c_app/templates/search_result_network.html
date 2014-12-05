@@ -14,15 +14,15 @@
                                      <th>{% trans "Action" %}</th>
                                      {% endif %}
                                  </tr>
-                           {% for object in result %}
-                                 <tr>
-                                     <td>{{ object.username }}</td>
-                                    <td>{{ object.first_name }}</td>
-                                    <td>{{ object.last_name }}</td>
-                                     <th><a class="btn btn-primary" href={% url 'c4c:user_detail' object.id %}>{% trans "Details"%}</a></th>
-                                     <th><a class="btn btn-primary" href={% url 'c4c:add_user_to_network' object.id %}>{% trans "Add to Personal Network"%}</a></th>
-                                 </tr>
-                           {% endfor %}
+	                           {% for object in result %}
+	                                 <tr>
+	                                     <td>{{ object.username }}</td>
+	                                    <td>{{ object.first_name }}</td>
+	                                    <td>{{ object.last_name }}</td>
+	                                     <th><a class="btn btn-primary" href="{% url 'c4c:user_detail' object.id %}">{% trans "Details"%}</a></th>
+	                                     <th><a class="btn btn-primary" href="{% url 'c4c:add_user_to_network' object.id %}">{% trans "Add to Personal Network"%}</a></th>
+	                                 </tr>
+	                           {% endfor %}
                         </table>
     {% else %}
         <p>{% trans "Your search didn't match any user" %}</p>
