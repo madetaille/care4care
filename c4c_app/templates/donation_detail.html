@@ -1,6 +1,6 @@
 {% extends "base.html" %}
-
-{% block title %}Care4Care - {% trans "Donation detail"%}{% endblock %}
+{% load i18n %}
+{% block title %}Care4Care - {% trans "Donation detail" %} {% endblock %}
 
 {% block content %}
 
@@ -16,6 +16,8 @@
     <li> {% trans "Message"%} : {{ c4cdonation.message }}</li>
 </ul>
 
-
-
 {% endblock content %}
+
+{% block help %}
+{% trans "This page provides details about a donation of currency (time)." %}
+{% endblock help %}
