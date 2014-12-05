@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 
 from c4c_app import views
 urlpatterns = patterns('',
+
                        # Home
                        url(r'^$', views.Feeds.as_view(template_name='index.html'), name='home'),
                        # Jobs

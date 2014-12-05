@@ -16,6 +16,10 @@ from django.utils.translation import ugettext as _
 
 from c4c_app.models import C4CUser
 from c4c_app.views_error403 import error403
+from django.shortcuts import get_object_or_404
+from c4c import settings
+from django.template.loader import get_template
+from django.core.mail import EmailMultiAlternatives
 
 class UserDetail(generic.DetailView):
     model = C4CUser
@@ -37,13 +41,27 @@ class UserEdit(generic.edit.UpdateView):
     model = User
     fields = ['username','first_name','last_name','email']
 
-    def get_context_data(self, **kwargs):
-        # Call the base implementation first to get a context
-        context = super(UserEdit, self).get_context_data(**kwargs)
+    def post(self, request, **kwargs):
+        ret = super(UserEdit, self).post(request, **kwargs)
+        ownerpk = int(self.kwargs.get('pk'))
         viewer = get_object_or_404(User, pk=self.request.user.pk)
-        context['viewerpk'] = viewer.pk
-        context['ownerpk'] = int(self.kwargs.get('pk'))
-        return context
+        viewerpk = viewer.pk
+
+        if viewerpk != ownerpk:
+            return error403(self.request)
+        else:
+            return ret
+
+    def get(self, request, **kwargs):
+        ret = super(UserEdit, self).get(request, **kwargs)
+        ownerpk = int(self.kwargs.get('pk'))
+        viewer = get_object_or_404(User, pk=self.request.user.pk)
+        viewerpk = viewer.pk
+
+        if viewerpk != ownerpk:
+            return error403(self.request)
+        else:
+            return ret
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
@@ -55,14 +73,27 @@ class C4CUserEdit(generic.edit.UpdateView):
     model = C4CUser
     fields = ['address','birthday']
 
-    def get_context_data(self, **kwargs):
-        context = super(C4CUserEdit, self).get_context_data(**kwargs)
-        viewer = get_object_or_404(C4CUser, user=self.request.user)
-        context['viewerpk'] = viewer.user.pk
-        context['ownerpk'] = int(self.kwargs.get('pk'))
+    def post(self, request, **kwargs):
+        ret = super(C4CUserEdit, self).post(request, **kwargs)
+        ownerpk = int(self.kwargs.get('pk'))
+        viewer = get_object_or_404(User, pk=self.request.user.pk)
+        viewerpk = viewer.pk
 
-        # branches
-        return context
+        if viewerpk != ownerpk:
+            return error403(self.request)
+        else:
+            return ret
+
+    def get(self, request, **kwargs):
+        ret = super(C4CUserEdit, self).get(request, **kwargs)
+        ownerpk = int(self.kwargs.get('pk'))
+        viewer = get_object_or_404(User, pk=self.request.user.pk)
+        viewerpk = viewer.pk
+
+        if viewerpk != ownerpk:
+            return error403(self.request)
+        else:
+            return ret
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
@@ -119,6 +150,11 @@ class ResetPassForm(forms.Form):
 
 def resetpassword(request):
     template_name = 'resetpassword.html'
+
+    # check access permission
+    if request.user.is_authenticated():
+        return error403(request)
+
     if request.method == 'POST':
         form = ResetPassForm(request.POST)
 
@@ -129,11 +165,19 @@ def resetpassword(request):
             user = get_object_or_404(User, email=email)
             user.set_password(password)
             user.save()
-            # print(password)
+            
+            user_email = get_object_or_404(C4CUser, user = request.user)
+            subject = 'Reset of your password !'
+            from_email, to = settings.EMAIL_HOST_USER, user_email.user.email
+    
+            htmly = get_template('email_reset_password.html')
 
-            # send email here. The password to send is the variable
-            # 'password'
-            # ...
+            d = Context({'password' : password, 'user_email' : user_email})
+            html_content = htmly.render(d)
+            msg = EmailMultiAlternatives(subject, '', from_email, [to])
+            msg.attach_alternative(html_content, "text/html")
+            msg.send()
+    
             return HttpResponseRedirect(reverse('c4c:login'))
 
     else:

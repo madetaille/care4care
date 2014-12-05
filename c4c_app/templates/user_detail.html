@@ -47,4 +47,9 @@
         <br/>
 <p>{% trans "You can "%}<a href={% url 'c4c:c4cuser_edit' c4cuser.user.pk %}>{% trans "edit your C4C profile"%}</a>.</p>
     {% endif %}
+
+{% if viewer.pk != c4cuser.pk %}
+<a class="btn btn-primary pull-center" href={% url 'c4c:send_email' c4cuser.user.pk %}>{% trans "Send a message" %}</a>
+
+{% endif %}
 {% endblock content %}
