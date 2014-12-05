@@ -30,15 +30,15 @@
                 {% trans "Branches: " %}
                 <ul>
                     {% for branch in branches %}
-			            <li><a href="{% url "c4c:branch_detail" branch.pk %}">{{ branch.name }}</a></li>
-			        {% empty %}
-			            <li>{% trans "This user is not affiliated with any branch." %}</li>
-			        {% endfor %}
+                        <li><a href="{% url "c4c:branch_detail" branch.pk %}">{{ branch.name }}</a></li>
+                    {% empty %}
+                        <li>{% trans "This user is not affiliated with any branch." %}</li>
+                    {% endfor %}
                 </ul>
             </div>
         </div>
     </div>
-    
+
     {% if viewer.pk != c4cuser.pk %}
         <a class="btn btn-primary btn-block" href="{% url 'c4c:send_email' c4cuser.user.pk %}">{% trans "Send a message" %}</a>
         {% if not is_in_my_network %}
@@ -52,5 +52,5 @@
 {% endblock content %}
 
 {% block help %}
-{% trans "This is a user's profile page. It provided information about said user. If this is your profile, it's possible to modify the information from here." %}
+{% trans "This is a user's profile page. It provides information about said user. If this is your profile, it's possible to modify the information from here." %}
 {% endblock help %}
