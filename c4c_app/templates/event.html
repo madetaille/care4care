@@ -1,10 +1,11 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% load display_username %}
 
 {% block title %}Care4Care - {{ event.user.first_name }} {{ event.user.last_name }}{% trans "'s Agenda"%}{% endblock %}
 
 {% block content %}
-    <h2>{{ event.user.first_name }} {{ event.user.last_name }}{% trans "'s Agenda"%}</h2>
+    <h2>{% display_username event.user %}{% trans "'s Agenda"%}</h2>
     <h3>{{ event.name }}</h3>
     <a href="{% url 'c4c:month' event.user.pk event.date.year event.date.month %}">{% trans "Return to calendar"%}</a>
 

@@ -1,10 +1,11 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% load display_username %}
 
 {% block title %}Care4Care - {{ member.user.first_name }} {{ member.user.last_name }}{% trans "'s Agenda"%}{% endblock %}
 
 {% block content %}
-    <h2>{{ member.user.first_name }} {{ member.user.last_name }}{% trans "'s Agenda"%}</h2>
+    <h2>{% display_username member.user %}{% trans "'s Agenda"%}</h2>
     <h3>{{ year }}</h3>
     <nav>
         <div class="text-center">

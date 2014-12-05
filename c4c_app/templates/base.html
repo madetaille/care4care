@@ -1,4 +1,5 @@
 {% load i18n %}
+{% load display_username %}
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -56,7 +57,7 @@
                             </a>
                         </li>
                         {% if user.is_authenticated %}
-                            <li><a href="{% url 'c4c:logout'  %}">{% trans "Logout"%} : {{ user.username }}</a></li>
+                            <li><a href="{% url 'c4c:logout'  %}">{% trans "Logout"%} : {% display_username user False %}</a></li>
                         {% else %}
                             <li><a href="{% url 'c4c:login'  %}">{% trans "Login"%}</a></li>
                             <li><a href="{% url 'c4c:registration'  %}">{% trans "Register"%}</a></li>

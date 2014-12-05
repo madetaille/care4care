@@ -1,144 +1,145 @@
 {% extends "base.html" %}
 {% load i18n %}
+{% load display_username %}
 
 {% block title %}Care4Care - {% trans "User jobs" %}{% endblock %}
 {% block content %}
-    <h2>My jobs</h2>
-    <div class="row">
-        <div class="col-sm-6"><a id="button_need" class="btn btn-primary btn-block btn-lg" href="{% url 'c4c:demand_creation' %}">{% trans "I NEED HELP!"%}</a></div>
-        <div class="col-sm-6"><a id="button_want" class="btn btn-primary btn-block btn-lg" href="{% url 'c4c:offer_creation' %}">{% trans "I WANT TO HELP!"%}</a></div>
-    </div>
-    <div class="row">
-        <div class="col-md-6 col-sm-12">
-            <h3 class="text-center">{% trans "Ongoing" %}</h3>
-            {% if ongoing|length == 0 %}
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        You have currently no ongoing jobs
-                    </div>
-                </div>
-            {% else %}
-                {% for job in ongoing %}
-                    <div class="panel panel-default" onclick="location.href='{% url 'c4c:job_detail' job.id %}'">
-                        <div class="panel-heading">
-                            <h3 class="panel-title"> {{job.title}} </h3>
-                        </div>
-                        <div class="panel-body">
-                            <div class="pull-left">{% if job.offer %}Offer{%else%}Demand{%endif%}</div>
-                            <div class="pull-right">{{job.created_by}}</div>
-                            <div class="text-center"><b>{{job.start_date}}</b></div>
-                            {{job.description}}<br/>
-                            <a class="btn btn-primary pull-right" href="{% url 'c4c:job_detail' job.id %}">{% trans "More Infos" %}</a>
-                        </div>
-                    </div>
-                {% endfor %}
-            {% endif %}
-        </div>
-        <div class="col-md-6 col-sm-12">
-            <h3 class="text-center">{% trans "Outdated" %}</h3>
-            {% if outdated|length == 0 %}
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        You have currently no outdated jobs
-                    </div>
-                </div>
-            {% else %}
-                {% for job in outdated %}
-                    <div class="panel panel-default" onclick="location.href='{% url 'c4c:job_detail' job.id %}'">
-                        <div class="panel-heading">
-                            <h3 class="panel-title"> {{job.title}} </h3>
-                        </div>
-                        <div class="panel-body">
-                            <div class="pull-left">{% if job.offer %}Offer{%else%}Demand{%endif%}</div>
-                            <div class="pull-right">{{job.created_by}}</div>
-                            <div class="text-center"><b>{{job.start_date}}</b></div>
-                            {{job.description}}<br/>
-                            <a class="btn btn-primary pull-right" href="{% url 'c4c:job_detail' job.id %}">{% trans "More Infos" %}</a>
-                        </div>
-                    </div>
-                {% endfor %}
-            {% endif %}
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-6 col-sm-12">
-            <h3 class="text-center">{% trans "My demands" %}</h3>
-            {% if mydemands|length == 0 %}
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        You have currently no demands
-                    </div>
-                </div>
-            {% else %}
-                {% for job in mydemands %}
-                    <div class="panel panel-default" onclick="location.href='{% url 'c4c:job_detail' job.id %}'">
-                        <div class="panel-heading">
-                            <h3 class="panel-title"> {{job.title}} </h3>
-                        </div>
-                        <div class="panel-body">
-                            <div class="pull-left">{% if job.offer %}Offer{%else%}Demand{%endif%}</div>
-                            <div class="pull-right">{{job.created_by}}</div>
-                            <div class="text-center"><b>{{job.start_date}}</b></div>
-                            {{job.description}}<br/>
-                            <a class="btn btn-primary pull-right" href="{% url 'c4c:job_detail' job.id %}">{% trans "More Infos" %}</a>
-                        </div>
-                    </div>
-                {% endfor %}
-            {% endif %}
-        </div>
-        <div class="col-md-6 col-sm-12">
-            <h3 class="text-center">{% trans "My offers" %}</h3>
-            {% if myoffers|length == 0 %}
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        You have currently no offers
-                    </div>
-                </div>
-            {% else %}
-                {% for job in myoffers %}
-                    <div class="panel panel-default" onclick="location.href='{% url 'c4c:job_detail' job.id %}'">
-                        <div class="panel-heading">
-                            <h3 class="panel-title"> {{job.title}} </h3>
-                        </div>
-                        <div class="panel-body">
-                            <div class="pull-left">{% if job.offer %}Offer{%else%}Demand{%endif%}</div>
-                            <div class="pull-right">{{job.created_by}}</div>
-                            <div class="text-center"><b>{{job.start_date}}</b></div>
-                            {{job.description}}<br/>
-                            <a class="btn btn-primary pull-right" href="{% url 'c4c:job_detail' job.id %}">{% trans "More Infos" %}</a>
-                        </div>
-                    </div>
-                {% endfor %}
-            {% endif %}
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-12">
-            <h3 class="text-center">{% trans "Created jobs" %}</h3>
-            {% if created|length == 0 %}
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        You have not created any job yet.
-                    </div>
-                </div>
-            {% else %}
-                {% for job in created %}
-                    <div class="panel panel-default" onclick="location.href='{% url 'c4c:job_detail' job.id %}'">
-                        <div class="panel-heading">
-                            <h3 class="panel-title"> {{job.title}} </h3>
-                        </div>
-                        <div class="panel-body">
-                            <div class="pull-left">{% if job.offer %}Offer{%else%}Demand{%endif%}</div>
-                            <div class="pull-right">{{job.created_by}}</div>
-                            <div class="text-center"><b>{{job.start_date}}</b></div>
-                            {{job.description}}<br/>
-                            <a class="btn btn-primary pull-right" href="{% url 'c4c:job_detail' job.id %}">{% trans "More Infos" %}</a>
-                        </div>
-                    </div>
-                {% endfor %}
-            {% endif %}
-        </div>
-    </div>
+	<h2>My jobs</h2>
+	<div class="row">
+	    <div class="col-sm-6"><a id="button_need" class="btn btn-primary btn-block btn-lg" href="{% url 'c4c:demand_creation' %}">{% trans "I NEED HELP!"%}</a></div>
+	    <div class="col-sm-6"><a id="button_want" class="btn btn-primary btn-block btn-lg" href="{% url 'c4c:offer_creation' %}">{% trans "I WANT TO HELP!"%}</a></div>
+	</div>
+	<div class="row">
+	    <div class="col-md-6 col-sm-12">
+	        <h3 class="text-center">{% trans "Ongoing" %}</h3>
+			{% if ongoing|length == 0 %}
+	            <div class="panel panel-default">
+	                <div class="panel-body">
+	                    You have currently no ongoing jobs
+	                </div>
+	            </div>
+	        {% else %}
+	            {% for job in ongoing %}
+	                <div class="panel panel-default" onclick="location.href='{% url 'c4c:job_detail' job.id %}'">
+	                    <div class="panel-heading">
+	                        <h3 class="panel-title"> {{job.title}} </h3>
+	                    </div>
+	                    <div class="panel-body">
+	                        <div class="pull-left">{% if job.offer %}Offer{%else%}Demand{%endif%}</div>
+	                        <div class="pull-right">{% display_username job.created_by %}</div>
+	                        <div class="text-center"><b>{{job.start_date}}</b></div>
+	                        {{job.description}}<br/>
+	                        <a class="btn btn-primary pull-right" href="{% url 'c4c:job_detail' job.id %}">{% trans "More Infos" %}</a>
+	                    </div>
+	                </div>
+	            {% endfor %}
+	        {% endif %}
+	    </div>
+	    <div class="col-md-6 col-sm-12">
+			<h3 class="text-center">{% trans "Outdated" %}</h3>
+			{% if outdated|length == 0 %}
+	            <div class="panel panel-default">
+	                <div class="panel-body">
+	                    You have currently no outdated jobs
+	                </div>
+	            </div>
+	        {% else %}
+				{% for job in outdated %}
+					<div class="panel panel-default" onclick="location.href='{% url 'c4c:job_detail' job.id %}'">
+					    <div class="panel-heading">
+					        <h3 class="panel-title"> {{job.title}} </h3>
+					    </div>
+					    <div class="panel-body">
+					        <div class="pull-left">{% if job.offer %}Offer{%else%}Demand{%endif%}</div>
+					        <div class="pull-right">{% display_username job.created_by %}</div>
+					        <div class="text-center"><b>{{job.start_date}}</b></div>
+					        {{job.description}}<br/>
+					        <a class="btn btn-primary pull-right" href="{% url 'c4c:job_detail' job.id %}">{% trans "More Infos" %}</a>
+					    </div>
+					</div>
+				{% endfor %}
+			{% endif %}
+	    </div>
+	</div>
+	<div class="row">
+	    <div class="col-md-6 col-sm-12">
+			<h3 class="text-center">{% trans "My demands" %}</h3>
+	        {% if mydemands|length == 0 %}
+	            <div class="panel panel-default">
+	                <div class="panel-body">
+	                    You have currently no demands
+	                </div>
+	            </div>
+	        {% else %}
+	            {% for job in mydemands %}
+	                <div class="panel panel-default" onclick="location.href='{% url 'c4c:job_detail' job.id %}'">
+	                    <div class="panel-heading">
+	                        <h3 class="panel-title"> {{job.title}} </h3>
+	                    </div>
+	                    <div class="panel-body">
+	                        <div class="pull-left">{% if job.offer %}Offer{%else%}Demand{%endif%}</div>
+	                        <div class="pull-right">{% display_username job.created_by %}</div>
+	                        <div class="text-center"><b>{{job.start_date}}</b></div>
+	                        {{job.description}}<br/>
+	                        <a class="btn btn-primary pull-right" href="{% url 'c4c:job_detail' job.id %}">{% trans "More Infos" %}</a>
+	                    </div>
+	                </div>
+	            {% endfor %}
+	        {% endif %}
+	    </div>
+	    <div class="col-md-6 col-sm-12">
+			<h3 class="text-center">{% trans "My offers" %}</h3>
+			{% if myoffers|length == 0 %}
+	            <div class="panel panel-default">
+	                <div class="panel-body">
+	                    You have currently no offers
+	                </div>
+	            </div>
+	        {% else %}
+	            {% for job in myoffers %}
+	                <div class="panel panel-default" onclick="location.href='{% url 'c4c:job_detail' job.id %}'">
+	                    <div class="panel-heading">
+	                        <h3 class="panel-title"> {{job.title}} </h3>
+	                    </div>
+	                    <div class="panel-body">
+	                        <div class="pull-left">{% if job.offer %}Offer{%else%}Demand{%endif%}</div>
+	                        <div class="pull-right">{% display_username job.created_by %}</div>
+	                        <div class="text-center"><b>{{job.start_date}}</b></div>
+	                        {{job.description}}<br/>
+	                        <a class="btn btn-primary pull-right" href="{% url 'c4c:job_detail' job.id %}">{% trans "More Infos" %}</a>
+	                    </div>
+	                </div>
+	            {% endfor %}
+	        {% endif %}
+	    </div>
+	</div>
+	<div class="row">
+	    <div class="col-sm-12">
+			<h3 class="text-center">{% trans "Created jobs" %}</h3>
+			{% if created|length == 0 %}
+	            <div class="panel panel-default">
+	                <div class="panel-body">
+	                    You have not created any job yet.
+	                </div>
+	            </div>
+	        {% else %}
+	            {% for job in created %}
+	                <div class="panel panel-default" onclick="location.href='{% url 'c4c:job_detail' job.id %}'">
+	                    <div class="panel-heading">
+	                        <h3 class="panel-title"> {{job.title}} </h3>
+	                    </div>
+	                    <div class="panel-body">
+	                        <div class="pull-left">{% if job.offer %}Offer{%else%}Demand{%endif%}</div>
+	                        <div class="pull-right">{% display_username job.created_by %}</div>
+	                        <div class="text-center"><b>{{job.start_date}}</b></div>
+	                        {{job.description}}<br/>
+	                        <a class="btn btn-primary pull-right" href="{% url 'c4c:job_detail' job.id %}">{% trans "More Infos" %}</a>
+	                    </div>
+	                </div>
+	            {% endfor %}
+	        {% endif %}
+	    </div>
+	</div>
 {% endblock content %}
 
 {% block help %}
