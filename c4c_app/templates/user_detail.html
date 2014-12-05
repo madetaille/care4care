@@ -7,14 +7,14 @@
     {% if viewer.pk == c4cuser.pk %}
         <h2>{% trans "My profile" %}</h2>
     {% else %}
-        <h2 class="text-center">{{ c4cuser.user.username }}{% trans "'s profile" %}</h2>
+        <h2>{{ c4cuser.user.username }}{% trans "'s profile" %}</h2>
     {% endif %}
     <br/>
 
     <div class="well">
         <div class="media">
             <a class="media-left" href="#">
-                <img style="max-width: 200px; max-height:200px;" src="{%if user.c4cuser.avatar %}media/{{ user.c4cuser.avatar.url }}{%else%}{{ STATIC_URL }}img/unknown_user.png{%endif%}" alt="Profile photo">
+                <img style="max-width: 200px; max-height:200px;" src="{%if user.c4cuser.avatar %}/media/{{ user.c4cuser.avatar.url }}{%else%}{{ STATIC_URL }}img/unknown_user.png{%endif%}" alt="Profile photo">
             </a>
             <div class="media-body">
                 <h4 class="media-heading">{{ c4cuser.user.first_name }} {{ c4cuser.user.last_name }}</h4>
