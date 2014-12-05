@@ -55,16 +55,17 @@ class C4CUser(models.Model):
         """ Ensures the image have the good size """
         super(C4CUser, self).save()
 
-        image = Image.open(self.avatar)
-        (width, height) = image.size
+        if self.avatar is not None:
+            image = Image.open(self.avatar)
+            (width, height) = image.size
 
-        if width > 200 or height > 200:
-            factor = min(1, 200 / height)
-            factor = min(factor, 200 / width)
+            if width > 200 or height > 200:
+                factor = min(1, 200 / height)
+                factor = min(factor, 200 / width)
 
-            size = (int(width * factor), int(height * factor))
-            image = image.resize(size, Image.ANTIALIAS)
-            image.save(self.avatar.path)
+                size = (int(width * factor), int(height * factor))
+                image = image.resize(size, Image.ANTIALIAS)
+                image.save(self.avatar.path)
 
 
 class C4CJob(models.Model):
