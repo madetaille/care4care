@@ -41,9 +41,12 @@
     
     {% if viewer.pk != c4cuser.pk %}
         <a class="btn btn-primary btn-block" href={% url 'c4c:send_email' c4cuser.user.pk %}>{% trans "Send a message" %}</a>
-    {% endif %}
-
-    {% if viewer.pk == c4cuser.pk %}
+        {% if not is_in_my_network %}
+            <a class="btn btn-primary btn-block" href="{% url 'c4c:add_user_to_network' c4cuser.user.pk %}">{% trans "Add to my personal network"%}</a>
+        {% else %}
+            <a class="btn btn-primary btn-block" href="{% url 'c4c:del_network' c4cuser.user.pk %}">{% trans "Delete from my personal network"%}</a>
+        {% endif %}
+    {% else %}
         <a href="{% url 'c4c:user_edit' %}" class="btn btn-primary btn-block">{% trans "Edit your profile"%}</a>
     {% endif %}
 {% endblock content %}

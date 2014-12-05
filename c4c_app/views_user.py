@@ -30,7 +30,8 @@ class UserDetail(generic.DetailView):
         viewer = get_object_or_404(C4CUser, user=self.request.user)
         context['viewer'] = viewer
 
-        context['is_in_network'] = viewer == context['c4cuser'] or context['c4cuser'].filter(pk=viewer.pk).exists()
+        context['is_in_network'] = viewer == context['c4cuser'] or context['c4cuser'].network.filter(pk=viewer.user.pk).exists()
+        context['is_in_my_network'] = viewer == context['c4cuser'] or viewer.network.filter(pk=context['c4cuser'].user.pk).exists()
 
         # get branches
         context['branches'] = self.object.get_branches()
