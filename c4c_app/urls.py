@@ -45,7 +45,7 @@ urlpatterns = patterns('',
                        url(r'^allNewsBranch/$', views.AllNewsBranch.as_view(), name='all_news_list_Branch'),
                        url(r'^allNews/$', views.AllNews.as_view(), name='all_news_list'),
                        # Branch
-                       url(r'^branchdetail/(?P<pk>\d+)/$', views.BranchDetail.as_view(), name='branch_detail'),
+                       url(r'^branchdetail/(?P<pk>\w+)/$', views.BranchDetail.as_view(), name='branch_detail'),
                        # Agenda
                        url(r'^agenda/$', login_required(views.AgendaYear), name='agenda'),
                        url(r'^agenda/(\d+)/$', login_required(views.AgendaYear), name='agenda'),
@@ -62,5 +62,7 @@ urlpatterns = patterns('',
                        #url(r'^news/$', views.news, name = 'news'),
                        # What is Care 4 Care ?
                        url(r'^whatisc4c/$', views.whatisc4c, name='whatisc4c'),
-                       url(r'^aboutus/$', views.aboutus, name='aboutus')
+                       url(r'^aboutus/$', views.aboutus, name='aboutus'),
+                       url(r'^sendemail/(?P<pk>\d+)/$', login_required(views.send_email),name = 'send_email'),
+                       url(r'^sendemailuser/(?P<pk>\d+)/$', login_required(views.send_email_user),name = 'send_user_email')
                        )
