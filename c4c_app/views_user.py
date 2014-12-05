@@ -37,13 +37,27 @@ class UserEdit(generic.edit.UpdateView):
     model = User
     fields = ['username','first_name','last_name','email']
 
-    def get_context_data(self, **kwargs):
-        # Call the base implementation first to get a context
-        context = super(UserEdit, self).get_context_data(**kwargs)
+    def post(self, request, **kwargs):
+        ret = super(UserEdit, self).post(request, **kwargs)
+        ownerpk = int(self.kwargs.get('pk'))
         viewer = get_object_or_404(User, pk=self.request.user.pk)
-        context['viewerpk'] = viewer.pk
-        context['ownerpk'] = int(self.kwargs.get('pk'))
-        return context
+        viewerpk = viewer.pk
+
+        if viewerpk != ownerpk:
+            return error403(self.request)
+        else:
+            return ret
+
+    def get(self, request, **kwargs):
+        ret = super(UserEdit, self).get(request, **kwargs)
+        ownerpk = int(self.kwargs.get('pk'))
+        viewer = get_object_or_404(User, pk=self.request.user.pk)
+        viewerpk = viewer.pk
+
+        if viewerpk != ownerpk:
+            return error403(self.request)
+        else:
+            return ret
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
@@ -55,14 +69,27 @@ class C4CUserEdit(generic.edit.UpdateView):
     model = C4CUser
     fields = ['address','birthday']
 
-    def get_context_data(self, **kwargs):
-        context = super(C4CUserEdit, self).get_context_data(**kwargs)
-        viewer = get_object_or_404(C4CUser, user=self.request.user)
-        context['viewerpk'] = viewer.user.pk
-        context['ownerpk'] = int(self.kwargs.get('pk'))
+    def post(self, request, **kwargs):
+        ret = super(C4CUserEdit, self).post(request, **kwargs)
+        ownerpk = int(self.kwargs.get('pk'))
+        viewer = get_object_or_404(User, pk=self.request.user.pk)
+        viewerpk = viewer.pk
 
-        # branches
-        return context
+        if viewerpk != ownerpk:
+            return error403(self.request)
+        else:
+            return ret
+
+    def get(self, request, **kwargs):
+        ret = super(C4CUserEdit, self).get(request, **kwargs)
+        ownerpk = int(self.kwargs.get('pk'))
+        viewer = get_object_or_404(User, pk=self.request.user.pk)
+        viewerpk = viewer.pk
+
+        if viewerpk != ownerpk:
+            return error403(self.request)
+        else:
+            return ret
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
@@ -119,6 +146,11 @@ class ResetPassForm(forms.Form):
 
 def resetpassword(request):
     template_name = 'resetpassword.html'
+
+    # check access permission
+    if request.user.is_authenticated():
+        return error403(request)
+
     if request.method == 'POST':
         form = ResetPassForm(request.POST)
 
