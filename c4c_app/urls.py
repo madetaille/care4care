@@ -18,8 +18,10 @@ urlpatterns = patterns('',
                        url(r'^userjobs/$', login_required(views.userJobs), name='user_jobs'),
                        url(r'^(?P<member_pk>\d+)/userjobs/$', views.userJobs, name='user_jobs'),
                        url(r'^userjobs/$', views.userJobs, name='user_jobs'),
-                       url(r'^jobcreation/$', login_required(views.JobCreation.as_view()), name='job_creation'),
-                       url(r'^(?P<pk>\d+)/jobupdate/$', login_required(views.JobUpdate.as_view()), name='job_update'),
+                       url(r'^jobcreation/$', login_required(lambda request: views.JobCreation(request, offer=True)), name='job_creation'),
+                       url(r'^offercreation/$', login_required(lambda request: views.JobCreation(request, offer=True)), name='offer_creation'),
+                       url(r'^demandcreation/$', login_required(lambda request: views.JobCreation(request, offer=False)), name='demand_creation'),
+                       url(r'^(?P<job_pk>\d+)/jobupdate/$', login_required(views.JobCreation), name='job_update'),
                        # Gift
                        url(r'^donation/$', views.DonationCreation.as_view(), name='donation_creation'),
                        url(r'^donation_detail/(?P<pk>\d+)/$', views.DonationDetail.as_view(), name='donation_detail'),
@@ -41,6 +43,8 @@ urlpatterns = patterns('',
                         url(r'^resetpass/$', views.resetpassword, name='resetpass'),
                        # history
                        url(r'^history/$', views.History.as_view(), name='history'),
+                       #search
+                       url(r'^search/$', views.Search.as_view(), name='search'),
                        # News
                        url(r'^News/$', views.NewsCreation.as_view(), name='news_creation'),
                        url(r'^news_detail/(?P<pk>\d+)/$', views.NewsDetail.as_view(), name='news_detail'),
