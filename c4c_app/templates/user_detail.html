@@ -7,7 +7,7 @@
     {% if viewer.pk == c4cuser.pk %}
         <h2>{% trans "My profile" %}</h2>
     {% else %}
-        <h2 class="text-center">{{ c4cuser.user.username }}{% trans "'s profile" %}</h2>
+        <h2>{{ c4cuser.user.username }}{% trans "'s profile" %}</h2>
     {% endif %}
     <br/>
 
