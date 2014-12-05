@@ -9,6 +9,7 @@ from django.shortcuts import get_object_or_404, render
 from django.utils.translation import ugettext as _
 
 from c4c_app.models import C4CUser
+from django.views import generic
 
 def network(request):#, event_pk=None):
     template_name = 'network.html'
@@ -19,6 +20,22 @@ def add_user_to_network(request):#, event_pk=None):
     template_name = 'add_user_to_network.html'
     if request.method == 'GET':
         return render_to_response(template_name, context_instance=RequestContext(request))
+    
+class PersonalNetwork(generic.ListView):
+    template_name = 'network.html'
+    context_object_name = 'network_list'
+
+    def get_queryset(self):
+        member = get_object_or_404(C4CUser, user=self.request.user)
+        return member.network.all()
+
+def addNetwork(request, c4cuser_pk):
+    user_to_add = get_object_or_404(C4CUser,pk = c4cuser_pk)
+    user = get_object_or_404(C4CUser,pk = request.user)
+
+    user.network.add(user_to_add)
+    return HttpResponseRedirect(reverse('c4c:network'))
+
     
     """ Edit/add an event """
     """if event_pk is not None:
