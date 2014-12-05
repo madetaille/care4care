@@ -13,6 +13,6 @@
     {%endif%}
 	<form action="{%if event %}{% url 'c4c:editevent' event.pk %}{% else %}{% url 'c4c:editevent' %}{% endif %}" method="POST"> {% csrf_token %}
         <table>{{ form }}</table>
-		<button type="submit" class="btn btn-primary">{% trans "Save"%}</button>
+		<button id="event_submit" type="submit" class="btn btn-primary">{% trans "Save"%}</button>
 	</form>
 {% endblock content %}

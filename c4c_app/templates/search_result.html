@@ -2,6 +2,19 @@
 {% load i18n %}
 
 {% block content %}
+        <h3> care4care search </h3>
+        <div style="text-align: center">
+
+             <form action="{% url 'c4c:search' %}"   class="form-inline" role="search" method="get">
+                        <div class="form-group">
+                        <div >
+                                <input type="text" class="form-control" placeholder="Search" style="width:500px" name="search">
+                         </div>
+                         </div>
+                         <input type="submit" value={% trans "Search" %} />
+             </form>
+         </div>
+
     {% if result.1|length != 0 or result.0|length != 0 %}
                 {% if result.0|length != 0 %}
                     <h3>{% trans "Matches for Job" %}</h3>
@@ -36,19 +49,25 @@
                                      <th>{% trans "name" %}</th>
                                      <th>{% trans "last name" %}</th>
                                      <th>{% trans "more details" %}</th>
+                                     {% if user.is_authenticated %}
+                                     <th>{% trans "Action" %}</th>
+                                     {% endif %}
                                  </tr>
                            {% for object in result.1 %}
                                  <tr>
                                      <td>{{ object.username }}</td>
                                     <td>{{ object.first_name }}</td>
                                     <td>{{ object.last_name }}</td>
-                                     <th><a class="btn btn-primary" href={% url 'c4c:user_detail' object.id %}>{% trans "Details"%}</a></th>
+                                     <td><a class="btn btn-primary" href={% url 'c4c:user_detail' object.id %}>{% trans "Details"%}</a></td>
+                                     {% if user.is_authenticated %}
+                                     <td><a class="btn btn-primary" href={% url 'c4c:user_detail' object.id %}>{% trans "Add to network"%}</a></td>
+                                     {% endif %}
                                  </tr>
                            {% endfor %}
                         </table>
                 {% endif %}
     {% else %}
-        <p>{% trans "Your search didn't match any user or Job" %}</p>
+        <p style="text-align:center">{% trans "Your search didn't match any user or Job" %}</p>
     {% endif %}
 
 {% endblock content %}
