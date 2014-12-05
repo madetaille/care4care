@@ -21,7 +21,7 @@ class C4CUser(models.Model):
     time_account = models.IntegerField(default=0)
     birthday = models.DateField()
     network = models.ManyToManyField("self", symmetrical=False, blank=True)
-    avatar = models.ImageField(upload_to="avatars/", blank=True, default=None)
+    avatar = models.ImageField(upload_to="avatars/", blank=True, default=None, null=True)
 
     def get_branches(self):
         """ Get branches to which this user belongs """
