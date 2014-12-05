@@ -4,20 +4,29 @@
 {% block title %}Care4Care - {% trans "Branch detail"%}{% endblock %}
 
 {% block content %}
-    <h1 class="text-center">{{ c4cbranch.name }}</h1>
+    <h1 class="text-center">{{ c4cbranch.name }} {% trans "details" %}</h1>
     <p>{% trans "Address" %}: {{ c4cbranch.address }}</p>
-    <p>{% trans "Main user" %}: {{ c4cbranch.main_user.username }} ({{ c4cbranch.main_user.first_name }} {{ c4cbranch.main_user.last_name }})</p>
+    <p>{% trans "Main user" %}: <a href={% url "c4c:user_detail" c4cbranch.main_user.pk %}>{{ c4cbranch.main_user.first_name }} {{ c4cbranch.main_user.last_name }} ({{ c4cbranch.main_user.username }})</a></p>
 
     <h2>{% trans "List of branch administrators" %}</h2>
     <ul>
-        {% for user in c4cbranch.get_admin %}
-        <li>{{ user }}</li>
-        {% endif %}
+        {% for user in c4cbranch.get_admins %}
+        <li><a href={% url "c4c:user_detail" user.pk %}>{{ user.first_name }} {{ user.last_name }} ({{ user.username }})</a></li>
+        {% empty %}
+        <li>{% trans "There are no users in this branch." %}</li>
+        {% endfor %}
     </ul>
 
-    {% if c4cuser in c4cbranch.get_users %}
-        <p>{% trans "You already belong to this branch" %}</p>
-    {% else %}
-        <a href="" class="btn btn-primary">{% trans "Join this branch" %}</a>
+    <br/>
+    {% if user.is_authenticated %}
+        {% if user in c4cbranch.get_users %}
+            <a href={% url "c4c:remove_from_branch" pk %} class="btn btn-primary">{% trans "Leave this branch" %}</a>
+        {% else %}
+            <a href={% url "c4c:add_to_branch" pk %} class="btn btn-primary">{% trans "Join this branch" %}</a>
+        {% endif %}
     {% endif %}
 {% endblock content %}
+
+{% block help %}
+{% trans "This contains detailed information about a branch. If you're logged in, you can also join the branch or leave it from this page." %}
+{% endblock help %}

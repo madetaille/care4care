@@ -32,7 +32,6 @@ class UserDetail(generic.DetailView):
 
         # get branches
         context['branches'] = self.object.get_branches()
-        context['not_empty_br'] = len(self.object.get_branches()) != 0
         return context
 
 class UserEdit(generic.edit.UpdateView):
@@ -164,10 +163,10 @@ def resetpassword(request):
             user = get_object_or_404(User, email=email)
             user.set_password(password)
             user.save()
-            
+
             subject = _('Reset of your password !')
             from_email, to = settings.EMAIL_HOST_USER, email
-    
+
             htmly = get_template('email_reset_password.html')
 
             d = Context({'password' : password, 'user_email' : user})
@@ -175,7 +174,7 @@ def resetpassword(request):
             msg = EmailMultiAlternatives(subject, '', from_email, [to])
             msg.attach_alternative(html_content, "text/html")
             msg.send()
-    
+
             return HttpResponseRedirect(reverse('c4c:login'))
 
     else:
@@ -183,17 +182,3 @@ def resetpassword(request):
 
     return render(request, template_name, {'form': form})
 
-class PersonalNetwork(generic.ListView):
-    template_name = 'network.html'
-    context_object_name = 'network_list'
-
-    def get_queryset(self):
-        member = get_object_or_404(C4CUser, user=self.request.user)
-        return member.network.all()
-
-def addNetwork(request, c4cuser_pk):
-    user_to_add = get_object_or_404(C4CUser,pk = c4cuser_pk)
-    user = get_object_or_404(C4CUser,pk = request.user)
-
-    user.network.add(user_to_add)
-    return HttpResponseRedirect(reverse('c4c:network'))

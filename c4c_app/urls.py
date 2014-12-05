@@ -32,10 +32,10 @@ urlpatterns = patterns('',
                        url(r'^alldonationReceived/$', views.AllDonation_received.as_view(), name='donation_list_R'),
                        url(r'^error/$', login_required(views.DonationError), name='donation_error'),
                        # User
-                       url(r'^userdetail/(?P<pk>\d+)/$', views.UserDetail.as_view(), name='user_detail'),
-                       url(r'^useredit/(?P<pk>\d+)/$', views.UserEdit.as_view(), name='user_edit'),
-                       url(r'^c4cedit/(?P<pk>\d+)/$', views.C4CUserEdit.as_view(), name='c4cuser_edit'),
-                       url(r'^chpassword/(?P<pk>\d+)/$', views.chPassword, name='chPassword'),
+                       url(r'^userdetail/(?P<pk>\d+)/$', login_required(views.UserDetail.as_view()), name='user_detail'),
+                       url(r'^useredit/(?P<pk>\d+)/$', login_required(views.UserEdit.as_view()), name='user_edit'),
+                       url(r'^c4cedit/(?P<pk>\d+)/$', login_required(views.C4CUserEdit.as_view()), name='c4cuser_edit'),
+                       url(r'^chpassword/(?P<pk>\d+)/$', login_required(views.chPassword), name='chPassword'),
                        url(r'^network/$', login_required(views.network), name='network'),  # views.PersonalNetwork.as_view(), name='network'),
                        url(r'^add_user_to_network/$', login_required(views.add_user_to_network), name='add_user_to_network'),
                        url(r'^(?P<c4cuser_pk>\d+)/addnetwork', views.addNetwork, name='add_network'),
@@ -46,6 +46,8 @@ urlpatterns = patterns('',
                        url(r'^resetpass/$', views.resetpassword, name='resetpass'),
                        # history
                        url(r'^history/$', views.History.as_view(), name='history'),
+                       # search
+                       url(r'^search/$', views.Search.as_view(), name='search'),
                        # News
                        url(r'^News/$', views.NewsCreation.as_view(), name='news_creation'),
                        url(r'^news_detail/(?P<pk>\d+)/$', views.NewsDetail.as_view(), name='news_detail'),
@@ -53,6 +55,9 @@ urlpatterns = patterns('',
                        url(r'^allNews/$', views.AllNews.as_view(), name='all_news_list'),
                        # Branch
                        url(r'^branchdetail/(?P<pk>\w+)/$', views.BranchDetail.as_view(), name='branch_detail'),
+                       url(r'^addtobranch/(?P<pk>\w+)/$', views.add_to_branch, name='add_to_branch'),
+                       url(r'^removefrombranch/(?P<pk>\w+)/$', views.remove_from_branch, name='remove_from_branch'),
+                       url(r'^branchlist/$', views.BranchList.as_view(), name='branchlist'),
                        # Agenda
                        url(r'^agenda/$', login_required(views.AgendaYear), name='agenda'),
                        url(r'^agenda/(\d+)/$', login_required(views.AgendaYear), name='agenda'),
