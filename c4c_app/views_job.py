@@ -303,9 +303,9 @@ class Feeds(generic.ListView):
         jobs = []
         res = []
         for usr in users:
-            if usr != user:
-                jobs.append(C4CJob.objects.filter(created_by=usr.user, complete=False, start_date__gte=datetime.date.today()))
 
+            jobs.append(C4CJob.objects.filter(created_by=usr.user, complete=False, start_date__gte=datetime.date.today()))
+                
         demands = []
         offers = []
         for jobs_usr in jobs:
