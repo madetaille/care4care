@@ -24,7 +24,6 @@ class Search(generic.ListView):
                 user_list += list(User.objects.filter(first_name__icontains = word_search))
                 user_list += list(User.objects.filter(username__icontains = word_search))
 
-            print((job_list,user_list))
             job_list = set(job_list)
             user_list = set(user_list)
             history_list = [job_list, user_list]
