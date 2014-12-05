@@ -19,9 +19,9 @@ class Search(generic.ListView):
                 job_list += list(C4CJob.objects.filter(title__icontains = word_search))
                 job_list += list(C4CJob.objects.filter(description__icontains = word_search))
                 job_list += list(C4CJob.objects.filter(location__icontains = word_search))
-                user_list += list(User.objects.filter(last_name = word_search))
-                user_list += list(User.objects.filter(first_name = word_search))
-                user_list += list(User.objects.filter(username = word_search))
+                user_list += list(User.objects.filter(last_name__icontains = word_search))
+                user_list += list(User.objects.filter(first_name__icontains = word_search))
+                user_list += list(User.objects.filter(username__icontains = word_search))
 
             job_list = set(job_list)
             user_list = set(user_list)

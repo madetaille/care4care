@@ -16,7 +16,6 @@ from django.template.loader import get_template
 from django.utils import timezone
 from django.utils.translation import ugettext as _
 from django.views import generic
-from django.views.generic.edit import UpdateView
 
 from c4c import settings
 from c4c_app.models import C4CUser, C4CJob, C4CEvent
@@ -140,8 +139,10 @@ def doneJob(request, c4cjob_id):
     job.duration = request.POST['Duration']
     job.end_date = timezone.now()
     job.save()
-    event = get_object_or_404(C4CEvent, job=job, user=request.user)
-    event.delete()
+    
+    if C4CEvent.objects.filter(job=job, user=request.user).exists():
+        event = C4CEvent.objects.get(job=job, user=request.user)
+        event.delete()
 
     send_email_done_job(job)
     return HttpResponseRedirect(reverse('c4c:job_detail', args=(job.id,)))
@@ -157,8 +158,10 @@ def confirmJob(request, c4cjob_id):
     job.complete = True
     job.save()
 
-    event = get_object_or_404(C4CEvent, job=job, user=request.user)
-    event.delete()
+    if C4CEvent.objects.filter(job=job, user=request.user).exists():
+        event = C4CEvent.objects.get(job=job, user=request.user)
+        event.delete()
+        
     send_email_confirm(job)
     return HttpResponseRedirect(reverse('c4c:job_detail', args=(job.id,)))
 
@@ -191,10 +194,14 @@ def cancelJob(request, c4cjob_id):
             return error403(request)
 
         send_email_canceled_demand(job)
-        event1 = get_object_or_404(C4CEvent, job=job, user=job.done_by)
-        event2 = get_object_or_404(C4CEvent, job=job, user=job.asked_by)
-        event1.delete()
-        event2.delete()
+        
+        if C4CEvent.objects.filter(job=job, user=job.done_by).exists():
+            event1 = get_object_or_404(C4CEvent, job=job, user=job.done_by)
+            event1.delete()
+        if C4CEvent.objects.filter(job=job, user=job.asked_by).exists():
+            event2 = get_object_or_404(C4CEvent, job=job, user=job.asked_by)
+            event2.delete()
+            
         job.done_by = None
     else:
 
@@ -202,10 +209,14 @@ def cancelJob(request, c4cjob_id):
             return error403(request)
 
         send_email_canceled_offer(job)
-        event1 = get_object_or_404(C4CEvent, job=job, user=job.done_by)
-        event2 = get_object_or_404(C4CEvent, job=job, user=job.asked_by)
-        event1.delete()
-        event2.delete()
+        
+        if C4CEvent.objects.filter(job=job, user=job.done_by).exists():
+            event1 = get_object_or_404(C4CEvent, job=job, user=job.done_by)
+            event1.delete()
+        if C4CEvent.objects.filter(job=job, user=job.asked_by).exists():
+            event2 = get_object_or_404(C4CEvent, job=job, user=job.asked_by)
+            event2.delete()
+            
         job.asked_by = None
     job.save()
 
@@ -228,11 +239,13 @@ def deleteJob(request, c4cjob_id):
 
         send_email_delete_offer(job)
 
-    if(job.asked_by is not None and job.done_by is not None):
+    if C4CEvent.objects.filter(job=job, user=job.done_by).exists():
         event1 = get_object_or_404(C4CEvent, job=job, user=job.done_by)
-        event2 = get_object_or_404(C4CEvent, job=job, user=job.asked_by)
         event1.delete()
+    if C4CEvent.objects.filter(job=job, user=job.asked_by).exists():
+        event2 = get_object_or_404(C4CEvent, job=job, user=job.asked_by)
         event2.delete()
+            
     job.delete()
     return HttpResponseRedirect(reverse('c4c:user_jobs'))
 

@@ -1,11 +1,15 @@
+from django.conf import settings
 from django.conf.urls import patterns, url
 from django.contrib.auth.decorators import login_required
+from django.views.generic.base import TemplateView
 
 from c4c_app import views
 urlpatterns = patterns('',
 
                        # Home
                        url(r'^$', views.Feeds.as_view(template_name='index.html'), name='home'),
+                       # Media
+                       url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
                        # Jobs
                        url(r'^feeds/$', views.Feeds.as_view(), name='feeds'),
                        url(r'^jobdetail/(?P<pk>\d+)/$', views.JobDetail.as_view(), name='job_detail'),
@@ -40,11 +44,11 @@ urlpatterns = patterns('',
                        url(r'^registration/$', views.view_registration, name='registration'),
                        url(r'^login/$', views.user_login, name='login'),
                        url(r'^logout/$', views.user_logout, name='logout'),
-                       #Reset password
-                        url(r'^resetpass/$', views.resetpassword, name='resetpass'),
+                       # Reset password
+                       url(r'^resetpass/$', views.resetpassword, name='resetpass'),
                        # history
                        url(r'^history/$', views.History.as_view(), name='history'),
-                       #search
+                       # search
                        url(r'^search/$', views.Search.as_view(), name='search'),
                        url(r'^searchnetwork/$', views.SearchNetwork.as_view(), name='search_network'),
                        # News
@@ -56,7 +60,7 @@ urlpatterns = patterns('',
                        url(r'^branchdetail/(?P<pk>\w+)/$', views.BranchDetail.as_view(), name='branch_detail'),
                        url(r'^addtobranch/(?P<pk>\w+)/$', views.add_to_branch, name='add_to_branch'),
                        url(r'^removefrombranch/(?P<pk>\w+)/$', views.remove_from_branch, name='remove_from_branch'),
-                       url(r'^branchlist/$',views.BranchList.as_view(), name='branchlist'),
+                       url(r'^branchlist/$', views.BranchList.as_view(), name='branchlist'),
                        # Agenda
                        url(r'^agenda/$', login_required(views.AgendaYear), name='agenda'),
                        url(r'^agenda/(\d+)/$', login_required(views.AgendaYear), name='agenda'),
@@ -69,11 +73,15 @@ urlpatterns = patterns('',
                        url(r'^event/(\d+)/$', login_required(views.AgendaEvent), name='event'),
                        # Stat
                        url(r'^stat/$', views.stat, name='stat'),
+                       # Admin
+                       url(r'^admin/stat/$', views.GraphsView, name='statuser'),
+                       url(r'^admin/stat/line$', views.GraphsViewBar, name='statuserbar'),
+
                        # News
                        #url(r'^news/$', views.news, name = 'news'),
                        # What is Care 4 Care ?
                        url(r'^whatisc4c/$', views.whatisc4c, name='whatisc4c'),
                        url(r'^aboutus/$', views.aboutus, name='aboutus'),
-                       url(r'^sendemail/(?P<pk>\d+)/$', login_required(views.send_email),name = 'send_email'),
-                       url(r'^sendemailuser/(?P<pk>\d+)/$', login_required(views.send_email_user),name = 'send_user_email')
+                       url(r'^sendemail/(?P<pk>\d+)/$', login_required(views.send_email), name='send_email'),
+                       url(r'^sendemailuser/(?P<pk>\d+)/$', login_required(views.send_email_user), name='send_user_email')
                        )
