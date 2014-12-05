@@ -5,10 +5,7 @@
 
 
 {% block content %}
-<a class="btn btn-default" href="{% url 'c4c:donation_list_M' %}"> {% trans "All Donation Made"%} </a>
-<a class="btn btn-default" href="{% url 'c4c:donation_list_R' %}"> {% trans "All Donation Received"%} </a>
-        <fieldset >
-            <legend > {% trans "Donation"%}  </legend>
+    <h2>New donation</h2>
     <form action="" method="post" role="form" class="form-horizontal">{% csrf_token %}
         {{ form.as_p }}
         <div class="form-group">
@@ -18,9 +15,6 @@
             </div>
         </div>
     </form>
-        </fieldset>
-
-
 {% endblock content %}
 
 {% block help %}
