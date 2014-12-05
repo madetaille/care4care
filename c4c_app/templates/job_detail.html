@@ -41,31 +41,31 @@
 	
 	{% if user.is_authenticated %}		
 	    {% if c4cjob.done_by == None and c4cjob.asked_by.pk != member.pk %}
-	        <a type="button" class="btn btn-primary btn-block" href="{% url 'c4c:accept_job' c4cjob.id %}">{% trans "I will do it!" %}</a>
+	        <a id="accept" type="button" class="btn btn-primary btn-block" href="{% url 'c4c:accept_job' c4cjob.id %}">{% trans "I will do it!" %}</a>
 		{% elif c4cjob.asked_by == None and c4cjob.done_by.pk != member.pk %}
-	        <a type="button" class="btn btn-primary btn-block" href="{% url 'c4c:accept_job' c4cjob.id %}">{% trans "I need this!" %}</a>
+	        <a id="accept" type="button" class="btn btn-primary btn-block" href="{% url 'c4c:accept_job' c4cjob.id %}">{% trans "I need this!" %}</a>
 		{% elif c4cjob.end_date == None and c4cjob.done_by.pk == member.pk and c4cjob.done_by != None and c4cjob.asked_by != None %}
 	        <form action="{% url 'c4c:done_job' c4cjob.id %}" method="post">
 	            {% csrf_token %}
 	            <input type="number" name="Duration" />
-	            <button type="submit" class="btn btn-primary">{% trans "Done" %}</button>
+	            <button id="done" type="submit" class="btn btn-primary">{% trans "Done" %}</button>
 	        </form>
 		{% elif c4cjob.complete == False and c4cjob.asked_by.pk == member.pk and c4cjob.end_date != None %}
             <div class="row">
                 <div class="col-sm-6">
-	               <a type="button" class="btn btn-primary btn-block" href="{% url 'c4c:confirm_job' c4cjob.id %}">{% trans "Confirm" %}</a>
+	               <a id="confirm" type="button" class="btn btn-primary btn-block" href="{% url 'c4c:confirm_job' c4cjob.id %}">{% trans "Confirm" %}</a>
 	            </div>
 	            <div class="col-sm-6">
-	               <a type="button" class="btn btn-primary btn-block" href="{% url 'c4c:report_job' c4cjob.id %}">{% trans "Report" %}</a>
+	               <a id="report" type="button" class="btn btn-primary btn-block" href="{% url 'c4c:report_job' c4cjob.id %}">{% trans "Report" %}</a>
 	            </div>
 	        </div>
 		{% endif %}
 		
 		{% if c4cjob.end_date == None and c4cjob.done_by != None and c4cjob.asked_by != None %}
 			{% if c4cjob.offer == True and c4cjob.asked_by.pk == member.pk  %}
-	            <a type="button" class="btn btn-primary btn-block" href="{% url 'c4c:cancel_job' c4cjob.id %}">{% trans "Cancel" %}</a>
+	            <a id="cancel" type="button" class="btn btn-primary btn-block" href="{% url 'c4c:cancel_job' c4cjob.id %}">{% trans "Cancel" %}</a>
 			{% elif c4cjob.offer == False and c4cjob.done_by.pk == member.pk %}
-	            <a type="button" class="btn btn-primary btn-block" href="{% url 'c4c:cancel_job' c4cjob.id %}">{% trans "Cancel" %}</a>
+	            <a id="cancel" type="button" class="btn btn-primary btn-block" href="{% url 'c4c:cancel_job' c4cjob.id %}">{% trans "Cancel" %}</a>
 			{% endif %}
 		{% endif %}
 		
@@ -73,19 +73,19 @@
 		    {% if c4cjob.offer == True and c4cjob.done_by.pk == member.pk  %}
 			     <div class="row">
 			         <div class="col-sm-6">
-                        <a type="button" class="btn btn-primary btn-block" href="{% url 'c4c:delete_job' c4cjob.id %}">{% trans "Delete" %}</a>
+                        <a id="delete" type="button" class="btn btn-primary btn-block" href="{% url 'c4c:delete_job' c4cjob.id %}">{% trans "Delete" %}</a>
                      </div>
                      <div class="col-sm-6">
-                        <a type="button" class="btn btn-primary btn-block" href="{% url 'c4c:job_update' c4cjob.pk %}">{% trans "Update" %}</a>
+                        <a id="update" type="button" class="btn btn-primary btn-block" href="{% url 'c4c:job_update' c4cjob.pk %}">{% trans "Update" %}</a>
                      </div>
                  </div>
 			{% elif c4cjob.offer == False and c4cjob.asked_by.pk == member.pk %}
                  <div class="row">
                      <div class="col-sm-6">
-                        <a type="button" class="btn btn-primary btn-block" href="{% url 'c4c:delete_job' c4cjob.id %}">{% trans "Delete" %}</a>
+                        <a id="delete" type="button" class="btn btn-primary btn-block" href="{% url 'c4c:delete_job' c4cjob.id %}">{% trans "Delete" %}</a>
                      </div>
                      <div class="col-sm-6">
-                        <a type="button" class="btn btn-primary btn-block" href="{% url 'c4c:job_update' c4cjob.pk %}">{% trans "Update" %}</a>
+                        <a id="update" type="button" class="btn btn-primary btn-block" href="{% url 'c4c:job_update' c4cjob.pk %}">{% trans "Update" %}</a>
                      </div>
                  </div>
             {% endif %}

@@ -24,8 +24,8 @@
 	{% endif %}
 	
 	<div class="row">
-        <div class="col-sm-6"><a class="btn btn-primary btn-block btn-lg" href="{% url 'c4c:demand_creation' %}">{% trans "I NEED HELP!"%}</a></div>
-        <div class="col-sm-6"><a class="btn btn-primary btn-block btn-lg" href="{% url 'c4c:offer_creation' %}">{% trans "I WANT TO HELP!"%}</a></div>
+        <div id="button_need" class="col-sm-6"><a class="btn btn-primary btn-block btn-lg" href="{% url 'c4c:demand_creation' %}">{% trans "I NEED HELP!"%}</a></div>
+        <div id="button_want" class="col-sm-6"><a class="btn btn-primary btn-block btn-lg" href="{% url 'c4c:offer_creation' %}">{% trans "I WANT TO HELP!"%}</a></div>
     </div>
 	{% if all_jobs_list %}
 		<div class="row">
