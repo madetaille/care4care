@@ -8,7 +8,7 @@
 			{% if forloop.counter == 1%}
             <h3 class="text-center">{% trans "Ongoing" %}</h3>
 				{% for job in kind %}
-				<div class="panel panel-default" onclick="location.href='{% url 'c4c:job_detail' job.id %}'">
+				<div id="job" class="panel panel-default" onclick="location.href='{% url 'c4c:job_detail' job.id %}'">
 					<div class="panel-heading">
 						<h3 class="panel-title"> {{job.title}} </h3>
 					</div>
@@ -24,7 +24,7 @@
 			{% elif forloop.counter == 2%}
             <h3 class="text-center">{% trans "Outdated" %}</h3>
 				{% for job in kind %}
-				<div class="panel panel-default" onclick="location.href='{% url 'c4c:job_detail' job.id %}'">
+				<div id="job" class="panel panel-default" onclick="location.href='{% url 'c4c:job_detail' job.id %}'">
 					<div class="panel-heading">
 						<h3 class="panel-title"> {{job.title}} </h3>
 					</div>
@@ -40,7 +40,7 @@
 			{% elif forloop.counter == 3 %}
             <h3 class="text-center">{% trans "My Demands" %}</h3>
 				{% for job in kind %}
-				<div class="panel panel-default" onclick="location.href='{% url 'c4c:job_detail' job.id %}'">
+				<div id="job" class="panel panel-default" onclick="location.href='{% url 'c4c:job_detail' job.id %}'">
 					<div class="panel-heading">
 						<h3 class="panel-title"> {{job.title}} </h3>
 					</div>
@@ -56,7 +56,7 @@
 			{% elif forloop.counter == 4 %}
             <h3 class="text-center">{% trans "My Offers" %}</h3>
 				{% for job in kind %}
-				<div class="panel panel-default" onclick="location.href='{% url 'c4c:job_detail' job.id %}'">
+				<div id="job" class="panel panel-default" onclick="location.href='{% url 'c4c:job_detail' job.id %}'">
 					<div class="panel-heading">
 						<h3 class="panel-title"> {{job.title}} </h3>
 					</div>
@@ -72,7 +72,7 @@
 			{% elif forloop.counter == 5 %}
             <h3 class="text-center">{% trans "Created jobs" %}</h3>
 				{% for job in kind %}
-				<div class="panel panel-default" onclick="location.href='{% url 'c4c:job_detail' job.id %}'">
+				<div id="job" class="panel panel-default" onclick="location.href='{% url 'c4c:job_detail' job.id %}'">
 					<div class="panel-heading">
 						<h3 class="panel-title"> {{job.title}} </h3>
 					</div>

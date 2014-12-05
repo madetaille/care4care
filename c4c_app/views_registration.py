@@ -6,12 +6,15 @@ from django.http import HttpResponseRedirect
 from django.forms.fields import DateField
 from django.contrib.admin import widgets
 
+from django.utils import translation
+from django.utils.translation import ugettext as _
+
 class UserForm(forms.Form):
-    username = forms.CharField(label='Your name', max_length=100)
-    password = forms.CharField(label='Password', max_length=10,widget=forms.PasswordInput)
-    email = forms.EmailField(label='Email', max_length=50)
-    first_name = forms.CharField(label='First name', max_length=40)
-    last_name = forms.CharField(label='Last name', max_length=40)
+    username = forms.CharField(label=_('Your name'), max_length=100)
+    password = forms.CharField(label=_('Password'), max_length=10,widget=forms.PasswordInput)
+    email = forms.EmailField(label=_('Email'), max_length=50)
+    first_name = forms.CharField(label=_('First name'), max_length=40)
+    last_name = forms.CharField(label=_('Last name'), max_length=40)
     address = forms.CharField(max_length=300)
     birthday = DateField(widget=widgets.AdminDateWidget)
 

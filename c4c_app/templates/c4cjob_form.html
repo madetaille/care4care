@@ -5,9 +5,9 @@
 
 {% block content %}
 	<form method="post">{% csrf_token %}
-		<input type="radio" name="kind" value="offer" checked>Offer
+		<input type="radio" name="kind" value="offer">{% trans "Offer"%}
 	    <br/>
-	    <input type="radio" name="kind" value="demand" checked>Demand
+	    <input type="radio" name="kind" value="demand" checked>{% trans "Demand"%}
 		<br/>
         {% trans "Title" %} :
         <input type="text" name="title" maxlength="100" value = {{c4cjob.title}}>
@@ -27,6 +27,6 @@
         <br>
         <br>
 
-    <input type="submit" value={% trans "Submit" %} />
+    <input id="jobcreation_submit" type="submit" value={% trans "Submit" %} />
 	</form>
 {% endblock content %}

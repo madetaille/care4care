@@ -1,54 +1,89 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block title %}Care4Care{% endblock %}
+{% block title %}Care4Care - {{ member.user.first_name }} {{ member.user.last_name }}{% trans "'s Agenda"%}{% endblock %}
 
 {% block content %}
-	<a href= "{% url 'c4c:month' user.pk year month 'prev' %}">&lt;&lt; Prev </a>
-	<a href= "{% url 'c4c:month' user.pk year month 'next' %}">Next &gt;&gt;</a>
-	
-	<h4>{{ mname }} {{ year }}</h4>
+    <h2>{{ member.user.first_name }} {{ member.user.last_name }}{% trans "'s Agenda"%}</h2>
+    <h3>{{ mname }} {{ year }}</h3>
+    <nav>
+        <div class="text-center">
+            <ul class="pagination pagination-lg">
+                <li><a href="{% url 'c4c:agenda' member.pk year|add:'-1' %}"><span aria-hidden="true">&laquo;</span><span class="sr-only">{% trans "Previous"%}</span></a></li>
+                <li><a href="{% url 'c4c:agenda' member.pk year|add:'-3' %}">{{ year|add:'-3' }}</a></li>
+                <li><a href="{% url 'c4c:agenda' member.pk year|add:'-2' %}">{{ year|add:'-2' }}</a></li>
+                <li><a href="{% url 'c4c:agenda' member.pk year|add:'-1' %}">{{ year|add:'-1' }}</a></li>
+                <li class="active"><a href="{% url 'c4c:agenda' member.pk year %}">{{ year }}</a></li>
+                <li><a href="{% url 'c4c:agenda' member.pk year|add:'1' %}">{{ year|add:'1' }}</a></li>
+                <li><a href="{% url 'c4c:agenda' member.pk year|add:'2' %}">{{ year|add:'2' }}</a></li>
+                <li><a href="{% url 'c4c:agenda' member.pk year|add:'3' %}">{{ year|add:'3' }}</a></li>
+                <li><a href="{% url 'c4c:agenda' member.pk year|add:'1' %}"><span class="sr-only">{% trans "Next"%}</span><span aria-hidden="true">&raquo;</span></a></li>
+            </ul>
+            <ul class="pagination pagination-sm">
+                <li><a href="{% url 'c4c:agenda' member.pk year %}">{% trans "All year"%} <span class="sr-only">{% trans "(current)"%}</span></a></li>
+                {% for nmonth in months %}
+                    <li {% if month == nmonth.n %}class="active"{% endif %}><a href="{% url 'c4c:month' member.pk year nmonth.n %}">{{ nmonth.name }} {% if nmonth.nb_entry %}<span class="badge">{{ nmonth.nb_entry }}{% endif %}</span></a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </nav>
 	
 	<div class="month">
-	    <table>
-	
-	    <tr>
-	        <td class="empty">Mon</td>
-	        <td class="empty">Tue</td>
-	        <td class="empty">Wed</td>
-	        <td class="empty">Thu</td>
-	        <td class="empty">Fri</td>
-	        <td class="empty">Sat</td>
-	        <td class="empty">Sun</td>
-	    </tr>
-	
-	    {% for week in month_days %}
-	        <tr>
-	        {% for day, entries, current in week %}
-	
-	            <!-- TD style: empty | day | current; onClick handler and highlight  -->
-	            <td class= {% if day == 0 %}"empty"{% endif %}
-	            {% if day != 0 and not current %}"day"{% endif %}
-	            {% if day != 0 and current %}"current"{% endif %}
-	            {% if day != 0 %}
-	                onClick="parent.location='{% url 'c4c:day' user.pk year month day %}'"
-	                onMouseOver="this.bgColor='#eeeeee';"
-	                onMouseOut="this.bgColor='white';"
-	            {% endif %} >
-	
-	            <!-- Day number and entry snippets -->
-	            {% if day != 0 %}
-	                {{ day }}
-	                {% for entry in entries %}
-	                    <br />
-	                    <b>{{ entry.user }}</b>: {{ entry.short|safe }}
-	                {% endfor %}
-	            {% endif %}
-	            </td>
-	        {% endfor %}
-	        </tr>
-	    {% endfor %}
+	    <table class="table">
+		    <tr>
+		        <th class="empty">{% trans "Mon"%}</th>
+		        <th class="empty">{% trans "Tue"%}</th>
+		        <th class="empty">{% trans "Wed"%}</th>
+		        <th class="empty">{% trans "Thu"%}</th>
+		        <th class="empty">{% trans "Fri"%}</th>
+		        <th class="empty">{% trans "Sat"%}</th>
+		        <th class="empty">{% trans "Sun"%}</th>
+		    </tr>
+
+		    {% for week in month_days %}
+		        <tr>
+			        {% for day, entries, current in week %}
+			            <!-- TD style: empty | day | current; onClick handler and highlight  -->
+			            <td class= {% if day == 0 %}"empty"{% endif %}
+			            {% if day != 0 and not current %}"day"{% endif %}
+			            {% if day != 0 and current %}"current"{% endif %}
+			            {% if day != 0 %}
+			                onClick="parent.location='{% url 'c4c:day' member.pk year month day %}'"
+			                onMouseOver="this.bgColor='#eeeeee';"
+			                onMouseOut="this.bgColor='white';"
+			            {% endif %} >
+			
+			            <!-- Day number and entry snippets -->
+			            {% if day != 0 %}
+			                <a href="{% url 'c4c:day' member.pk year month day %}">
+			                <span aria-hidden="true">{{ day }}</span> 
+			                <span class="sr-only">{{ day }} {{ nmonth }} {{ year }}</span>
+			                {% if entries|length != 0 %}<span class="badge">{{ entries | length }} <span class="sr-only">{% trans "events this day"%}</span>{% endif %}</a>
+			            {% endif %}
+			            </td>
+			        {% endfor %}
+		        </tr>
+		    {% endfor %}
 	    </table>
-	
-	    <div class="clear"></div>
+	    
+	    <table class="table table-bordered table-hover">
+		    <tr>
+	            <th>{% trans "Date"%}</th>
+	            <th>{% trans "Name"%}</th>
+	        </tr>
+		    {% for week in month_days %}
+		       {% for day, entries, current in week %}
+		           {% for entry in entries %}
+		               <tr>
+	                        <td><a href="{% url 'c4c:event' entry.pk %}">{{ entry.date }}</a></td>
+	                        <td><a href="{% url 'c4c:event' entry.pk %}">{{ entry.name }}</a></td>
+	                    </tr>
+	               {% endfor %}
+	           {% endfor %}
+	        {% endfor %}
+        </table>
+	    {% if user.pk == member.user.pk %}
+	       <a href="{% url 'c4c:editevent' %}" class="btn btn-primary btn-block">{% trans "Create new event" %}</a>
+	    {% endif %} 
 	</div>
 {% endblock content %}

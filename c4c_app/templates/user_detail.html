@@ -1,17 +1,17 @@
-{% extends "base.html" %}
+{% extends "base.html" %} 
 {% load i18n %}
 
-{% block title %}{% if viewer.pk == c4cuser.pk %} Care4Care - My profile {% else %} Care4Care - {{ c4cuser.user.username }}'s profile {% endif %}{% endblock %}
+{% block title %}{% if viewer.pk == c4cuser.pk %} Care4Care - {% trans "My profile"%} {% else %} Care4Care - {{ c4cuser.user.username }}{% trans "'s profile"%} {% endif %}{% endblock %}
 
 {% block content %}
     {% if viewer.pk == c4cuser.pk %}
-    <h1 class="text-center">{% trans "My profile" %}"</h1>
+<h1 class="text-center">{% trans "My profile" %}</h1>
     {% else %}
-    <h1 class="text-center">{{ c4cuser.user.username }}{% trans "'s profile" %}"</h1>
+<h1 class="text-center">{{ c4cuser.user.username }}{% trans "'s profile" %}</h1>
     {% endif %}
     <br/>
 
-<h2> {% trans "User details: " %}"</h2>
+<h2> {% trans "User details: " %}</h2>
     <ul>
         <li>{% trans "Username: " %} {{ c4cuser.user.username }}</li>
         <li>{% trans "First name: "%} {{ c4cuser.user.first_name }}</li>

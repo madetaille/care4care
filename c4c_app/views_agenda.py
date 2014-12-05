@@ -1,68 +1,88 @@
-from django.shortcuts import get_object_or_404, render, render_to_response
-from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
-from django.core.urlresolvers import reverse
-from django.core.context_processors import csrf
-from django.forms.models import modelformset_factory
-from datetime import date, timedelta
-from django.utils import timezone
 import calendar
+from datetime import date, timedelta
 import time
 
-from c4c_app.models import C4CEvent, C4CUser
+from django.contrib.auth.decorators import login_required
+from django.core.context_processors import csrf
+from django.core.urlresolvers import reverse
+from django.forms import ModelForm
+from django.http import HttpResponseRedirect, HttpResponseNotFound
+from django.shortcuts import get_object_or_404, render
+from django.utils.translation import ugettext as _
 
-mnames = "January February March April May June July August September October November December"
+from c4c_app.models import C4CEvent, C4CUser
+mnames = _("January February March April May June July August September October November December")
 mnames = mnames.split()
 
-def year(request, member_pk=None, year=None):
+
+def _get_monthes_for_year(member, year):
+    nowy, nowm = time.localtime()[:2]
+
+    mlst = []
+    for n, month in enumerate(mnames):
+        current = False   # are there entry(s) for this month; current month?
+        entries = C4CEvent.objects.filter(date__year=year, date__month=n + 1, user=member.user)
+
+        if year == nowy and n + 1 == nowm:
+            current = True
+
+        mlst.append(dict(n=n + 1, name=month, nb_entry=len(entries), entries=entries, current=current))
+    return mlst
+
+
+def AgendaYear(request, member_pk=None, year=None):
     """Main listing, years and months; three years per page."""
     # prev / next years
-    
-    member=None
-    if member_pk: member = get_object_or_404(C4CUser, pk=member_pk)
-    else: member = get_object_or_404(C4CUser, user=request.user)
-    
-    if year: year = int(year)
-    else:    year = time.localtime()[0]
+    member = None
+    if member_pk:
+        member = get_object_or_404(C4CUser, pk=member_pk)
+    else:
+        member = get_object_or_404(C4CUser, user=request.user)
 
-    nowy, nowm = time.localtime()[:2]
-    lst = []
+    if member != request.user.c4cuser and not member.network.filter(pk=request.user.pk).exists():
+        return HttpResponseNotFound('<h1>Page not found</h1>')
+
+    if year:
+        year = int(year)
+    else:
+        year = time.localtime()[0]
 
     # create a list of months for each year, indicating ones that contain entries and current
-    for y in [year]:
-        mlst = []
-        for n, month in enumerate(mnames):
-            entry = current = False   # are there entry(s) for this month; current month?
-            entries = C4CEvent.objects.filter(date__year=y, date__month=n+1, user=member.user)
+    mlst = _get_monthes_for_year(member, year)
 
-            if entries:
-                entry = True
-            if y == nowy and n+1 == nowm:
-                current = True
-            mlst.append(dict(n=n+1, name=month, entry=entry, current=current))
-        lst.append((y, mlst))
-        
-    context={'years':lst, 'user':member, 'year':year}
-    
-    return render(request,"agenda.html", context)
+    has_entries = False
+    for month in mlst:
+        if len(month["entries"]) != 0:
+            has_entries = True
+
+    context = {'months': mlst, 'member': member, 'year': year, 'has_entries': has_entries}
+
+    return render(request, "agenda.html", context)
 
 
-def month(request, member_pk, year, month, change=None):
-    
-    member=None
-    if member_pk: member = get_object_or_404(C4CUser, pk=member_pk)
-    else: member = get_object_or_404(C4CUser, user=request.user)
-    
+def AgendaMonth(request, member_pk, year, month, change=None):
     """Listing of days in `month`."""
+
+    member = None
+    if member_pk:
+        member = get_object_or_404(C4CUser, pk=member_pk)
+    else:
+        member = get_object_or_404(C4CUser, user=request.user)
+
+    if member != request.user.c4cuser and not member.network.filter(pk=request.user.pk).exists():
+        return HttpResponseNotFound('<h1>Page not found</h1>')
+
     year, month = int(year), int(month)
 
     # apply next / previous change
     if change in ('next', 'prev'):
         now, mdelta = date(year, month, 15), timedelta(days=31)
-        if change == 'next':   mod = mdelta
-        elif change == 'prev': mod = -mdelta
+        if change == 'next':
+            mod = mdelta
+        elif change == 'prev':
+            mod = -mdelta
 
-        year, month = (now+mod).timetuple()[:2]
+        year, month = (now + mod).timetuple()[:2]
 
     # init variables
     cal = calendar.Calendar()
@@ -71,10 +91,13 @@ def month(request, member_pk, year, month, change=None):
     lst = [[]]
     week = 0
 
+    mlst = _get_monthes_for_year(member, year)
+
     # make month lists containing list of days for each week
     # each day tuple will contain list of entries and 'current' indicator
     for day in month_days:
-        entries = current = False   # are there entries for this day; current day?
+        entries = []
+        current = False   # are there entries for this day; current day?
         if day:
             entries = C4CEvent.objects.filter(date__year=year, date__month=month, date__day=day, user=member.user)
             if day == nday and year == nyear and month == nmonth:
@@ -84,47 +107,79 @@ def month(request, member_pk, year, month, change=None):
         if len(lst[week]) == 7:
             lst.append([])
             week += 1
-    
-    context = {'year':year, 'month':month, 'user':member, 'month_days':lst, 'mname':mnames[month-1]}
-    
-    return render(request,"month.html", context)
 
-  
-def day(request, member_pk, year, month, day):
-    
-    member=None
-    if member_pk: member = get_object_or_404(C4CUser, pk=member_pk)
-    else: member = get_object_or_404(C4CUser, user=request.user)
-    
-    change =(member.user == request.user)
-    
-    """Entries for the day."""
-    EntriesFormset = modelformset_factory(C4CEvent, extra=1, exclude=("user", "date"),
-                                          can_delete=True)
+    context = {'year': year, 'months': mlst, 'month': month, 'member': member, 'month_days': lst, 'mname': mnames[month - 1]}
 
-    if request.method == 'POST' and change:
-        formset = EntriesFormset(request.POST)
-        if formset.is_valid():
-            # add current user and date to each entry & save
-            entries = formset.save(commit=False)
-            for entry in entries:
-                entry.user = member.user
-                entry.date = date(int(year), int(month), int(day))
-                entry.save()
-            formset.save()
-            return HttpResponseRedirect(reverse('c4c:month', args=( member.pk, year, month)))
+    return render(request, "month.html", context)
 
+
+def AgendaDay(request, member_pk, year, month, day):
+    member = None
+    if member_pk:
+        member = get_object_or_404(C4CUser, pk=member_pk)
     else:
-        # display formset for existing enties and one extra form
-        formset = EntriesFormset(queryset=C4CEvent.objects.filter(date__year=year,
-            date__month=month, date__day=day, user=member.user))
-        
-    return render(request,"day.html", add_csrf(request, entries=formset, year=year,
-            month=month, day=day, user=member.user))
+        member = get_object_or_404(C4CUser, user=request.user)
+
+    if member != request.user.c4cuser and not member.network.filter(pk=request.user.pk).exists():
+        return HttpResponseNotFound('<h1>Page not found</h1>')
+
+    year, month, day = int(year), int(month), int(day)
+    day_name = date(year, month, day).strftime("%A")
+    month_name = mnames[month - 1]
+    entries = C4CEvent.objects.filter(date__year=year, date__month=month, date__day=day, user=member.user)
+
+    context = {'year': year, 'month': month, 'day': day, 'member': member, 'month_name': month_name, 'day_name': day_name, 'entries': entries}
+
+    return render(request, "day.html", context)
+
+
+def AgendaEvent(request, event_pk):
+    event = get_object_or_404(C4CEvent, pk=event_pk)
+    if event.user != request.user and not event.user.c4cuser.network.filter(pk=request.user.pk).exists():
+        return HttpResponseNotFound('<h1>Page not found</h1>')
+    context = {"event": event}
+    return render(request, "event.html", context)
+
+
+def AgendaEditEvent(request, event_pk=None):
+    """ Edit/add an event """
+    if event_pk is not None:
+        event = get_object_or_404(C4CEvent, pk=event_pk)
+        if request.user != event.user:
+            return HttpResponseNotFound('<h1>Page not found</h1>')
+    else:
+        event = None
+
+    class ArticleForm(ModelForm):
+
+        class Meta:
+            model = C4CEvent
+            fields = ['name', 'job', 'date', 'description']
+
+    if request.method == 'POST':
+        if event is not None:
+            form = ArticleForm(request.POST, instance=event)
+        else:
+            form = ArticleForm(request.POST)
+        if form.is_valid():
+            # add current user and date to each entry & save
+            entry = form.save(commit=False)
+            print(entry.pk)
+            entry.user = request.user
+            entry.save()
+            # form.save()
+            return HttpResponseRedirect(reverse('c4c:month', args=(request.user.pk, entry.date.year, entry.date.month)))
+    else:
+        if event is not None:
+            form = ArticleForm(instance=event)
+        else:
+            form = ArticleForm()
+    return render(request, "edit_event.html", add_csrf(request, event=event, form=form.as_table(), member=request.user))
+
 
 @login_required
 def add_csrf(request, ** kwargs):
     """Add CSRF and user to dictionary."""
     d = dict(** kwargs)
     d.update(csrf(request))
-    return d    
+    return d
