@@ -16,7 +16,6 @@ from django.template.loader import get_template
 from django.utils import timezone
 from django.utils.translation import ugettext as _
 from django.views import generic
-from django.views.generic.edit import CreateView
 from django.views.generic.edit import UpdateView
 
 from c4c import settings
@@ -84,19 +83,6 @@ def add_csrf(request, ** kwargs):
     return d
 
 
-class JobUpdate(UpdateView):
-    model = C4CJob
-    template_name = 'c4cjob_update_form.html'
-
-    fields = ['title', 'description', 'location', 'start_date']
-
-    def form_valid(self, form):
-        self.object = form.save(commit=False)
-
-        self.object.save()
-        return HttpResponseRedirect(reverse('c4c:job_detail', args=(self.object.id,)))
-
-
 class JobDetail(generic.DetailView):
     model = C4CJob
     template_name = 'job_detail.html'
@@ -122,7 +108,7 @@ def acceptJob(request, c4cjob_id):
         if user_site == job.asked_by or job.end_date is not None or job.complete or job.done_by is not None:
             return error403(request)
         else:
-            job.done_by = user_site.user
+            job.done_by = user_site
             job.save()
             event1 = C4CEvent(name=job.title, date=job.start_date, job=job, user=job.asked_by, description=job.description)
             event2 = C4CEvent(name=job.title, date=job.start_date, job=job, user=job.done_by, description=job.description)

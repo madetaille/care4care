@@ -6,8 +6,12 @@ from django.http import HttpResponseRedirect
 from django.forms.fields import DateField
 from django.contrib.admin import widgets
 
-from django.utils import translation
 from django.utils.translation import ugettext as _
+
+from c4c import settings
+from django.template.loader import get_template
+from django.core.mail import EmailMultiAlternatives
+from django.template import Context
 
 class UserForm(forms.Form):
     username = forms.CharField(label=_('Your name'), max_length=100)
@@ -34,7 +38,18 @@ def view_registration(request):
             user.save()
             c4cuser = C4CUser(user=user, address=form.cleaned_data['address'], birthday=form.cleaned_data['birthday'])
             c4cuser.save()
+            
+            subject = _('Your account has been successfully created !')
+            from_email, to = settings.EMAIL_HOST_USER, user.email
+    
+            htmly = get_template('email_inscription.html')
 
+            d = Context({'user' : user, 'c4cuser' : c4cuser})
+            html_content = htmly.render(d)
+            msg = EmailMultiAlternatives(subject, '', from_email, [to])
+            msg.attach_alternative(html_content, "text/html")
+            msg.send()
+            
             # process the data in form.cleaned_data as required
             # ...
             # redirect to a new URL:

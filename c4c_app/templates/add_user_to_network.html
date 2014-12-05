@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}Care4Care - {% trans "Add User To Network"%}{% endblock %}
+{% block content %}
+<h1> {% trans "Add new user to Personal Network" %} </h1>
+
+<form>
+  <fieldset>
+    <legend>Search (by username, name or e-mail)</legend>
+    Search for : <input type="text" size="60"><br><br>
+    <button type="search" class="btn btn-default">{% trans "Search"%}</button>
+  </fieldset>
+</form>
+
+<!-- 
+	<fieldset >
+            <legend > {% trans "Donation"%}  </legend>
+	<form action="" method="post" role="form" class="form-horizontal">{% csrf_token %}
+        {{ form.as_p }}
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="search" class="btn btn-default">{% trans "Search"%}</button>
+            </div>
+        </div>
+	</form>
+        </fieldset>
+        
+         -->
+{% endblock content %}
