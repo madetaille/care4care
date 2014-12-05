@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load i18n %}
+        {% block content %}
+
+
+        {% if result %}
+            {% for objectBlock in result %}
+                <p>You searched for: <strong>{{ word  }}</strong></p>
+                <table class="table table-hover" >
+                     <tr>
+                         <th>{% trans "title"%}</th>
+                         <th>{% trans "duration"%}</th>
+                         <th>{% trans "location"%}</th>
+                         <th>{% trans "complete"%}</th>
+                         <th>{% trans "more details"%}</th>
+                     </tr>
+               {% for object in objectBlock %}
+                     <tr>
+                        <td>{{ object.title }}</td>
+                        <td>{{ object.duration }}</td>
+                        <td>{{ object.location }}</td>
+                         {% if object.complete == False %}
+                         <td> {% trans "NO"%} </td>
+                         {% else %}
+                         <td>{% trans "YES"%}</td>
+                         {% endif %}
+                         <th><button type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:job_detail' object.id %}'">{% trans "Details"%}</button></th>
+                     </tr>
+               {% endfor %}
+               </table>
+            {% endfor %}
+        {% else %}
+            <p>You searched for: <strong> Nothing</strong>.</p>
+        {% endif %}
+
+        {% endblock content %}
