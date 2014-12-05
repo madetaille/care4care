@@ -10,20 +10,24 @@
         {%else%}
             {%trans "Create a new"%} {%if is_new_and_offer %}{%trans "offer"%}{%else%}{%trans "demand"%}{%endif%}
         {%endif%}</h2>
-    
+
     <form method="POST"> {% csrf_token %}
         <table class="table table-bordered table-hover">
             {% if job == None %}
-	            <tr>
-	                <th>Type</th>
-	                <td>
-	                    <input type="radio" name="kind" id="job_offer" value="offer" {%if is_new_and_offer %}checked="checked"{%endif%}/> <label for="job_offer"> {% trans "Offer"%}</label><br/>
-	                    <input type="radio" name="kind" id="job_demand" value="demand" {%if not is_new_and_offer %}checked="checked"{%endif%}/> <label for="job_demand"> {% trans "Demand"%}</label><br/>
-	                </td>
-	            </tr>
-	        {% endif %}
+                <tr>
+                    <th>Type</th>
+                    <td>
+                        <input type="radio" name="kind" id="job_offer" value="offer" {%if is_new_and_offer %}checked="checked"{%endif%}/> <label for="job_offer"> {% trans "Offer"%}</label><br/>
+                        <input type="radio" name="kind" id="job_demand" value="demand" {%if not is_new_and_offer %}checked="checked"{%endif%}/> <label for="job_demand"> {% trans "Demand"%}</label><br/>
+                    </td>
+                </tr>
+            {% endif %}
             {{ form }}
         </table>
         <button type="submit" id="jobcreation_submit" class="btn btn-primary">{% trans "Save"%}</button>
     </form>
 {% endblock content %}
+
+{% block help %}
+{% trans "You can create new jobs or edit existing ones whether they are offers or demands. Fill in the form and click on the button to confirm the job. Note that the duration serves as currency and the unit is in minutes." %}
+{% endblock help %}
