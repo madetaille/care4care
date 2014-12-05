@@ -71,6 +71,8 @@ urlpatterns = patterns('',
                        url(r'^admin/stats/line3$', views.ActivePie, name='statpie'),
                        url(r'^admin/stats/line4$', views.UserByBranch, name='statUserBranch'),
                        url(r'^admin/stats/line5$', views.GraphsTimeJobs, name='stattimejobs'),
+                       url(r'^admin/stats/line6$', views.JobPie, name='statpiejob'),
+
 
 
                        # News

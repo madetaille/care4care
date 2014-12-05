@@ -124,7 +124,7 @@ def GraphsTimeworked(request):
     f = plt.figure()
     line1 = plt.plot_date(x, y_sum, xdate=True, ydate=False, ls='-', ms=0, color='#16171E')
     plt.fill_between(x, 0, y_sum, facecolor='#D0F3FF')
-    plt.title('Time worked this year')
+    plt.title('Time worked ')
     plt.rc('font', size=10)
 
     canvas = FigureCanvasAgg(f)
@@ -180,12 +180,36 @@ def ActivePie(request):
     userstot= User.objects.count()
 
     x= [nuseractive,userstot-nuseractive]
+    explode = (0, 0.1)
 
     # Plot
     f = plt.figure()
-    line1 = plt.pie(x, explode=None, labels=['Active', 'Inactive'], colors=('b', 'g', 'r', 'c', 'm', 'y', 'k', 'w'), autopct=None, pctdistance=0.6, shadow=False, labeldistance=1.1, startangle=None, radius=None)
-    plt.title('Active and inactive users')
+    line1 = plt.pie(x, explode=explode, labels=['Active', 'Inactive'], colors=('b', 'g', 'r', 'c', 'm', 'y', 'k', 'w'), autopct='%1.1f%%', pctdistance=0.6, shadow=True, labeldistance=1.1, startangle=None, radius=None)
     plt.rc('font', size=18)
+    plt.axis('equal')
+
+
+    canvas = FigureCanvasAgg(f)
+    response = HttpResponse(content_type='image/png')
+    canvas.print_png(response)
+    matplotlib.pyplot.close(f)
+    return response
+
+def JobPie(request):
+
+    jobs = C4CJob.objects.filter(complete=False)
+
+    q1=jobs.filter(done_by=None)
+
+
+    x= [len(q1),len(jobs)-len(q1)]
+    explode = (0, 0.1)
+
+    # Plot
+    f = plt.figure()
+    line1 = plt.pie(x, explode=explode, labels=['Asked', 'Accepted'], colors=('b', 'g', 'r', 'c', 'm', 'y', 'k', 'w'), autopct='%1.1f%%', pctdistance=0.6, shadow=True, labeldistance=1.1, startangle=None, radius=None)
+    plt.rc('font', size=18)
+    plt.axis('equal')
 
 
     canvas = FigureCanvasAgg(f)
@@ -216,7 +240,7 @@ def UserByBranch(request):
     f = plt.figure()
     x = np.arange(len(q1))
     width=0.5
-    plt.xlim(0, len(q1)+2)
+    plt.xlim(0, len(q1))
     plt.ylim(0, max+2)
     plt.title('Number of users by branch')
     plt.xlabel('branch name')
