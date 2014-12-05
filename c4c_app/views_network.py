@@ -16,27 +16,27 @@ def network(request):#, event_pk=None):
     if request.method == 'GET':
         return render_to_response(template_name, context_instance=RequestContext(request))
     
-def add_user_to_network(request):#, event_pk=None):
-    template_name = 'add_user_to_network.html'
-    if request.method == 'GET':
-        return render_to_response(template_name, context_instance=RequestContext(request))
-    
 class PersonalNetwork(generic.ListView):
     template_name = 'network.html'
     context_object_name = 'network_list'
 
     def get_queryset(self):
         member = get_object_or_404(C4CUser, user=self.request.user)
-        return member.network.all()
+        return list(member.network.all())
 
-def addNetwork(request, c4cuser_pk):
-    user_to_add = get_object_or_404(C4CUser,pk = c4cuser_pk)
+def addNetwork(request, pk):
+    user_to_add = get_object_or_404(C4CUser,pk = pk)
     user = get_object_or_404(C4CUser,pk = request.user)
 
     user.network.add(user_to_add)
     return HttpResponseRedirect(reverse('c4c:network'))
 
-    
+def deleteNetwork(request, pk):
+    user = get_object_or_404(C4CUser,pk = request.user)
+    user_del = get_object_or_404(C4CUser,pk = pk)
+    user.network.remove(user_del)
+    return HttpResponseRedirect(reverse('c4c:network'))
+
     """ Edit/add an event """
     """if event_pk is not None:
         event = get_object_or_404(C4CEvent, pk=event_pk)
