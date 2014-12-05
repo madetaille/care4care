@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}Care4Care - {% trans "Branch list"%}{% endblock %}
+
+{% block content %}
+    <h1 class="text-center">{% trans "List of branches" %}</h1>
+    <ul>
+        {% for branch in all_branches %}
+            <li><a href={% url "c4c:branch_detail" branch.pk %}>{{ branch }}</a></li>
+        {% empty %}
+            <li>{% trans "There are no branches yet." %}</li>
+        {% endfor %}
+    </ul>
+
+{% endblock content %}
+
+{% block help %}
+{% trans "This page contains a list of all available branches. You can access the details of a branch by clicking on its name in the list." %}
+{% endblock help %}

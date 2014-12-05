@@ -11,5 +11,8 @@
 	        </ul>
 	    {% endfor %}
 	{% endif %}
+	<select class="selectpicker">
+    <option>User1</option>
+  </select>
 	<a href="{% url 'c4c:add_user_to_network' %}" class="btn btn-primary btn-block">{% trans "Add new user" %}</a>
 {% endblock content %}
