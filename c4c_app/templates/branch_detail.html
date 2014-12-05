@@ -4,5 +4,20 @@
 {% block title %}Care4Care - {% trans "Branch detail"%}{% endblock %}
 
 {% block content %}
-    {{ c4cbranch.name }}
+    <h1 class="text-center">{{ c4cbranch.name }}</h1>
+    <p>{% trans "Address" %}: {{ c4cbranch.address }}</p>
+    <p>{% trans "Main user" %}: {{ c4cbranch.main_user.username }} ({{ c4cbranch.main_user.first_name }} {{ c4cbranch.main_user.last_name }})</p>
+
+    <h2>{% trans "List of branch administrators" %}</h2>
+    <ul>
+        {% for user in c4cbranch.get_admin %}
+        <li>{{ user }}</li>
+        {% endif %}
+    </ul>
+
+    {% if c4cuser in c4cbranch.get_users %}
+        <p>{% trans "You already belong to this branch" %}</p>
+    {% else %}
+        <a href="" class="btn btn-primary">{% trans "Join this branch" %}</a>
+    {% endif %}
 {% endblock content %}

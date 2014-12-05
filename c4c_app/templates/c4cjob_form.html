@@ -4,29 +4,26 @@
 {% block title %}Care4Care - {% trans "Job Creation" %} {% endblock %}
 
 {% block content %}
-	<form method="post">{% csrf_token %}
-		<input id="offer" type="radio" name="kind" value="offer">{% trans "Offer"%}
-	    <br/>
-	    <input id="demand" type="radio" name="kind" value="demand" checked>{% trans "Demand"%}
-		<br/>
-        {% trans "Title" %} :
-        <input type="text" name="title" maxlength="100" value = {{c4cjob.title}}>
-        <br>
-        <br>
-        {% trans "Description" %} :
-        <input type="text" name="description" maxlength="1000" value = {{c4cjob.description}}>
-        <br>
-        <br>
-        {% trans "Location" %} :
-        <input type="text" name="location" maxlength="300" value = {{c4cjob.location}}>
-        <br>
-        <br>
-        {% trans "Day when the job begin" %} :
-        <input type="datetime-local" name="start_date" value = {{c4cjob.start_date|date:"d/m/Y"}}>
-            ({% trans "month" %}/{% trans "day" %}/{% trans "year" %} {% trans "hour" %}:{% trans "minutes" %})
-        <br>
-        <br>
-
-    <input id="jobcreation_submit" type="submit" value={% trans "Submit" %} />
-	</form>
+    <h2>
+        {%if job != None %}
+            {%trans "Edit a job"%}
+        {%else%}
+            {%trans "Create a new"%} {%if is_new_and_offer %}{%trans "offer"%}{%else%}{%trans "demand"%}{%endif%}
+        {%endif%}</h2>
+    
+    <form method="POST"> {% csrf_token %}
+        <table class="table table-bordered table-hover">
+            {% if job == None %}
+	            <tr>
+	                <th>Type</th>
+	                <td>
+	                    <input type="radio" name="kind" id="job_offer" value="offer" {%if is_new_and_offer %}checked="checked"{%endif%}/> <label for="job_offer"> {% trans "Offer"%}</label><br/>
+	                    <input type="radio" name="kind" id="job_demand" value="demand" {%if not is_new_and_offer %}checked="checked"{%endif%}/> <label for="job_demand"> {% trans "Demand"%}</label><br/>
+	                </td>
+	            </tr>
+	        {% endif %}
+            {{ form }}
+        </table>
+        <button type="submit" id="jobcreation_submit" class="btn btn-primary">{% trans "Save"%}</button>
+    </form>
 {% endblock content %}
