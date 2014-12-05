@@ -14,46 +14,22 @@ class Search(generic.ListView):
         history_list = []
         job_list = []
         user_list = []
-        job_list_no_redundumcy = []
-        user_list_no_redundumcy = []
-        #donations_sent = []
-        #donation_received = []
-        #job_demanded = []
-        #job_done = []
 
         if 'search' in self.request.GET:
             for word_search in  str.split(self.request.GET['search']):
-                job_title = C4CJob.objects.filter(title__icontains = word_search)
-                job_list.append(job_title)
-            for word_search in  str.split(self.request.GET['search']):
-                job_description = C4CJob.objects.filter(description__icontains = word_search)
-                job_list.append(job_description)
-            for word_search in  str.split(self.request.GET['search']):
-                job_location = C4CJob.objects.filter(location__icontains = word_search)
-                job_list.append(job_location)
-            for word_search in  str.split(self.request.GET['search']):
-                user_lastname = User.objects.filter(last_name = word_search)
-                user_list.append(user_lastname)
-            for word_search in  str.split(self.request.GET['search']):
-                user_first_name = User.objects.filter(first_name = word_search)
-                user_list.append(user_first_name)
+                job_list += list(C4CJob.objects.filter(title__icontains = word_search))
+                job_list += list(C4CJob.objects.filter(description__icontains = word_search))
+                job_list += list(C4CJob.objects.filter(location__icontains = word_search))
+                user_list += list(User.objects.filter(last_name = word_search))
+                user_list += list(User.objects.filter(first_name = word_search))
+                user_list += list(User.objects.filter(username = word_search))
 
-            if job_list:
-                for i in job_list:
-                    for j in i:
-                        if j not in job_list_no_redundumcy:
-                            job_list_no_redundumcy.append(j)
-                history_list.append(job_list_no_redundumcy)
-            if user_list:
-                for i in user_list:
-                    for j in i:
-                        if j not in user_list_no_redundumcy:
-                            user_list_no_redundumcy.append(j)
-                history_list.append(user_list_no_redundumcy)
+            print((job_list,user_list))
+            job_list = set(job_list)
+            user_list = set(user_list)
+            history_list = [job_list, user_list]
 
         else:
-            return HttpResponseRedirect("/")
+            return HttpResponseRedirect('/')
 
-
-
-        return history_list
+        return (job_list,user_list)
