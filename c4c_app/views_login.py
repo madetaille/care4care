@@ -5,9 +5,14 @@ from django.contrib.auth import logout
 
 from django.utils import translation
 from django.utils.translation import ugettext as _
+from c4c_app.views_error403 import error403
 
 def user_login(request):
     template_name = 'user_login.html'
+
+    # Authenticated user cannot login
+    if request.user.is_authenticated():
+        return error403(request)
 
     # If the request is a HTTP POST, try to pull out the relevant information.
     if request.method == 'POST':
@@ -48,6 +53,11 @@ def user_login(request):
 # Use the login_required() decorator to ensure only those logged in can access the view.
 
 def user_logout(request):
+
+    # User that aren't authenticated cannot logout
+    if not request.user.is_authenticated():
+        return error403(request)
+
     # Since we know the user is logged in, we can now just log them out.
     logout(request)
 

@@ -4,13 +4,9 @@
 {% block title %}Care4Care - {% trans "Update profile (User)"%} {% endblock %}
 
 {% block content %}
-{% if viewerpk == ownerpk %}
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
         <input type="submit" value="Update User details" />
     </form>
-{% else %}
-    <p>{% trans "You cannot modify another user's profile"%}.</p>
-{% endif %}
 {% endblock content %}

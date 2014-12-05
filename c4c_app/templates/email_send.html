@@ -1,0 +1,8 @@
+{% load i18n %}
+{% trans "Hello"%} {{ user_to }} ! <br>
+{% trans "The user " %} {{ user_that_send }} {% trans "is sending you an email." %}
+<br>
+<br>
+
+{% trans "Here is the email : "%} <br>
+{{ content }}
