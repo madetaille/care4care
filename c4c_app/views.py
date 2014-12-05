@@ -19,6 +19,7 @@ from c4c_app.views_stat import *
 #from c4c_app.views_news import *
 from c4c_app.views_whatisc4c import *
 from c4c_app.views_aboutus import *
+from c4c_app.views_statuser import *
 
 from c4c_app.views_send_email import *
 
