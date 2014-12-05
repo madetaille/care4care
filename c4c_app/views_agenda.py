@@ -150,7 +150,7 @@ def AgendaEditEvent(request, event_pk=None):
     else:
         event = None
 
-    class ArticleForm(ModelForm):
+    class EventForm(ModelForm):
 
         class Meta:
             model = C4CEvent
@@ -158,9 +158,9 @@ def AgendaEditEvent(request, event_pk=None):
 
     if request.method == 'POST':
         if event is not None:
-            form = ArticleForm(request.POST, instance=event)
+            form = EventForm(request.POST, instance=event)
         else:
-            form = ArticleForm(request.POST)
+            form = EventForm(request.POST)
         if form.is_valid():
             # add current user and date to each entry & save
             entry = form.save(commit=False)
@@ -171,9 +171,9 @@ def AgendaEditEvent(request, event_pk=None):
             return HttpResponseRedirect(reverse('c4c:month', args=(request.user.pk, entry.date.year, entry.date.month)))
     else:
         if event is not None:
-            form = ArticleForm(instance=event)
+            form = EventForm(instance=event)
         else:
-            form = ArticleForm()
+            form = EventForm()
     return render(request, "edit_event.html", add_csrf(request, event=event, form=form.as_table(), member=request.user))
 
 

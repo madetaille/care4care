@@ -8,9 +8,9 @@
             </div>
         </div>
         <div>
-            <button type="button" style="margin-left:50px; margin-right:50px;" class="btn btn-primary" style="text-align:left" onclick="location.href='{% url 'c4c:donation_creation' %}'">{% trans "Make a donation"%}</button>
-            <button type="button" class="btn btn-primary" style="margin-left:50px; margin-right:50px;" onclick="location.href='{% url 'c4c:job_creation' %}'">{% trans "Ask fo help"%}</button>
-            <button type="button" class="btn btn-primary"  style="margin-left:50px; margin-right:50px;" onclick="location.href='{% url 'c4c:user_jobs' %}'">{% trans "Job offer"%}</button>
+            <a type="button" style="margin-left:50px; margin-right:50px;" class="btn btn-primary" style="text-align:left" href="{% url 'c4c:donation_creation' %}">{% trans "Make a donation"%}</a>
+            <a type="button" class="btn btn-primary" style="margin-left:50px; margin-right:50px;" href="{% url 'c4c:demand_creation' %}">{% trans "Ask fo help"%}</a>
+            <a type="button" class="btn btn-primary"  style="margin-left:50px; margin-right:50px;" href="{% url 'c4c:user_jobs' %}">{% trans "Job offer"%}</a>
         </div>
     {% if history %}
         {% for objectBlock in history %}
@@ -29,7 +29,7 @@
                         <td>{{ object.date }}</td>
                         <td>{{ object.message }}</td>
                         <td>{{ object.amount}}</td>
-                        <td><button type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:donation_detail' object.id %}'">{% trans "Details"%}</button></td>
+                        <td><a type="button" class="btn btn-primary" href="{% url 'c4c:donation_detail' object.id %}">{% trans "Details"%}</a></td>
                      </tr>
                 {% endfor %}
             </table>
@@ -51,7 +51,7 @@
                         <td>{{ object.date }}</td>
                         <td>{{ object.message }}</td>
                         <td>{{ object.amount}}</td>
-                        <td><button type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:donation_detail' object.id %}'">{% trans "Details"%}</button></td>
+                        <td><a type="button" class="btn btn-primary" href="{% url 'c4c:donation_detail' object.id %}">{% trans "Details"%}</a></td>
                      </tr>
                 {% endfor %}
             </table>
@@ -79,7 +79,7 @@
                          {% else %}
                          <td>{% trans "YES"%}</td>
                          {% endif %}
-                         <td><button type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:job_detail' object.id %}'">{% trans "Details"%}</button></td>
+                         <td><a type="button" class="btn btn-primary" href="{% url 'c4c:job_detail' object.id %}">{% trans "Details"%}</a></td>
                      </tr>
                {% endfor %}
                </table>
@@ -107,7 +107,7 @@
                          {% else %}
                          <td>{% trans "YES"%}</td>
                          {% endif %}
-                         <th><button type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:job_detail' object.id %}'">{% trans "Details"%}</button></th>
+                         <th><a type="button" class="btn btn-primary" href="{% url 'c4c:job_detail' object.id %}">{% trans "Details"%}</a></th>
                      </tr>
                {% endfor %}
                </table>

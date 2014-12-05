@@ -13,58 +13,57 @@
             {% endif %}
             <div class="media-body">
                 <h4 class="media-heading">{% trans "Welcome!"%}</h4>
-            </div>
-        </div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+        <div class="col-sm-6"><a class="btn btn-primary btn-block btn-lg" href="{% url 'c4c:demand_creation' %}">{% trans "I NEED HELP!"%}</a></div>
+        <div class="col-sm-6"><a class="btn btn-primary btn-block btn-lg" href="{% url 'c4c:offer_creation' %}">{% trans "I WANT TO HELP!"%}</a></div>
     </div>
-    <div>
-
-        <button id="jobcreation" type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:job_creation' %}'">{% trans "I NEED HELP!"%}</button>
-        <button id="jobcreation" type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:job_creation' %}'">{% trans "I WANT TO HELP!"%}</button>
-</div>
-{% if all_jobs_list %}
-    <div class="row">
-    {% for kind in all_jobs_list %}
-        {% if forloop.counter == 1 %}
-            <div class="col-md-6">
-                <h3 class="text-center">{% trans "Demands"%}</h3>
-            {% for job in kind %}
-                <div id="job" class="panel panel-default" onclick="location.href='{% url 'c4c:job_detail' job.id %}'">
-                    <div class="panel-heading">
-                        <h3 class="panel-title"> {{job.title}} </h3>
-                    </div>
-                    <div class="panel-body">
-                        <div class="pull-left">{{job.title}}</div>
-                        <div class="pull-right">{{job.asked_by}}</div>
-                        <div class="text-center"><b>{{job.start_date}}</b></div>
-                        {{job.description}}<br/>
-                        <button type="button" class="btn btn-primary pull-right" onclick="location.href='{% url 'c4c:job_detail' job.id %}'">{% trans "More Infos"%}</button>
-                    </div>
-                </div>
-            {% endfor %}
-            </div>
-        {% elif forloop.counter == 2 %}
-            <div class="col-md-6">
-                <h3 class="text-center">{% trans "Offers"%}</h3>
-            {% for job in kind %}
-                <div id="job" class="panel panel-default" onclick="location.href='{% url 'c4c:job_detail' job.id %}'">
-                    <div class="panel-heading">
-                        <h3 class="panel-title"> {{job.title}} </h3>
-                    </div>
-                    <div class="panel-body">
-                        <div class="pull-left">{{job.title}}</div>
-                        <div class="pull-right">{{job.done_by}}</div>
-                        <div class="text-center"><b>{{job.start_date}}</b></div>
-                        {{job.description}}<br/>
-                        <button type="button" class="btn btn-primary pull-right" onclick="location.href='{% url 'c4c:job_detail' job.id %}'">{% trans "More Infos"%}</button>
-                    </div>
-                </div>
-            {% endfor %}
-            </div>
-        {% endif %}
-
-    {% endfor %}
-    </div>
-{% endif %}
+	{% if all_jobs_list %}
+		<div class="row">
+	    {% for kind in all_jobs_list %}
+	        {% if forloop.counter == 1 %}
+	            <div class="col-md-6">
+	                <h3 class="text-center">{% trans "Demands"%}</h3>
+				{% for job in kind %}
+					<div class="panel panel-default" onclick="location.href='{% url 'c4c:job_detail' job.id %}'">
+						<div class="panel-heading">
+							<h3 class="panel-title"> {{job.title}} </h3>
+						</div>
+						<div class="panel-body">
+							<div class="pull-left">{% if job.offer %}Offer{%else%}Demand{%endif%}</div>
+							<div class="pull-right">{{job.asked_by}}</div>
+							<div class="text-center"><b>{{job.start_date}}</b></div>
+							{{job.description}}<br/>
+	                        <a type="button" class="btn btn-primary pull-right" href="{% url 'c4c:job_detail' job.id %}">{% trans "More Infos"%}</a>
+						</div>
+					</div>
+				{% endfor %}
+				</div>
+	        {% elif forloop.counter == 2 %}
+	            <div class="col-md-6">
+	                <h3 class="text-center">{% trans "Offers"%}</h3>
+				{% for job in kind %}
+					<div class="panel panel-default" onclick="location.href='{% url 'c4c:job_detail' job.id %}'">
+						<div class="panel-heading">
+							<h3 class="panel-title"> {{job.title}} </h3>
+						</div>
+						<div class="panel-body">
+							<div class="pull-left">{% if job.offer %}Offer{%else%}Demand{%endif%}</div>
+							<div class="pull-right">{{job.done_by}}</div>
+							<div class="text-center"><b>{{job.start_date}}</b></div>
+							{{job.description}}<br/>
+	                        <a type="button" class="btn btn-primary pull-right" href="{% url 'c4c:job_detail' job.id %}">{% trans "More Infos"%}</a>
+						</div>
+					</div>
+				{% endfor %}
+				</div>
+	        {% endif %}
+	        
+	    {% endfor %}
+	    </div>    
+	{% endif %}
 {% endblock content %}
 
 {% block help %}

@@ -4,68 +4,91 @@
 {% block title %}Care4Care - {% trans "Job detail" %}{% endblock %}
 
 {% block content %}
-    <h1>{{ c4cjob.title }}</h1>
+    <h2>Job detail : {{ c4cjob.title }}</h2>
 	
-	<ul>
-        <li>{% trans "Created by" %} : {{c4cjob.created_by}}</li>
-		{% if c4cjob.asked_by != None %}
-        <li>{% trans "Asked by" %} : {{c4cjob.asked_by}}</li>
-		{% endif %}
-		{% if c4cjob.done_by != None %}
-        <li>{% trans "Done by" %} : {{c4cjob.done_by}}</li>
-		{% endif %}
-        <li>{% trans "Address" %} : {{c4cjob.location}}</li>
-        <li>{% trans "Description" %} : {{c4cjob.description}}</li>
-        <li>{% trans "Due for" %} : {{c4cjob.start_date}}</li>
-		{% if c4cjob.end_date != None %}
-        <li>{% trans "Finished at" %} : {{c4cjob.end_date}}</li>
-        <li>{% trans "Credit" %} : {{c4cjob.duration}}</li>
-		{% endif %}
-		{% if c4cjob.complete %}
-        <li><p>{% trans "Completed" %}</p></li>
-		{% else %}
-        <li><p> {% trans "Ongoing" %} </p></li>
-		{% endif %}
-	</ul>
+	<table class="table table-bordered">
+	   <tr>
+	       <th>{% trans "Type"%}</th>
+	       <th>{% trans "Status" %}</th>
+	   </tr>
+	   <tr>
+	       <td>{%if c4cjob.offer %}Offer{%else%}Demand{%endif%}</td>
+	       <td>{% if c4cjob.complete %}{% trans "Completed" %}{%else%}{% trans "Ongoing" %}{%endif%}</td>
+	   </tr>
+	   <tr>
+	       <th>{% trans "Asked by"%}</th>
+	       <th>{% trans "Done by"%}</th>
+	   </tr>
+	   <tr>
+	       <td>{%if c4cjob.asked_by != None %}{{ c4cjob.asked_by }}{%else%}Nobody (yet){%endif%}</td>
+	       <td>{%if c4cjob.done_by != None %}{{ c4cjob.done_by }}{%else%}Nobody (yet){%endif%}</td>
+	   </tr>
+	   <tr>
+	       <th>Time credit {%if not c4cjob.complete %}estimated{% endif %}</th>
+	       <th>Location</th>
+	   </tr>
+	   <tr>
+	       <td>{{ c4cjob.duration }}</td>
+	       <td>{{ c4cjob.location }}</td>
+	   </tr>
+	   <tr>
+	       <th colspan="2">Description</th>
+	   </tr>
+	   <tr>
+	       <td colspan="2">{{ c4cjob.description }}</td>
+	   </tr>
+	</table>
 	
-{% if user.is_authenticated %}		
-	{% if c4cjob.done_by == None and c4cjob.asked_by.pk != member.pk %}
-<button id="accept" type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:accept_job' c4cjob.id %}'">{% trans "Accept" %}</button>
-
-	{% elif c4cjob.asked_by == None and c4cjob.done_by.pk != member.pk %}
-<button id="accept" type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:accept_job' c4cjob.id %}'">{% trans "Accept" %}</button>
-
-	{% elif c4cjob.end_date == None and c4cjob.done_by.pk == member.pk and c4cjob.done_by != None and c4cjob.asked_by != None %}
-		<form action="{% url 'c4c:done_job' c4cjob.id %}" method="post">
-		{% csrf_token %}
-		<input type="number" name="Duration" />
-        <button id="done" type="submit" class="btn btn-primary">{% trans "Done" %}</button>
-		</form>
-
-	{% elif c4cjob.complete == False and c4cjob.asked_by.pk == member.pk and c4cjob.end_date != None %}
-<button id="confirm" type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:confirm_job' c4cjob.id %}'">{% trans "Confirm" %}</button>
-<button id="report" type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:report_job' c4cjob.id %}'">{% trans "Report" %}</button>
-		</form>
+	{% if user.is_authenticated %}		
+	    {% if c4cjob.done_by == None and c4cjob.asked_by.pk != member.pk %}
+	        <a type="button" class="btn btn-primary btn-block" href="{% url 'c4c:accept_job' c4cjob.id %}">{% trans "I will do it!" %}</a>
+		{% elif c4cjob.asked_by == None and c4cjob.done_by.pk != member.pk %}
+	        <a type="button" class="btn btn-primary btn-block" href="{% url 'c4c:accept_job' c4cjob.id %}">{% trans "I need this!" %}</a>
+		{% elif c4cjob.end_date == None and c4cjob.done_by.pk == member.pk and c4cjob.done_by != None and c4cjob.asked_by != None %}
+	        <form action="{% url 'c4c:done_job' c4cjob.id %}" method="post">
+	            {% csrf_token %}
+	            <input type="number" name="Duration" />
+	            <button type="submit" class="btn btn-primary">{% trans "Done" %}</button>
+	        </form>
+		{% elif c4cjob.complete == False and c4cjob.asked_by.pk == member.pk and c4cjob.end_date != None %}
+            <div class="row">
+                <div class="col-sm-6">
+	               <a type="button" class="btn btn-primary btn-block" href="{% url 'c4c:confirm_job' c4cjob.id %}">{% trans "Confirm" %}</a>
+	            </div>
+	            <div class="col-sm-6">
+	               <a type="button" class="btn btn-primary btn-block" href="{% url 'c4c:report_job' c4cjob.id %}">{% trans "Report" %}</a>
+	            </div>
+	        </div>
+		{% endif %}
+		
+		{% if c4cjob.end_date == None and c4cjob.done_by != None and c4cjob.asked_by != None %}
+			{% if c4cjob.offer == True and c4cjob.asked_by.pk == member.pk  %}
+	            <a type="button" class="btn btn-primary btn-block" href="{% url 'c4c:cancel_job' c4cjob.id %}">{% trans "Cancel" %}</a>
+			{% elif c4cjob.offer == False and c4cjob.done_by.pk == member.pk %}
+	            <a type="button" class="btn btn-primary btn-block" href="{% url 'c4c:cancel_job' c4cjob.id %}">{% trans "Cancel" %}</a>
+			{% endif %}
+		{% endif %}
+		
+		{% if c4cjob.complete == False and c4cjob.end_date == None %}
+		    {% if c4cjob.offer == True and c4cjob.done_by.pk == member.pk  %}
+			     <div class="row">
+			         <div class="col-sm-6">
+                        <a type="button" class="btn btn-primary btn-block" href="{% url 'c4c:delete_job' c4cjob.id %}">{% trans "Delete" %}</a>
+                     </div>
+                     <div class="col-sm-6">
+                        <a type="button" class="btn btn-primary btn-block" href="{% url 'c4c:job_update' c4cjob.pk %}">{% trans "Update" %}</a>
+                     </div>
+                 </div>
+			{% elif c4cjob.offer == False and c4cjob.asked_by.pk == member.pk %}
+                 <div class="row">
+                     <div class="col-sm-6">
+                        <a type="button" class="btn btn-primary btn-block" href="{% url 'c4c:delete_job' c4cjob.id %}">{% trans "Delete" %}</a>
+                     </div>
+                     <div class="col-sm-6">
+                        <a type="button" class="btn btn-primary btn-block" href="{% url 'c4c:job_update' c4cjob.pk %}">{% trans "Update" %}</a>
+                     </div>
+                 </div>
+            {% endif %}
+		{% endif %}
 	{% endif %}
-	
-	{% if c4cjob.end_date == None and c4cjob.done_by != None and c4cjob.asked_by != None %}
-		{% if c4cjob.offer == True and c4cjob.asked_by.pk == member.pk  %}
-<button id="cancel" type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:cancel_job' c4cjob.id %}'">{% trans "Cancel" %}</button>
-
-		{% elif c4cjob.offer == False and c4cjob.done_by.pk == member.pk %}
-<button id="cancel" type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:cancel_job' c4cjob.id %}'">{% trans "Cancel" %}</button>
-		{% endif %}
-	{% endif %}
-	
-	{% if c4cjob.complete == False and c4cjob.end_date == None %}
-		{% if c4cjob.offer == True and c4cjob.done_by.pk == member.pk  %}
-<button id="delete" type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:delete_job' c4cjob.id %}'">{% trans "Delete" %}</button>
-<button id="update" type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:job_update' c4cjob.pk %}'">{% trans "Update" %}</button>
-
-		{% elif c4cjob.offer == False and c4cjob.asked_by.pk == member.pk %}
-<button id="delete" type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:delete_job' c4cjob.id %}'">{% trans "Delete" %}</button>
-<button id="update" type="button" class="btn btn-primary" onclick="location.href='{% url 'c4c:job_update' c4cjob.pk %}'">{% trans "Update" %}</button>
-		{% endif %}
-	{% endif %}
-{% endif %}
 {% endblock content %}
