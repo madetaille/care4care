@@ -47,6 +47,9 @@ urlpatterns = patterns('',
                        url(r'^allNews/$', views.AllNews.as_view(), name='all_news_list'),
                        # Branch
                        url(r'^branchdetail/(?P<pk>\w+)/$', views.BranchDetail.as_view(), name='branch_detail'),
+                       url(r'^addtobranch/(?P<pk>\w+)/$', views.add_to_branch, name='add_to_branch'),
+                       url(r'^removefrombranch/(?P<pk>\w+)/$', views.remove_from_branch, name='remove_from_branch'),
+                       url(r'^branchlist/$',views.BranchList.as_view(), name='branchlist'),
                        # Agenda
                        url(r'^agenda/$', login_required(views.AgendaYear), name='agenda'),
                        url(r'^agenda/(\d+)/$', login_required(views.AgendaYear), name='agenda'),

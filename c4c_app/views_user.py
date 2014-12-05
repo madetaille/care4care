@@ -33,7 +33,6 @@ class UserDetail(generic.DetailView):
 
         # get branches
         context['branches'] = self.object.get_branches()
-        context['not_empty_br'] = len(self.object.get_branches()) != 0
         return context
 
 class UserEdit(generic.edit.UpdateView):
@@ -165,11 +164,11 @@ def resetpassword(request):
             user = get_object_or_404(User, email=email)
             user.set_password(password)
             user.save()
-            
+
             user_email = get_object_or_404(C4CUser, user = request.user)
             subject = 'Reset of your password !'
             from_email, to = settings.EMAIL_HOST_USER, user_email.user.email
-    
+
             htmly = get_template('email_reset_password.html')
 
             d = Context({'password' : password, 'user_email' : user_email})
@@ -177,7 +176,7 @@ def resetpassword(request):
             msg = EmailMultiAlternatives(subject, '', from_email, [to])
             msg.attach_alternative(html_content, "text/html")
             msg.send()
-    
+
             return HttpResponseRedirect(reverse('c4c:login'))
 
     else:

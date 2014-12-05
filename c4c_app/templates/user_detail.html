@@ -1,4 +1,4 @@
-{% extends "base.html" %} 
+{% extends "base.html" %}
 {% load i18n %}
 
 {% block title %}{% if viewer.pk == c4cuser.pk %} Care4Care - {% trans "My profile"%} {% else %} Care4Care - {{ c4cuser.user.username }}{% trans "'s profile"%} {% endif %}{% endblock %}
@@ -21,8 +21,8 @@
 
     {% if viewer.pk == c4cuser.pk %}
         <br/>
-		<p>{% trans "You can "%}<a href={% url 'c4c:user_edit' c4cuser.user.pk %}>{% trans "edit your user profile"%}</a>.</p>
-		<p>{% trans "You can also change your"%} <a href={% url 'c4c:chPassword' c4cuser.user.pk %}>{% trans "password"%}</a>.</p>
+        <p>{% trans "You can "%}<a href={% url 'c4c:user_edit' c4cuser.user.pk %}>{% trans "edit your user profile"%}</a>.</p>
+        <p>{% trans "You can also change your"%} <a href={% url 'c4c:chPassword' c4cuser.user.pk %}>{% trans "password"%}</a>.</p>
     {% endif %}
 
 <h2> C4C {% trans "details: "%}</h2>
@@ -33,15 +33,13 @@
     </ul>
 
     <h3>Branches: </h3>
-    {% if not_empty_br %}
-        <ul>
-            {% for branch in branches %}
-                <li>{{ branch }}</li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>This user is not affiliated with any branch.</p>
-    {% endif %}
+    <ul>
+        {% for branch in branches %}
+            <li><a href={% url "c4c:branch_detail" branch.pk %}>{{ branch.name }}</a></li>
+        {% empty %}
+            <li>{% trans "This user is not affiliated with any branch." %}</li>
+        {% endfor %}
+    </ul>
 
     {% if viewer.pk == c4cuser.pk %}
         <br/>
