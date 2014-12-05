@@ -5,51 +5,50 @@
 
 {% block content %}
     {% if viewer.pk == c4cuser.pk %}
-<h1 class="text-center">{% trans "My profile" %}</h1>
+        <h2>{% trans "My profile" %}</h2>
     {% else %}
-<h1 class="text-center">{{ c4cuser.user.username }}{% trans "'s profile" %}</h1>
+        <h2 class="text-center">{{ c4cuser.user.username }}{% trans "'s profile" %}</h2>
     {% endif %}
     <br/>
 
-<h2> {% trans "User details: " %}</h2>
-    <ul>
-        <li>{% trans "Username: " %} {{ c4cuser.user.username }}</li>
-        <li>{% trans "First name: "%} {{ c4cuser.user.first_name }}</li>
-        <li>{% trans "Last name: "%} {{ c4cuser.user.last_name }}</li>
-        <li>{% trans "Email: "%} {{ c4cuser.user.email }}</li>
-    </ul>
-
-    {% if viewer.pk == c4cuser.pk %}
-        <br/>
-        <p>{% trans "You can "%}<a href={% url 'c4c:user_edit' c4cuser.user.pk %}>{% trans "edit your user profile"%}</a>.</p>
-        <p>{% trans "You can also change your"%} <a href={% url 'c4c:chPassword' c4cuser.user.pk %}>{% trans "password"%}</a>.</p>
+    <div class="well">
+        <div class="media">
+            <a class="media-left" href="#">
+                <img style="max-width: 200px; max-height:200px;" src="{%if user.c4cuser.avatar %}media/{{ user.c4cuser.avatar.url }}{%else%}{{ STATIC_URL }}img/unknown_user.png{%endif%}" alt="Profile photo">
+            </a>
+            <div class="media-body">
+                <h4 class="media-heading">{{ c4cuser.user.first_name }} {{ c4cuser.user.last_name }}</h4>
+                {% if viewer.pk == c4cuser.pk %}
+                    {% trans "Username: " %} {{ c4cuser.user.username }}<br/>
+                    {% trans "Account balance: "%} {{ c4cuser.time_account }}<br/>
+                {% endif %}
+                {%if is_in_network %}
+                    {% trans "Birthday: "%} {{ c4cuser.birthday }}<br/>
+                    {% trans "Email: "%} {{ c4cuser.user.email }}<br/>
+                    {% trans "Address: "%} {{ c4cuser.address }}<br/>
+                {% endif %}
+                {% trans "Branches: " %}
+                <ul>
+                    {% for branch in branches %}
+			            <li><a href={% url "c4c:branch_detail" branch.pk %}>{{ branch.name }}</a></li>
+			        {% empty %}
+			            <li>{% trans "This user is not affiliated with any branch." %}</li>
+			        {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    {% if viewer.pk != c4cuser.pk %}
+        <a class="btn btn-primary btn-block" href={% url 'c4c:send_email' c4cuser.user.pk %}>{% trans "Send a message" %}</a>
+        {% if not is_in_my_network %}
+            <a class="btn btn-primary btn-block" href="{% url 'c4c:add_user_to_network' c4cuser.user.pk %}">{% trans "Add to my personal network"%}</a>
+        {% else %}
+            <a class="btn btn-primary btn-block" href="{% url 'c4c:del_network' c4cuser.user.pk %}">{% trans "Delete from my personal network"%}</a>
+        {% endif %}
+    {% else %}
+        <a href="{% url 'c4c:user_edit' %}" class="btn btn-primary btn-block">{% trans "Edit your profile"%}</a>
     {% endif %}
-
-<h2> C4C {% trans "details: "%}</h2>
-    <ul>
-        <li>{% trans "Address: "%} {{ c4cuser.address }}</li>
-        <li>{% trans "Birthday: "%} {{ c4cuser.birthday }}</li>
-        <li>{% trans "Account balance: "%} {{ c4cuser.time_account }}</li>
-    </ul>
-
-    <h3>Branches: </h3>
-    <ul>
-        {% for branch in branches %}
-            <li><a href={% url "c4c:branch_detail" branch.pk %}>{{ branch.name }}</a></li>
-        {% empty %}
-            <li>{% trans "This user is not affiliated with any branch." %}</li>
-        {% endfor %}
-    </ul>
-
-    {% if viewer.pk == c4cuser.pk %}
-        <br/>
-<p>{% trans "You can "%}<a href={% url 'c4c:c4cuser_edit' c4cuser.user.pk %}>{% trans "edit your C4C profile"%}</a>.</p>
-    {% endif %}
-
-{% if viewer.pk != c4cuser.pk %}
-<a class="btn btn-primary pull-center" href={% url 'c4c:send_email' c4cuser.user.pk %}>{% trans "Send a message" %}</a>
-
-{% endif %}
 {% endblock content %}
 
 {% block help %}

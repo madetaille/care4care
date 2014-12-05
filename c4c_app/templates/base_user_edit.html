@@ -4,9 +4,13 @@
 {% block title %}Care4Care - {% trans "Update profile (User)"%} {% endblock %}
 
 {% block content %}
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Update User details" />
+        {{ form }}
+        <button id="registration_submit" type="submit" class="btn btn-primary">{% trans "Update" %}</button>
     </form>
 {% endblock content %}
+
+{% block help %}
+{% trans "This page can be used to edit some information in the user profile: username, email, first name and last name." %}
+{% endblock help %}

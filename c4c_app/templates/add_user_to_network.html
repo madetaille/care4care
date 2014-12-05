@@ -4,7 +4,7 @@
 {% block title %}Care4Care - {% trans "Add User To Network"%}{% endblock %}
 {% block content %}
 <h1> {% trans "Add new user to Personal Network" %} </h1>
-<!-- 
+<!--
 <form>
   <fieldset>
     <legend>Search (by username, name or e-mail)</legend>
@@ -13,18 +13,22 @@
   </fieldset>
 </form>
  -->
-<!-- 
-	<fieldset >
+<!--
+    <fieldset >
             <legend > {% trans "Donation"%}  </legend>
-	<form action="" method="post" role="form" class="form-horizontal">{% csrf_token %}
+    <form action="" method="post" role="form" class="form-horizontal">{% csrf_token %}
         {{ form.as_p }}
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
                 <button type="search" class="btn btn-default">{% trans "Search"%}</button>
             </div>
         </div>
-	</form>
+    </form>
         </fieldset>
-        
+
          -->
 {% endblock content %}
+
+{% block help %}
+{% trans "This page is used to add a user to your personnal network." %}
+{% endblock help %}
