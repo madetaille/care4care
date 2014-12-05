@@ -16,7 +16,7 @@ from c4c_app.models import C4CUser, C4CBranch
 
 
 class UserForm(forms.Form):
-    username = forms.CharField(label=_('Your name'), max_length=100)
+    username = forms.CharField(label=_('Username'), max_length=100)
     password = forms.CharField(label=_('Password'), max_length=10, widget=forms.PasswordInput)
     email = forms.EmailField(label=_('Email'), max_length=50)
     first_name = forms.CharField(label=_('First name'), max_length=40)

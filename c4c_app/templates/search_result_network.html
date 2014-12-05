@@ -10,6 +10,9 @@
                                      <th>{% trans "name" %}</th>
                                      <th>{% trans "last name" %}</th>
                                      <th>{% trans "more details" %}</th>
+                                     {% if user.is_authenticated %}
+                                     <th>{% trans "Action" %}</th>
+                                     {% endif %}
                                  </tr>
                            {% for object in result %}
                                  <tr>
