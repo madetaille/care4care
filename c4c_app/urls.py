@@ -1,7 +1,6 @@
 from django.conf import settings
 from django.conf.urls import patterns, url
 from django.contrib.auth.decorators import login_required
-from django.views.generic.base import TemplateView
 
 from c4c_app import views
 urlpatterns = patterns('',
