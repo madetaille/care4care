@@ -1,22 +1,15 @@
-from django.shortcuts import get_object_or_404
-from c4c_app.models import C4CDonation, C4CUser, C4CNews, C4CJob
+from c4c_app.models import C4CDonation, C4CUser, C4CJob
 from django.views import generic
 
 class History(generic.ListView):
-
+    """ For the history of a user """
+    
     model = C4CUser
     template_name = 'history.html'
     context_object_name = 'history'
 
     def get_queryset(self):
         history_list = []
-        #donations_sent = []
-        #donation_received = []
-        #job_demanded = []
-        #job_forbidden = []
-
-
-        user = get_object_or_404(C4CUser, user = self.request.user)
 
         #donation made by the user
         donations_sent = C4CDonation.objects.filter(sender = self.request.user)

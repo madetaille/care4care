@@ -84,6 +84,7 @@ def add_csrf(request, ** kwargs):
 
 
 class JobDetail(generic.DetailView):
+    """ Display the details of a job """
     model = C4CJob
     template_name = 'job_detail.html'
 
@@ -101,6 +102,7 @@ class JobDetail(generic.DetailView):
 
 @login_required
 def acceptJob(request, c4cjob_id):
+    """ In order that a user can accep a job """
     job = get_object_or_404(C4CJob, pk=c4cjob_id)
     user_site = request.user
 
@@ -132,6 +134,7 @@ def acceptJob(request, c4cjob_id):
 
 @login_required
 def doneJob(request, c4cjob_id):
+    """ In order that a user can say that he has done the job ! """
     job = get_object_or_404(C4CJob, pk=c4cjob_id)
 
     if job.asked_by is None or job.done_by is None or job.done_by != request.user or job.end_date is not None or job.complete:
@@ -151,6 +154,7 @@ def doneJob(request, c4cjob_id):
 
 @login_required
 def confirmJob(request, c4cjob_id):
+    """ In order that a user can conform that a job is completed !"""
     job = get_object_or_404(C4CJob, pk=c4cjob_id)
 
     if job.asked_by is None or job.done_by is None or job.asked_by != request.user or job.end_date is None or job.complete:
@@ -169,7 +173,7 @@ def confirmJob(request, c4cjob_id):
 
 @login_required
 def reportJob(request, c4cjob_id):
-    # TODO: envoie d un email a l admin
+    """ In order that a job can be reported to an administrator """
     job = get_object_or_404(C4CJob, pk=c4cjob_id)
 
     if job.asked_by is None or job.done_by is None or job.asked_by != request.user or job.end_date is None or job.complete:
@@ -187,6 +191,7 @@ def reportJob(request, c4cjob_id):
 
 @login_required
 def cancelJob(request, c4cjob_id):
+    """ In order that a job can be canceled """
     job = get_object_or_404(C4CJob, pk=c4cjob_id)
 
     if job.offer == False:
@@ -226,6 +231,7 @@ def cancelJob(request, c4cjob_id):
 
 @login_required
 def deleteJob(request, c4cjob_id):
+    """ In order that a job can be deleted """
     job = get_object_or_404(C4CJob, pk=c4cjob_id)
 
     if job.offer == False:
@@ -255,7 +261,7 @@ def deleteJob(request, c4cjob_id):
 
 @login_required
 def userJobs(request, member_pk=None):
-
+    """ Display all jobs of a user """
     member = None
     if member_pk:
         member = get_object_or_404(C4CUser, pk=member_pk)
@@ -279,6 +285,7 @@ def userJobs(request, member_pk=None):
 
 
 class Feeds(generic.ListView):
+    """ In order to find all jobs that are in a special branch """
     template_name = 'all_jobs.html'
     context_object_name = 'all_jobs_list'
 
@@ -315,6 +322,7 @@ class Feeds(generic.ListView):
 
 
 def send_email_creation_job(job, maker):
+    """ Send an email when a job is created """
     subject, from_email, to = 'Care4Care : ' + _('you created a job') + ' !', settings.EMAIL_HOST_USER, maker.user.email
     text_content = ''
     htmly = get_template('email_jobcreation.html')
@@ -330,6 +338,7 @@ def send_email_creation_job(job, maker):
 
 
 def send_email_done_job(job):
+    """ Send an email to a user when his offer/demand is done """
     subject, from_email, to = 'Care4Care : ' + _('a job is waiting for you to be completed') + ' !', settings.EMAIL_HOST_USER, job.asked_by.email
 
     htmly = get_template('email_jobcompleted.html')
@@ -346,6 +355,7 @@ def send_email_done_job(job):
 
 
 def send_email_confirm(job):
+    """ Send an email to a user when the offer/demand he has done has been confirmed """
     subject, from_email, to = 'Care4Care : ' + _('a job you did has been confirmed') + ' !', settings.EMAIL_HOST_USER, job.done_by.email
 
     htmly = get_template('email_jobconfirmed.html')
@@ -362,6 +372,7 @@ def send_email_confirm(job):
 
 
 def send_email_report_admin(job, emails):
+    """ Send an email to an admin when two users doesn't agree with the credit for a job """
     subject, from_email, = 'Care4Care : ' + _('there is a conflict between two members') + ' !', settings.EMAIL_HOST_USER
 
     for email in emails:
@@ -380,6 +391,7 @@ def send_email_report_admin(job, emails):
 
 
 def send_email_canceled_demand(job):
+    """ Send an email to a user when his demand has been cqnceled """
     subject, from_email, to = 'Care4Care : ' + _('a demand you asked for has been canceled') + ' !', settings.EMAIL_HOST_USER, job.asked_by.email
 
     htmly = get_template('email_jobcanceled.html')
@@ -396,6 +408,7 @@ def send_email_canceled_demand(job):
 
 
 def send_email_canceled_offer(job):
+    """ Send an email to a user when his offer has been canceled """
     subject, from_email, to = 'Care4Care : ' + _('an offer you made has been canceled') + ' !', settings.EMAIL_HOST_USER, job.done_by.email
 
     htmly = get_template('email_jobcanceled.html')
@@ -412,6 +425,7 @@ def send_email_canceled_offer(job):
 
 
 def send_email_delete_offer(job):
+    """ Send an email to a user when his offer has been deleted ! """
     subject, from_email, to = 'Care4Care : ' + _('an offer you accepted has been deleted') + ' !', settings.EMAIL_HOST_USER, job.asked_by.email
 
     htmly = get_template('email_jobdeleted.html')
@@ -428,6 +442,7 @@ def send_email_delete_offer(job):
 
 
 def send_email_delete_demand(job):
+    """ Send an email to user when his demand has been deleted """
     subject, from_email, to = 'Care4Care : ' + _('a demand you accepted has been deleted') + ' !', settings.EMAIL_HOST_USER, job.done_by.email
 
     htmly = get_template('email_jobdeleted.html')
@@ -444,6 +459,7 @@ def send_email_delete_demand(job):
 
 
 def send_email_accepted_offer(job):
+    """ Send an email to user when his offer has been accepted """
     subject, from_email, to = 'Care4Care : ' + _('a demand you made has been accepted') + ' !', settings.EMAIL_HOST_USER, job.done_by.email
 
     htmly = get_template('email_jobaccepted.html')
@@ -460,6 +476,7 @@ def send_email_accepted_offer(job):
 
 
 def send_email_accepted_demand(job):
+    """ Send an email to a user when his demand has been accepted """
     subject, from_email, to = 'Care4Care : ' + _('an offer you made has been accepted') + ' !', settings.EMAIL_HOST_USER, job.asked_by.email
 
     htmly = get_template('email_jobaccepted.html')
