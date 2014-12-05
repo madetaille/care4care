@@ -4,7 +4,7 @@ from django.http import HttpResponseRedirect
 from django.http import HttpResponse
 from matplotlib.backends.backend_agg import FigureCanvasAgg
 from django.contrib.auth.models import User
-from c4c_app.models import C4CJob
+from c4c_app.models import C4CJob, C4CUser, C4CBranch
 import datetime
 
 
@@ -29,9 +29,10 @@ def GraphsView(request):
     for x in range (0,len(times)):
         y[x] += times[x]
     y_sum = np.cumsum(y)
+
     z=0
     for x in range (0,len(y_sum)):
-        z += y_sum[x]
+        z += y[x]
 
 
     averagetime=z/number
@@ -151,6 +152,43 @@ def ActivePie(request):
     line1 = plt.pie(x, explode=None, labels=['Active', 'Inactive'], colors=('b', 'g', 'r', 'c', 'm', 'y', 'k', 'w'), autopct=None, pctdistance=0.6, shadow=False, labeldistance=1.1, startangle=None, radius=None)
     plt.title('Active and inactive users')
     plt.rc('font', size=20)
+
+
+    canvas = FigureCanvasAgg(f)
+    response = HttpResponse(content_type='image/png')
+    canvas.print_png(response)
+    matplotlib.pyplot.close(f)
+    return response
+
+def UserByBranch(request):
+
+    userbybranchs=[]
+
+    q1=C4CBranch.objects.values_list('group')\
+                                .order_by('group')
+    max=0
+    for x in q1:
+        q2=User.objects.filter(groups__in=(x))
+        userbybranchs.append(len(q2))
+        if max < len(q2):
+            max = len(q2)
+
+    namebranchs=[]
+    q3=C4CBranch.objects.values_list('name')\
+                                .order_by('group')
+    for x in q3:
+        namebranchs.append(x)
+
+    f = plt.figure()
+    x = np.arange(len(q1))
+    width=0.5
+    plt.xlim(0, len(q1)+2)
+    plt.ylim(0, max+2)
+    plt.title('Number of users by branch')
+    plt.xlabel('branch name')
+    plt.ylabel('number of users')
+    bar1 = plt.bar(x,userbybranchs, width, bottom=0, color='Green', alpha=0.65, label='Legend')
+    plt.xticks(x+width/2., namebranchs)
 
 
     canvas = FigureCanvasAgg(f)
