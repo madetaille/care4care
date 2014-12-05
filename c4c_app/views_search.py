@@ -12,16 +12,32 @@ class Search(generic.ListView):
 
     def get_queryset(self):
         job_list = []
+        user_list1 = []
+        user_list2 = []
+        user_list3 = []
         user_list = []
+        user = get_object_or_404(C4CUser, user = self.request.user)
 
         if 'search' in self.request.GET:
             for word_search in  str.split(self.request.GET['search']):
                 job_list += list(C4CJob.objects.filter(title__icontains = word_search))
                 job_list += list(C4CJob.objects.filter(description__icontains = word_search))
                 job_list += list(C4CJob.objects.filter(location__icontains = word_search))
-                user_list += list(User.objects.filter(last_name__icontains = word_search))
-                user_list += list(User.objects.filter(first_name__icontains = word_search))
-                user_list += list(User.objects.filter(username__icontains = word_search))
+                user_list1 += list(User.objects.filter(last_name__icontains = word_search))
+                user_list2 += list(User.objects.filter(first_name__icontains = word_search))
+                user_list3 += list(User.objects.filter(username__icontains = word_search))
+                
+                for i in user_list1:
+                    if i.pk != user.pk:
+                        user_list.append(i)
+                        
+                for i in user_list2:
+                    if i.pk != user.pk:
+                        user_list.append(i)
+                        
+                for i in user_list3:
+                    if i.pk != user.pk:
+                        user_list.append(i)
 
             job_list = set(job_list)
             user_list = set(user_list)

@@ -16,7 +16,7 @@ from c4c_app.models import C4CUser, C4CBranch
 
 
 class UserForm(forms.Form):
-    username = forms.CharField(label=_('Your name'), max_length=100)
+    username = forms.CharField(label=_('Username'), max_length=100)
     password = forms.CharField(label=_('Password'), max_length=10, widget=forms.PasswordInput)
     password_confirm = forms.CharField(label=_('Password (confirmation)'), max_length=10, widget=forms.PasswordInput)
     email = forms.EmailField(label=_('Email'), max_length=50)
@@ -36,6 +36,7 @@ class UserForm(forms.Form):
         cleaned_data = super(UserForm, self).clean()
         if "birthday" in cleaned_data and cleaned_data["birthday"] > datetime.date(datetime.date.today().year - 16, datetime.date.today().month, datetime.date.today().day):
             raise forms.ValidationError(_("You must be older than 16 years old!"))
+
         if "password" in cleaned_data and "password_confirm" in cleaned_data and cleaned_data["password"] != cleaned_data["password_confirm"]:
             raise forms.ValidationError(_("Passwords do not match"))
         return cleaned_data

@@ -3,7 +3,7 @@
 
 {% block content %}
         <h3> care4care search </h3>
-        <div style="text-align: center">
+        <div style="text-align: left">
 
              <form action="{% url 'c4c:search' %}"   class="form-inline" role="search" method="get">
                         <div class="form-group">
@@ -67,7 +67,7 @@
                         </table>
                 {% endif %}
     {% else %}
-        <p style="text-align:center">{% trans "Your search didn't match any user or Job" %}</p>
+        <p style="text-align:left"><br>{% trans "Your search didn't match any user or Job" %}</p>
     {% endif %}
 
 {% endblock content %}
