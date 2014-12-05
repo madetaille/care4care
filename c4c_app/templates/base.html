@@ -39,7 +39,14 @@
                     <a class="navbar-brand" href="/">Care4Care</a>
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
+                    <form action="{% url 'c4c:search' %}" class="navbar-form navbar-right" role="search" method="get">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Search" name="search">
+                         </div>
+                         <input type="submit" value={% trans "Search" %} />
+                    </form>
                     <ul class="nav navbar-nav navbar-right">
+                        <li role="presentation"><a data-toggle="tooltip" data-placement="bottom" title="{% block help %}This is a test message.{% endblock help %}" container="body">?</a></li>
                         {% if user.is_authenticated %}
                         <li><a href="{% url 'c4c:logout'  %}">{% trans "Logout"%} : {{ user.username }}</a></li>
                         {% else %}
@@ -58,6 +65,7 @@
                 <div class="col-sm-3">
                     <ul class="nav nav-pills nav-stacked">
                         <li role="presentation"><a href="{% url 'c4c:feeds' %}">{% trans "Feeds"%}</a></li>
+                        <li role="presentation"><a href="{% url 'c4c:branchlist' %}">{% trans "Branches" %}</a></li>
                         {% if user.is_authenticated %}
                         <li role="presentation"><a href="{% url 'c4c:user_detail' user.pk %}">{% trans "My Profile"%}</a></li>
                         <li role="presentation"><a href="{% url 'c4c:user_jobs'  %}">{% trans "My Jobs"%}</a></li>
@@ -72,7 +80,6 @@
                         <li role="presentation"><a href="{% url 'c4c:all_news_list' %}"> {% trans "News"%} </a></li>
                         <li role="presentation"><a href="{% url 'c4c:whatisc4c' %}">{% trans "What is Care4Care?"%}</a></li>
                         <li role="presentation"><a href="{% url 'c4c:aboutus' %}">{% trans "About us"%}</a></li>
-                        <li role="presentation"><a data-toggle="tooltip" data-placement="right" title="{% block help %}This is a test message.{% endblock help %}" container="body">{% trans "Help" %}</a></li>
                     </ul>
                 </div>
                 <div class="col-sm-9">

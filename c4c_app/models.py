@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from PIL import Image
 from django.contrib.auth.models import User, Group
 from django.db import models
 from django.db.models.signals import pre_save, post_save, pre_delete
@@ -20,6 +21,7 @@ class C4CUser(models.Model):
     time_account = models.IntegerField(default=0)
     birthday = models.DateField()
     network = models.ManyToManyField("self", symmetrical=False, blank=True)
+    avatar = models.ImageField(upload_to="avatars/", blank=True, default=None, null=True)
 
     def get_branches(self):
         """ Get branches to which this user belongs """
@@ -48,6 +50,22 @@ class C4CUser(models.Model):
             count += donation.amount
         self.time_account = count
         self.save()
+
+    def save(self):
+        """ Ensures the image have the good size """
+        super(C4CUser, self).save()
+
+        if self.avatar:
+            image = Image.open(self.avatar)
+            (width, height) = image.size
+
+            if width > 200 or height > 200:
+                factor = min(1, 200 / height)
+                factor = min(factor, 200 / width)
+
+                size = (int(width * factor), int(height * factor))
+                image = image.resize(size, Image.ANTIALIAS)
+                image.save(self.avatar.path)
 
 
 class C4CJob(models.Model):
@@ -131,10 +149,11 @@ class C4CBranch(models.Model):
     def get_users(self):
         """ Returns a queryset that will list all users contained in this branch """
         return User.objects.filter(groups__in=(self.group, self.officers_group))
-    
+
     def get_admins(self):
         """ Returns a queryset that will list all admin users contained in this branch """
         return User.objects.filter(groups__in=(self.officers_group,))
+
 
 class C4CEvent(models.Model):
 

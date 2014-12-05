@@ -1,0 +1,15 @@
+{% load i18n %}
+{% trans "Hello"%} {{ user }} ! <br>
+{% trans "Your account has been successfully created !" %} <br> <br>
+{% trans "Here ared your informations : " %} <br> 
+<li>{% trans "Username"%} : {{ user }}</li>
+<li>{% trans "Your email"%} : {{ user.email }}</li>
+<li>{% trans "Your first name "%} : {{ user.first_name }}</li>
+<li>{% trans "Your last name "%} : {{ user.last_name }}</li>
+<li>{% trans "Your address "%} : {{ c4cuser.address }}</li>
+<li>{% trans "Your birthday "%} : {{ c4cuser.birthday }}</li>
+<li>{% trans "Your credit "%} : {{ c4cuser.time_account }}</li>
+<br>
+<br>
+{% trans "Best regards"%}, <br>
+{% trans "The C4C Organisation"%}.

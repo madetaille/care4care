@@ -4,12 +4,12 @@
 {% block content %}
 <form action="{% url 'c4c:send_user_email' pk %}" method="POST">{% csrf_token %}
                 
-<p>Subject : <input type="text" class="form-control" maxlength="100" name="subject"> <p>
+<p>{% trans "Subject : " %}<input type="text" class="form-control" maxlength="100" name="subject"> <p>
                     
-<p>Please type your message : <p>
+<p> {% trans "Please type your message : " %}<p>
 <textarea class="form-control" maxlength="1000" name="content_message" rows="3" class="form-control"></textarea>
 <p>
 
-<button type="submit" class="btn btn-primary">Send</button>
+<button type="submit" class="btn btn-primary">{% trans "Send" %}</button>
 </form>
 {% endblock content %}

@@ -2,8 +2,8 @@
 {% load i18n %}
 
 {% block title %}Care4Care - {% trans "Network"%}{% endblock %}
-
 {% block content %}
+<h1> {% trans "Personal Network" %} </h1>
 	{% if network_list %}
 	    {% for member in network_list %}
 			<ul>
@@ -11,4 +11,8 @@
 	        </ul>
 	    {% endfor %}
 	{% endif %}
+	<select class="selectpicker">
+    <option>User1</option>
+  </select>
+	<a href="{% url 'c4c:add_user_to_network' %}" class="btn btn-primary btn-block">{% trans "Add new user" %}</a>
 {% endblock content %}
