@@ -60,7 +60,7 @@
                                     <td>{{ object.last_name }}</td>
                                      <td><a class="btn btn-primary" href={% url 'c4c:user_detail' object.id %}>{% trans "Details"%}</a></td>
                                      {% if user.is_authenticated %}
-                                     <td><a class="btn btn-primary" href={% url 'c4c:user_detail' object.id %}>{% trans "Add to network"%}</a></td>
+                                     <td><a class="btn btn-primary" href={% url 'c4c:add_user_to_network' object.id %}>{% trans "Add to network"%}</a></td>
                                      {% endif %}
                                  </tr>
                            {% endfor %}
