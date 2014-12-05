@@ -230,14 +230,16 @@ def deleteJob(request, c4cjob_id):
     if job.offer == False:
         if job.asked_by != request.user or job.end_date is not None or job.complete:
             return error403(request)
-
-        send_email_delete_demand(job)
+        if job.done_by:
+            send_email_delete_demand(job)
+            
     elif job.offer:
 
         if job.done_by != request.user or job.end_date is not None or job.complete:
             return error403(request)
-
-        send_email_delete_offer(job)
+        
+        if job.asked_by:
+            send_email_delete_offer(job)
 
     if C4CEvent.objects.filter(job=job, user=job.done_by).exists():
         event1 = get_object_or_404(C4CEvent, job=job, user=job.done_by)
