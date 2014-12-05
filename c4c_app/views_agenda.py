@@ -16,6 +16,7 @@ mnames = mnames.split()
 
 
 def _get_monthes_for_year(member, year):
+    """ Get months for a year """
     nowy, nowm = time.localtime()[:2]
 
     mlst = []
@@ -31,7 +32,7 @@ def _get_monthes_for_year(member, year):
 
 
 def AgendaYear(request, member_pk=None, year=None):
-    """Main listing, years and months; three years per page."""
+    """ Main listing, years and months; three years per page."""
     # prev / next years
     member = None
     if member_pk:
@@ -61,7 +62,7 @@ def AgendaYear(request, member_pk=None, year=None):
 
 
 def AgendaMonth(request, member_pk, year, month, change=None):
-    """Listing of days in `month`."""
+    """ Listing of days in `month`."""
 
     member = None
     if member_pk:
@@ -114,6 +115,8 @@ def AgendaMonth(request, member_pk, year, month, change=None):
 
 
 def AgendaDay(request, member_pk, year, month, day):
+    """ Listing of days """
+
     member = None
     if member_pk:
         member = get_object_or_404(C4CUser, pk=member_pk)
@@ -134,6 +137,7 @@ def AgendaDay(request, member_pk, year, month, day):
 
 
 def AgendaEvent(request, event_pk):
+    """ Get an event """
     event = get_object_or_404(C4CEvent, pk=event_pk)
     if event.user != request.user and not event.user.c4cuser.network.filter(pk=request.user.pk).exists():
         return HttpResponseNotFound('<h1>Page not found</h1>')

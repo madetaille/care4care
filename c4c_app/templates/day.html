@@ -7,7 +7,7 @@
     <h2>{{ member.user.first_name }} {{ member.user.last_name }}{% trans "'s Agenda"%}</h2>
     <h3>{{ day_name }} {{ day }} {{ month_name }} {{ year }}</h3>
     <a href="{% url 'c4c:month' member.pk year month %}">{% trans "Return to calendar"%}</a>
-	<table class="table table-bordered table-hover">
+    <table class="table table-bordered table-hover">
         <tr>
             <th>{% trans "Date"%}</th>
             <th>{% trans "Name"%}</th>
@@ -15,15 +15,19 @@
         {% if entries|length == 0 %}
             <tr><td colspan="2">{% trans "There is not any event on this day"%}</td></tr>
         {% else %}
-	        {% for entry in entries %}
-	            <tr>
-	                 <td><a href="{% url 'c4c:event' entry.pk %}">{{ entry.date }}</a></td>
-	                 <td><a href="{% url 'c4c:event' entry.pk %}">{{ entry.name }}</a></td>
-	             </tr>
-	        {% endfor %}
-	    {% endif %}
+            {% for entry in entries %}
+                <tr>
+                     <td><a href="{% url 'c4c:event' entry.pk %}">{{ entry.date }}</a></td>
+                     <td><a href="{% url 'c4c:event' entry.pk %}">{{ entry.name }}</a></td>
+                 </tr>
+            {% endfor %}
+        {% endif %}
     </table>
     {% if user.pk == member.user.pk %}
        <a href="{% url 'c4c:editevent' %}" class="btn btn-primary btn-block">{% trans "Create new event" %}</a>
-    {% endif %} 
+    {% endif %}
 {% endblock content %}
+
+{% block help %}
+{% trans "This is your personnal agenda. You can add, edit and remove events to keep track of what you have to do. Events for your jobs are added automatically." %}
+{% endblock help %}

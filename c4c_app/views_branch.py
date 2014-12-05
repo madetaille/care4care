@@ -1,15 +1,12 @@
-from django.shortcuts import get_object_or_404, render
-from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.views import generic
 from django.views.generic import ListView
-from django.utils import timezone
-
 from c4c_app.models import C4CBranch
-from c4c_app.models import C4CUser
 
 class BranchDetail(generic.DetailView):
+    """ Display branch details """
     model = C4CBranch
     template_name = 'branch_detail.html'
 
@@ -30,12 +27,13 @@ def add_to_branch(request,pk):
     return HttpResponseRedirect(reverse('c4c:branch_detail',args=(pk,)))
 
 def remove_from_branch(request,pk):
-
+    """ Remove a user from a branch """
     c4cbranch = get_object_or_404(C4CBranch,pk=pk)
     c4cbranch.group.user_set.remove(request.user)
     return HttpResponseRedirect(reverse('c4c:branch_detail',args=(pk,)))
 
 class BranchList(ListView):
+    """ Desplay branches List """
     model = C4CBranch
     template_name = 'branchlist.html'
     context_object_name = 'all_branches'

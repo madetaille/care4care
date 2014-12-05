@@ -7,7 +7,7 @@
     <h2>{{ event.user.first_name }} {{ event.user.last_name }}{% trans "'s Agenda"%}</h2>
     <h3>{{ event.name }}</h3>
     <a href="{% url 'c4c:month' event.user.pk event.date.year event.date.month %}">{% trans "Return to calendar"%}</a>
-    
+
     <table class="table table-bordered">
         <tr>
             <th>{% trans "Date"%}</th>
@@ -24,8 +24,12 @@
             <td colspan="2">{{ event.description }}</td>
         </tr>
     </table>
-    
+
     {% if event.user.pk == user.pk %}
         <a class="btn btn-primary" href="{% url 'c4c:editevent' event.pk %}">{% trans "Edit"%}</a>
     {% endif %}
 {% endblock content %}
+
+{% block help %}
+{% trans "This page displays the details on an event in a user's agenda. You can edit it by clicking on the button." %}
+{% endblock help %}

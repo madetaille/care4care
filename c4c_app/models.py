@@ -9,7 +9,6 @@ from model_utils import FieldTracker
 
 
 class C4CUser(models.Model):
-
     """ Add additionnal interesting fields to the default Django's users """
 
     class Meta:
@@ -69,7 +68,6 @@ class C4CUser(models.Model):
 
 
 class C4CJob(models.Model):
-
     """ Represents a job """
 
     class Meta:
@@ -105,7 +103,6 @@ class C4CJob(models.Model):
 
 
 class C4CDonation(models.Model):
-
     """ Represents a donation """
 
     class Meta:
@@ -127,7 +124,6 @@ class C4CDonation(models.Model):
 
 
 class C4CBranch(models.Model):
-
     """ Represents a branch """
 
     class Meta:
@@ -156,7 +152,6 @@ class C4CBranch(models.Model):
 
 
 class C4CEvent(models.Model):
-
     """ Represents an event """
 
     class Meta:
@@ -179,7 +174,7 @@ class C4CEvent(models.Model):
 
 
 class C4CNews(models.Model):
-
+    """ Represent a News written by an admin or a branch admin"""
     class Meta:
         verbose_name = 'News'
         verbose_name_plural = 'News'
@@ -251,5 +246,6 @@ def handle_donation_post_save(sender, instance, **kwargs):
 
 @receiver(pre_delete, sender=C4CDonation)
 def handle_donation_delete(sender, instance, **kwargs):
+    """ Recomputes the time account of the users impacted by the save of the donation """
     user_to_update = _get_set_without_none([instance.sender_id, instance.receiver_id, instance.tracker.previous('sender'), instance.tracker.previous('receiver')])
     _update_user_time_account_by_id(user_to_update)

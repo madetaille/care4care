@@ -5,16 +5,16 @@
 {% block content %}
 <h1> {% trans "Personal Network" %} </h1>
 <h3>{% trans "Add a new user to Personal Network"%}</h3>
-	{% if network_list %}
-		<table class="table table-hover">
-		    {% for member in network_list %}
-				<tr>
-					<td><a href="{% url 'c4c:user_detail' member.pk %}">{{ member }}</a></td>
-					<td><a class="btn btn-primary pull-right" href="{% url 'c4c:del_network' member.pk %}">{% trans "Delete" %}</a></td>
-				</tr>
-		    {% endfor %}
-	    </table>
-	{% endif %}
+    {% if network_list %}
+        <table class="table table-hover">
+            {% for member in network_list %}
+                <tr>
+                    <td><a href="{% url 'c4c:user_detail' member.pk %}">{{ member }}</a></td>
+                    <td><a class="btn btn-primary pull-right" href="{% url 'c4c:del_network' member.pk %}">{% trans "Delete" %}</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
 <form action="{% url 'c4c:search_network' %}"  role="search" method="get">
                         <div class="form-group">
                             <input type="text" class="form-control" placeholder="Search User" name="search">
@@ -22,3 +22,7 @@
                          <button type="submit" class="btn btn-primary">{% trans "Search" %}</button>
                     </form>
 {% endblock content %}
+
+{% block help %}
+{% trans "This is your personnal network. You can add and remove other users from it. When a user is in your personnal network, you have a fast and easy access to his/her profile." %}
+{% endblock help %}
