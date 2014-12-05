@@ -25,7 +25,7 @@ class DonationCreation(CreateView):
         success_url = '/donation_detail/'
         amount = int(self.request.POST['amount'])
 
-        if(sender.time_account > amount ):
+        if(sender.time_account >= amount ):
             self.object.sender = sender.user
             self.object.receiver = get_object_or_404(C4CUser, pk=self.request.POST['receiver']).user
             self.object.date = datetime.now()
