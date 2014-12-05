@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.conf.urls import patterns, url
 from django.contrib.auth.decorators import login_required
+from django.views.generic.base import TemplateView
 
 from c4c_app import views
 urlpatterns = patterns('',
@@ -76,5 +77,7 @@ urlpatterns = patterns('',
                        url(r'^whatisc4c/$', views.whatisc4c, name='whatisc4c'),
                        url(r'^aboutus/$', views.aboutus, name='aboutus'),
                        url(r'^sendemail/(?P<pk>\d+)/$', login_required(views.send_email), name='send_email'),
-                       url(r'^sendemailuser/(?P<pk>\d+)/$', login_required(views.send_email_user), name='send_user_email')
+                       url(r'^sendemailuser/(?P<pk>\d+)/$', login_required(views.send_email_user), name='send_user_email'),
+                       # Admin
+                       url(r'^admin/stats/$', TemplateView.as_view(template_name='admin/stats.html'))
                        )
