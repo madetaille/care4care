@@ -71,11 +71,13 @@ urlpatterns = patterns('',
                        url(r'^editevent/$', login_required(views.AgendaEditEvent), name='editevent'),
                        url(r'^editevent/(\d+)/$', login_required(views.AgendaEditEvent), name='editevent'),
                        url(r'^event/(\d+)/$', login_required(views.AgendaEvent), name='event'),
-                       # Stat
-                       url(r'^stat/$', views.stat, name='stat'),
                        # Admin
-                       url(r'^admin/stat/$', views.GraphsView, name='statuser'),
-                       url(r'^admin/stat/line$', views.GraphsViewBar, name='statuserbar'),
+                       url(r'^admin/stats$', views.GraphsView, name='statuser'),
+                       url(r'^admin/stats/line$', views.GraphsViewBar, name='statuserbar'),
+                       url(r'^admin/stats/line2$', views.GraphsTimeworked, name='stattime'),
+                       url(r'^admin/stats/line3$', views.ActivePie, name='statpie'),
+
+
 
                        # News
                        #url(r'^news/$', views.news, name = 'news'),
