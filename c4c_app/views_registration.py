@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.core.mail import EmailMultiAlternatives
 from django.forms.fields import DateField, ImageField
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.template import Context
 from django.template.loader import get_template
 from django.utils.translation import ugettext as _
@@ -39,6 +39,10 @@ class UserForm(forms.Form):
 
         if "password" in cleaned_data and "password_confirm" in cleaned_data and cleaned_data["password"] != cleaned_data["password_confirm"]:
             raise forms.ValidationError(_("Passwords do not match"))
+        if User.objects.filter(username = cleaned_data["username"]):
+            raise forms.ValidationError(_("Username already exists"))
+        #if get_object_or_404(C4CUser, user.username=cleaned_data["username"])
+         #   raise forms.ValidationError(_("Username already exists"))
         return cleaned_data
 
 

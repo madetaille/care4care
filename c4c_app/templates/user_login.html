@@ -7,12 +7,12 @@
     {% trans "Username" %} : <input type="text" name="username" value="" size="50" />
     <br />
     {% trans "Password" %} : <input type="password" name="password" value="" size="50" />
-    <br />
+    <br /><br />
 
     {% if invalid %}
     {% trans "Your email and password are incorrect." %}
+    <br /><br />
     {% endif %}
-
     <button id="login_submit" type="submit" class="btn btn-primary">{% trans "submit" %}</button>
 </form>
 
