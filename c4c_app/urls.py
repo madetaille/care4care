@@ -35,10 +35,9 @@ urlpatterns = patterns('',
                        # User
                        url(r'^userdetail/(?P<pk>\d+)/$', login_required(views.UserDetail.as_view()), name='user_detail'),
                        url(r'^useredit/$', login_required(views.UserEdit), name='user_edit'),
-                       #url(r'^c4cedit/(?P<pk>\d+)/$', login_required(views.C4CUserEdit.as_view()), name='c4cuser_edit'),
-                       #url(r'^chpassword/(?P<pk>\d+)/$', login_required(views.chPassword), name='chPassword'),
-                       url(r'^network/$', login_required(views.network), name='network'),  # views.PersonalNetwork.as_view(), name='network'),
-                       url(r'^add_user_to_network/$', login_required(views.add_user_to_network), name='add_user_to_network'),
+                       url(r'^network/$', login_required(views.PersonalNetwork.as_view()), name='network'),
+                       url(r'^add_user_to_network/(?P<pk>\d+)/$', login_required(views.addNetwork), name='add_user_to_network'),
+                       url(r'^delete_network/(?P<pk>\d+)/$', login_required(views.deleteNetwork), name='del_network'),
                        url(r'^(?P<c4cuser_pk>\d+)/addnetwork', views.addNetwork, name='add_network'),
                        url(r'^registration/$', views.view_registration, name='registration'),
                        url(r'^login/$', views.user_login, name='login'),
@@ -49,6 +48,7 @@ urlpatterns = patterns('',
                        url(r'^history/$', views.History.as_view(), name='history'),
                        # search
                        url(r'^search/$', views.Search.as_view(), name='search'),
+                       url(r'^searchnetwork/$', views.SearchNetwork.as_view(), name='search_network'),
                        # News
                        url(r'^News/$', views.NewsCreation.as_view(), name='news_creation'),
                        url(r'^news_detail/(?P<pk>\d+)/$', views.NewsDetail.as_view(), name='news_detail'),
@@ -71,13 +71,15 @@ urlpatterns = patterns('',
                        url(r'^event/(\d+)/$', login_required(views.AgendaEvent), name='event'),
                        # Stat
                        url(r'^stat/$', views.stat, name='stat'),
+                       # Admin
+                       url(r'^admin/stat/$', views.GraphsView, name='statuser'),
+                       url(r'^admin/stat/line$', views.GraphsViewBar, name='statuserbar'),
+
                        # News
                        #url(r'^news/$', views.news, name = 'news'),
                        # What is Care 4 Care ?
                        url(r'^whatisc4c/$', views.whatisc4c, name='whatisc4c'),
                        url(r'^aboutus/$', views.aboutus, name='aboutus'),
                        url(r'^sendemail/(?P<pk>\d+)/$', login_required(views.send_email), name='send_email'),
-                       url(r'^sendemailuser/(?P<pk>\d+)/$', login_required(views.send_email_user), name='send_user_email'),
-                       # Admin
-                       url(r'^admin/stats/$', TemplateView.as_view(template_name='admin/stats.html'))
+                       url(r'^sendemailuser/(?P<pk>\d+)/$', login_required(views.send_email_user), name='send_user_email')
                        )

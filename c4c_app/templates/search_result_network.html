@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block content %}
+    {% if result|length != 0%}
+                    <h3>{% trans "Matches for user" %}</h3>
+                        <table class="table table-hover" >
+                                 <tr>
+                                     <th>{% trans "username" %}</th>
+                                     <th>{% trans "name" %}</th>
+                                     <th>{% trans "last name" %}</th>
+                                     <th>{% trans "more details" %}</th>
+                                 </tr>
+                           {% for object in result %}
+                                 <tr>
+                                     <td>{{ object.username }}</td>
+                                    <td>{{ object.first_name }}</td>
+                                    <td>{{ object.last_name }}</td>
+                                     <th><a class="btn btn-primary" href={% url 'c4c:user_detail' object.id %}>{% trans "Details"%}</a></th>
+                                     <th><a class="btn btn-primary" href={% url 'c4c:add_user_to_network' object.id %}>{% trans "Add to Personal Network"%}</a></th>
+                                 </tr>
+                           {% endfor %}
+                        </table>
+    {% else %}
+        <p>{% trans "Your search didn't match any user" %}</p>
+    {% endif %}
+
+{% endblock content %}
