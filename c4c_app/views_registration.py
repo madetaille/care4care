@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.core.mail import EmailMultiAlternatives
 from django.forms.fields import DateField, ImageField
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.template import Context
 from django.template.loader import get_template
 from django.utils.translation import ugettext as _
@@ -16,8 +16,9 @@ from c4c_app.models import C4CUser, C4CBranch
 
 
 class UserForm(forms.Form):
-    username = forms.CharField(label=_('Your name'), max_length=100)
+    username = forms.CharField(label=_('Username'), max_length=100)
     password = forms.CharField(label=_('Password'), max_length=10, widget=forms.PasswordInput)
+    password_confirm = forms.CharField(label=_('Password (confirmation)'), max_length=10, widget=forms.PasswordInput)
     email = forms.EmailField(label=_('Email'), max_length=50)
     first_name = forms.CharField(label=_('First name'), max_length=40)
     last_name = forms.CharField(label=_('Last name'), max_length=40)
@@ -31,10 +32,17 @@ class UserForm(forms.Form):
         self.fields['branches'] = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple, choices=[(a.pk, a.name) for a in C4CBranch.objects.all()])
 
     def clean(self):
-        """ Verify birthday """
+        """ Verify birthday and password"""
         cleaned_data = super(UserForm, self).clean()
         if "birthday" in cleaned_data and cleaned_data["birthday"] > datetime.date(datetime.date.today().year - 16, datetime.date.today().month, datetime.date.today().day):
             raise forms.ValidationError(_("You must be older than 16 years old!"))
+
+        if "password" in cleaned_data and "password_confirm" in cleaned_data and cleaned_data["password"] != cleaned_data["password_confirm"]:
+            raise forms.ValidationError(_("Passwords do not match"))
+        if User.objects.filter(username = cleaned_data["username"]):
+            raise forms.ValidationError(_("Username already exists"))
+        #if get_object_or_404(C4CUser, user.username=cleaned_data["username"])
+         #   raise forms.ValidationError(_("Username already exists"))
         return cleaned_data
 
 

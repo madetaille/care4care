@@ -1,7 +1,6 @@
 from django.conf import settings
 from django.conf.urls import patterns, url
 from django.contrib.auth.decorators import login_required
-from django.views.generic.base import TemplateView
 
 from c4c_app import views
 urlpatterns = patterns('',
@@ -29,15 +28,11 @@ urlpatterns = patterns('',
                        # Gift
                        url(r'^donation/$', views.DonationCreation.as_view(), name='donation_creation'),
                        url(r'^donation_detail/(?P<pk>\d+)/$', views.DonationDetail.as_view(), name='donation_detail'),
-                       url(r'^alldonationMade/$', views.AllDonation_made.as_view(), name='donation_list_M'),
-                       url(r'^alldonationReceived/$', views.AllDonation_received.as_view(), name='donation_list_R'),
                        url(r'^error/$', login_required(views.DonationError), name='donation_error'),
                        # User
                        url(r'^userdetail/(?P<pk>\d+)/$', login_required(views.UserDetail.as_view()), name='user_detail'),
-                       url(r'^useredit/(?P<pk>\d+)/$', login_required(views.UserEdit.as_view()), name='user_edit'),
-                       url(r'^c4cedit/(?P<pk>\d+)/$', login_required(views.C4CUserEdit.as_view()), name='c4cuser_edit'),
-                       url(r'^chpassword/(?P<pk>\d+)/$', login_required(views.chPassword), name='chPassword'),
-                       url(r'^network/$', login_required(views.PersonalNetwork.as_view()), name='network'),#views.PersonalNetwork.as_view(), name='network'),
+                       url(r'^useredit/$', login_required(views.UserEdit), name='user_edit'),
+                       url(r'^network/$', login_required(views.PersonalNetwork.as_view()), name='network'),
                        url(r'^add_user_to_network/(?P<pk>\d+)/$', login_required(views.addNetwork), name='add_user_to_network'),
                        url(r'^delete_network/(?P<pk>\d+)/$', login_required(views.deleteNetwork), name='del_network'),
                        url(r'^(?P<c4cuser_pk>\d+)/addnetwork', views.addNetwork, name='add_network'),
@@ -52,8 +47,6 @@ urlpatterns = patterns('',
                        url(r'^search/$', views.Search.as_view(), name='search'),
                        url(r'^searchnetwork/$', views.SearchNetwork.as_view(), name='search_network'),
                        # News
-                       url(r'^News/$', views.NewsCreation.as_view(), name='news_creation'),
-                       url(r'^news_detail/(?P<pk>\d+)/$', views.NewsDetail.as_view(), name='news_detail'),
                        url(r'^allNewsBranch/$', views.AllNewsBranch.as_view(), name='all_news_list_Branch'),
                        url(r'^allNews/$', views.AllNews.as_view(), name='all_news_list'),
                        # Branch

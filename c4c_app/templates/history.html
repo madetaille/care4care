@@ -2,16 +2,11 @@
 {% load i18n %}
 
 {% block content %}
-        <div>
-             <div>
-                 <h2> {% trans "Your history"%}</h2>
-            </div>
+    <div>
+         <div>
+             <h2> {% trans "Your history"%}</h2>
         </div>
-        <div>
-            <a type="button" style="margin-left:50px; margin-right:50px;" class="btn btn-primary" style="text-align:left" href="{% url 'c4c:donation_creation' %}">{% trans "Make a donation"%}</a>
-            <a type="button" class="btn btn-primary" style="margin-left:50px; margin-right:50px;" href="{% url 'c4c:demand_creation' %}">{% trans "Ask fo help"%}</a>
-            <a type="button" class="btn btn-primary"  style="margin-left:50px; margin-right:50px;" href="{% url 'c4c:user_jobs' %}">{% trans "Job offer"%}</a>
-        </div>
+    </div>
     {% if history %}
         {% for objectBlock in history %}
             {% if forloop.counter == 1 %}
@@ -116,5 +111,9 @@
                 {% endif %}
             {% endif %}
         {% endfor %}
-    {% endif %}
+       {% endif %}
 {% endblock content %}
+
+{% block help %}
+    {% trans "This page is the history of everything you've done with your account. It provides an overview of all your recent donations, jobs, ..." %}
+{% endblock help %}

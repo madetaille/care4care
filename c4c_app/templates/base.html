@@ -13,6 +13,7 @@
 
         <!-- Bootstrap core CSS -->
         <link href="{{ STATIC_URL }}css/bootstrap.min.css" rel="stylesheet">
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 
         <!-- Custom styles for this template -->
         <!--<link href="{{ STATIC_URL }}css/style.css" rel="stylesheet"> -->
@@ -41,20 +42,25 @@
                 <div id="navbar" class="navbar-collapse collapse">
                     <form action="{% url 'c4c:search' %}" class="navbar-form navbar-right" role="search" method="get">
                         <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Search" name="search">
+                            <input id="id_search" type="text" class="form-control" placeholder="Search" name="search">
                          </div>
-                         <input type="submit" value={% trans "Search" %} />
+                         <button id="search_submit" type="submit" class="btn btn-default">{% trans "Search" %}</button>
                     </form>
                     <ul class="nav navbar-nav navbar-right">
-                        <li role="presentation"><a data-toggle="tooltip" data-placement="bottom" title="{% block help %}This is a test message.{% endblock help %}" container="body">?</a></li>
+                        <li role="presentation">
+                            <a data-toggle="tooltip" data-placement="bottom" title="{% block help %}Help is not available on this page :-({% endblock help %}" container="body">
+                                <span class="fa-stack">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-question fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
                         {% if user.is_authenticated %}
-                        <li><a href="{% url 'c4c:logout'  %}">{% trans "Logout"%} : {{ user.username }}</a></li>
+                            <li><a href="{% url 'c4c:logout'  %}">{% trans "Logout"%} : {{ user.username }}</a></li>
                         {% else %}
-                        <li><a href="{% url 'c4c:login'  %}">{% trans "Login"%}</a></li>
-                        <li><a href="{% url 'c4c:registration'  %}">{% trans "Register"%}</a></li>
+                            <li><a href="{% url 'c4c:login'  %}">{% trans "Login"%}</a></li>
+                            <li><a href="{% url 'c4c:registration'  %}">{% trans "Register"%}</a></li>
                         {% endif %}
-                        <li><a href="{% url 'c4c:stat'  %}">{% trans "Stat"%}</a></li>
-
                     </ul>
                 </div><!--/.navbar-collapse -->
             </div>
@@ -64,22 +70,22 @@
             <div class="row">
                 <div class="col-sm-3">
                     <ul class="nav nav-pills nav-stacked">
-                        <li role="presentation"><a href="{% url 'c4c:feeds' %}">{% trans "Feeds"%}</a></li>
-                        <li role="presentation"><a href="{% url 'c4c:branchlist' %}">{% trans "Branches" %}</a></li>
+                        <li role="presentation"><a href="{% url 'c4c:feeds' %}"><i class="fa fa-exchange"></i> {% trans "Feeds"%}</a></li>
+                        <li role="presentation"><a href="{% url 'c4c:branchlist' %}"><i class="fa fa-tree"></i> {% trans "Branches" %}</a></li>
                         {% if user.is_authenticated %}
-                        <li role="presentation"><a href="{% url 'c4c:user_detail' user.pk %}">{% trans "My Profile"%}</a></li>
-                        <li role="presentation"><a href="{% url 'c4c:user_jobs'  %}">{% trans "My Jobs"%}</a></li>
-                        <li role="presentation"><a href="{% url 'c4c:agenda'  %}">{% trans "My Agenda"%}</a></li>
-                        <li role="presentation"><a href="{% url 'c4c:network'  %}">{% trans "Personal Network"%}</a></li>
-                        <li role="presentation"><a href="{% url 'c4c:donation_creation' %}"> {% trans "Make Donation"%} </a></li>
-                        <li role="presentation"><a href="{% url 'c4c:history' %}">{% trans "History"%}</a></li>
+                        <li role="presentation"><a href="{% url 'c4c:user_detail' user.pk %}"><i class="fa fa-user"></i> {% trans "My Profile"%}</a></li>
+                        <li role="presentation"><a href="{% url 'c4c:user_jobs'  %}"><i class="fa fa-tasks"></i> {% trans "My Jobs"%}</a></li>
+                        <li role="presentation"><a href="{% url 'c4c:agenda'  %}"><i class="fa fa-calendar"></i> {% trans "My Agenda"%}</a></li>
+                        <li role="presentation"><a href="{% url 'c4c:network'  %}"><i class="fa fa-globe"></i> {% trans "Personal Network"%}</a></li>
+                        <li role="presentation"><a href="{% url 'c4c:donation_creation' %}"><i class="fa fa-heart"></i> {% trans "Make Donation"%} </a></li>
+                        <li role="presentation"><a href="{% url 'c4c:history' %}"><i class="fa fa-history"></i> {% trans "History"%}</a></li>
                         {% endif %}
                     </ul>
                     <hr/>
                     <ul class="nav nav-pills nav-stacked">
-                        <li role="presentation"><a href="{% url 'c4c:all_news_list' %}"> {% trans "News"%} </a></li>
-                        <li role="presentation"><a href="{% url 'c4c:whatisc4c' %}">{% trans "What is Care4Care?"%}</a></li>
-                        <li role="presentation"><a href="{% url 'c4c:aboutus' %}">{% trans "About us"%}</a></li>
+                        <li role="presentation"><a href="{% url 'c4c:all_news_list' %}"><i class="fa fa-newspaper-o"></i> {% trans "News"%} </a></li>
+                        <li role="presentation"><a href="{% url 'c4c:whatisc4c' %}"><i class="fa fa-info-circle"></i> {% trans "What is Care4Care?"%}</a></li>
+                        <li role="presentation"><a href="{% url 'c4c:aboutus' %}"><i class="fa fa-question"></i> {% trans "About us"%}</a></li>
                     </ul>
                 </div>
                 <div class="col-sm-9">
@@ -91,6 +97,7 @@
             <hr/>
             <footer>
                 <p>&copy; Care4Care</p>
+                <p>Any date input should be filled with the following format: Y-M-D H:M:S, where Y is the year, M the month, D the day, H the hour, M the minutes and S the seconds.</p>
             </footer>
         </div>
 

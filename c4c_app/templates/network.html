@@ -3,22 +3,26 @@
 
 {% block title %}Care4Care - {% trans "Network"%}{% endblock %}
 {% block content %}
-<h1> {% trans "Personal Network" %} </h1>
-<h3>{% trans "Add a new user to Personal Network"%}</h3>
-	{% if network_list %}
-		<table class="table table-hover">
-		    {% for member in network_list %}
-				<tr>
-					<td><a href="{% url 'c4c:user_detail' member.pk %}">{{ member }}</a></td>
-					<td><a class="btn btn-primary pull-right" href="{% url 'c4c:del_network' member.pk %}">{% trans "Delete" %}</a></td>
-				</tr>
-		    {% endfor %}
-	    </table>
-	{% endif %}
+<h1> {% trans "Personal Network" %} </h1> <br/>
+    {% if network_list %}
+        <table class="table table-hover">
+            {% for member in network_list %}
+                <tr>
+                    <td><a href="{% url 'c4c:user_detail' member.pk %}">{{ member }}</a></td>
+                    <td><a class="btn btn-primary pull-right" href="{% url 'c4c:del_network' member.pk %}">{% trans "Delete" %}</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+    <h4>{% trans "Add a new user to your Personal Network"%}</h4>
 <form action="{% url 'c4c:search_network' %}"  role="search" method="get">
                         <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Search" name="search">
+                            <input type="text" class="form-control" placeholder="Search User" name="search">
                          </div>
-                         <input type="submit" value={% trans "Search" %} />
+                         <button type="submit" class="btn btn-primary">{% trans "Search" %}</button>
                     </form>
 {% endblock content %}
+
+{% block help %}
+{% trans "This is your personnal network. You can add and remove other users from it. When a user is in your personnal network, you have a fast and easy access to his/her profile." %}
+{% endblock help %}

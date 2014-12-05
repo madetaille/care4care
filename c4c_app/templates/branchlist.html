@@ -4,14 +4,14 @@
 {% block title %}Care4Care - {% trans "Branch list"%}{% endblock %}
 
 {% block content %}
-    <h1 class="text-center">{% trans "List of branches" %}</h1>
-    <ul>
+    <h2>{% trans "List of branches" %}</h2>
+    <div class="list-group">
         {% for branch in all_branches %}
-            <li><a href={% url "c4c:branch_detail" branch.pk %}>{{ branch }}</a></li>
+            <a href="{% url "c4c:branch_detail" branch.pk %}" class="list-group-item">{{ branch }}</a>
         {% empty %}
-            <li>{% trans "There are no branches yet." %}</li>
+            <a href="#" class="list-group-item">{% trans "There are no branches yet." %}</a>
         {% endfor %}
-    </ul>
+    </div>
 
 {% endblock content %}
 

@@ -18,9 +18,13 @@ Lakensestraat 76 <br />
 <p>
 {% trans "Contact"%}: Katleen Deruytter <br />
 {% trans "Mobile"%}: 0486/247.246 <br />
-{% trans "E-mail"%}: katleen.deruytter@woonzorgbrussel.be<br />
-{% trans "Web"%}: www.woonzorgbrussel.be
+{% trans "E-mail"%}: <a href="mailto:katleen.deruytter@woonzorgbrussel.be">katleen.deruytter@woonzorgbrussel.be</a><br />
+{% trans "Web"%}: <a href="http://www.woonzorgbrussel.be"> Woonzorgbrussel </a>
 </p>
 </body>
 
 {% endblock content %}
+
+{% block help %}
+{% trans "This page contains information about the site's owner and how to contact her." %}
+{% endblock help %}

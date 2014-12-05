@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% load i18n %}
 {% if c4cjob.offer == True %}
 {% trans "Hello"%} {{ c4cjob.asked_by }} ! <br>
 {% trans "An offer you accepted has been deleted by"%} {{ c4cjob.done_by }}. <br>
