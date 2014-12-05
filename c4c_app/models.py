@@ -55,7 +55,7 @@ class C4CUser(models.Model):
         """ Ensures the image have the good size """
         super(C4CUser, self).save()
 
-        if self.avatar is not None:
+        if self.avatar:
             image = Image.open(self.avatar)
             (width, height) = image.size
 
