@@ -4,9 +4,7 @@
 
 {% block content %}
 
-<a class="btn btn-default" href="{% url 'c4c:donation_list_M' %}"> {% trans "All Donation Made"%} </a>
-<a class="btn btn-default" href="{% url 'c4c:donation_list_R' %}"> {% trans "All Donation Received"%} </a>
-<a class="btn btn-default" href="{% url 'c4c:donation_creation' %}"> {% trans "New Donation"%} </a>
+<a class="btn btn-default btn-block" href="{% url 'c4c:donation_creation' %}"> {% trans "New Donation"%} </a>
 
 <h1> {% trans "Donation Detail"%} </h1>
 
