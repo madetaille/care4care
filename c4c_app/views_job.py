@@ -271,8 +271,8 @@ def userJobs(request, member_pk=None):
     if member != request.user.c4cuser and not member.network.filter(pk=request.user.pk).exists():
         return HttpResponseNotFound('<h1>Page not found</h1>')
 
-    l1 = member.user.jobs_asked.filter(complete=False, start_date__gte=datetime.date.today()).order_by("-start_date")
-    l2 = member.user.jobs_accepted.filter(complete=False, start_date__gte=datetime.date.today()).order_by("-start_date")
+    l1 = member.user.jobs_asked.filter(complete=False, start_date__gte=datetime.date.today()).exclude(done_by__isnull=True).order_by("-start_date")
+    l2 = member.user.jobs_accepted.filter(complete=False, start_date__gte=datetime.date.today()).exclude(asked_by__isnull=True).order_by("-start_date")
     l3 = member.user.jobs_asked.filter(complete=False, start_date__lte=datetime.date.today()).order_by("-start_date")
     l4 = member.user.jobs_accepted.filter(complete=False, start_date__lte=datetime.date.today()).order_by("-start_date")
     mydemands = member.user.jobs_asked.all().order_by("-start_date")
