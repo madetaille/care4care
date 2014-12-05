@@ -30,7 +30,7 @@
                 {% trans "Branches: " %}
                 <ul>
                     {% for branch in branches %}
-			            <li><a href={% url "c4c:branch_detail" branch.pk %}>{{ branch.name }}</a></li>
+			            <li><a href="{% url "c4c:branch_detail" branch.pk %}">{{ branch.name }}</a></li>
 			        {% empty %}
 			            <li>{% trans "This user is not affiliated with any branch." %}</li>
 			        {% endfor %}
@@ -40,7 +40,7 @@
     </div>
     
     {% if viewer.pk != c4cuser.pk %}
-        <a class="btn btn-primary btn-block" href={% url 'c4c:send_email' c4cuser.user.pk %}>{% trans "Send a message" %}</a>
+        <a class="btn btn-primary btn-block" href="{% url 'c4c:send_email' c4cuser.user.pk %}">{% trans "Send a message" %}</a>
         {% if not is_in_my_network %}
             <a class="btn btn-primary btn-block" href="{% url 'c4c:add_user_to_network' c4cuser.user.pk %}">{% trans "Add to my personal network"%}</a>
         {% else %}
