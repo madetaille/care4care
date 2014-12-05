@@ -19,6 +19,7 @@ from c4c import settings
 from c4c_app.models import C4CUser, C4CBranch
 from c4c_app.views_error403 import error403
 
+from smtplib import *
 
 class UserDetail(generic.DetailView):
     model = C4CUser
@@ -129,7 +130,10 @@ def resetpassword(request):
             html_content = htmly.render(d)
             msg = EmailMultiAlternatives(subject, '', from_email, [to])
             msg.attach_alternative(html_content, "text/html")
-            msg.send()
+            try:
+                msg.send()
+            except SMTPDataError:
+                return HttpResponseRedirect(reverse('c4c:login'))
 
             return HttpResponseRedirect(reverse('c4c:login'))
 

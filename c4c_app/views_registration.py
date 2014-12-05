@@ -14,6 +14,7 @@ from django.utils.translation import ugettext as _
 from c4c import settings
 from c4c_app.models import C4CUser, C4CBranch
 
+from smtplib import *
 
 class UserForm(forms.Form):
     username = forms.CharField(label=_('Username'), max_length=100)
@@ -74,7 +75,10 @@ def view_registration(request):
             html_content = htmly.render(d)
             msg = EmailMultiAlternatives(subject, '', from_email, [to])
             msg.attach_alternative(html_content, "text/html")
-            msg.send()
+            try:
+                msg.send()
+            except SMTPDataError:
+                return HttpResponseRedirect('/')
 
             return HttpResponseRedirect('/')
 
