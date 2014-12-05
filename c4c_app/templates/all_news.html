@@ -5,7 +5,7 @@
 {% block title %}Care4Care - {% trans "News"%}{% endblock %}
 {% block content %}
 	<h2>{% if all %}{% trans 'News from Care4Care'%}{%else%}{% trans 'News from my branches'%}{%endif%}</h2>
-	{% if all %}
+	{% if all and user.is_authenticated %}
 	   <a class="btn btn-default" href="{% url 'c4c:all_news_list_Branch' %}"> {% trans "All branch news"%} </a>
 	{% else %}
 	   <a class="btn btn-default" href="{% url 'c4c:all_news_list' %}"> {% trans "All news"%} </a>
