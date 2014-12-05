@@ -4,7 +4,8 @@ from django.http import HttpResponseRedirect
 from django.http import HttpResponse
 from matplotlib.backends.backend_agg import FigureCanvasAgg
 from django.contrib.auth.models import User
-from datetime import datetime
+from c4c_app.models import C4CJob
+import datetime
 
 
 import matplotlib
@@ -14,8 +15,30 @@ from matplotlib.dates import date2num
 
 
 def GraphsView(request):
-    template_name='admin/stat.html'
-    return render_to_response(template_name, context_instance=RequestContext(request))
+    template_name = 'admin/stat.html'
+
+
+    q1 = C4CJob.objects.values_list('duration')
+
+    number=q1.count()
+
+    times=list(q1)
+
+    y = np.zeros(len(times))
+
+    for x in range (0,len(times)):
+        y[x] += times[x]
+    y_sum = np.cumsum(y)
+    z=0
+    for x in range (0,len(y_sum)):
+        z += y_sum[x]
+
+
+    averagetime=z/number
+
+
+
+    return render_to_response(template_name, {'averagetime':averagetime, }, context_instance=RequestContext(request))
 
 def GraphsViewBar(request):
 
@@ -57,8 +80,81 @@ def GraphsViewBar(request):
     bar1 = plt.bar(x,h,width=1.0,bottom=0,color='Green',alpha=0.65,label='Legend')
     plt.legend()"""
 
-    canvas = FigureCanvasAgg(f)    
+    canvas = FigureCanvasAgg(f)
     response = HttpResponse(content_type='image/png')
     canvas.print_png(response)
     matplotlib.pyplot.close(f)   
+    return response
+
+def GraphsTimeworked(request):
+
+    test =datetime.datetime.now()
+    test2=test.year
+
+    q1 = C4CJob.objects.values_list('duration')\
+                                .order_by('start_date')
+
+    q2=q1.filter(start_date__year=test2)
+
+    q3 = C4CJob.objects.values_list('start_date')\
+                                .order_by('start_date')
+
+    datetimes = C4CJob.objects.values_list('start_date', flat=True) \
+                                .order_by('start_date')
+
+    q4=datetimes.filter(start_date__year=test2)
+
+
+    times = list(q2)
+    dates = list(map(lambda d: d.date(), q4))
+
+    # Get some auxilliary values
+    min_date = date2num(dates[0])
+    max_date = date2num(dates[-1])
+    days = max_date - min_date + 1
+
+    # Initialize X and Y axes
+    x = np.arange(min_date, max_date + 1)
+    y = np.zeros(days)
+
+    # Iterate over dates, increase registration array
+    count=0
+    for date in dates:
+        index = int(date2num(date) - min_date)
+        y[index] += times[count]
+        count += 1
+    y_sum = np.cumsum(y)
+
+    # Plot
+    f = plt.figure()
+    line1 = plt.plot_date(x, y_sum, xdate=True, ydate=False, ls='-', ms=0, color='#16171E')
+    plt.fill_between(x, 0, y_sum, facecolor='#D0F3FF')
+    plt.title('Time worked this year')
+    plt.rc('font', size=10)
+
+    canvas = FigureCanvasAgg(f)
+    response = HttpResponse(content_type='image/png')
+    canvas.print_png(response)
+    matplotlib.pyplot.close(f)
+    return response
+
+def ActivePie(request):
+
+    useractive = User.objects.filter(is_active=True)
+    nuseractive=len(useractive)
+    userstot= User.objects.count()
+
+    x= [nuseractive,userstot-nuseractive]
+
+    # Plot
+    f = plt.figure()
+    line1 = plt.pie(x, explode=None, labels=['Active', 'Inactive'], colors=('b', 'g', 'r', 'c', 'm', 'y', 'k', 'w'), autopct=None, pctdistance=0.6, shadow=False, labeldistance=1.1, startangle=None, radius=None)
+    plt.title('Active and inactive users')
+    plt.rc('font', size=20)
+
+
+    canvas = FigureCanvasAgg(f)
+    response = HttpResponse(content_type='image/png')
+    canvas.print_png(response)
+    matplotlib.pyplot.close(f)
     return response

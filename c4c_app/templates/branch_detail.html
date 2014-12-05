@@ -5,7 +5,7 @@
 {% block title %}Care4Care - {% trans "Branch detail"%}{% endblock %}
 
 {% block content %}
-    <h2>{{ c4cbranch.name }} {% trans "details" %}</h2>
+    <h2>{{ c4cbranch.name }} {% trans ": branch details" %}</h2>
     <p>{% trans "Address" %}: {{ c4cbranch.address }}</p>
     <p>{% trans "Main user" %}: <a href="{% url "c4c:user_detail" c4cbranch.main_user.pk %}">{% display_username c4cbranch.main_user %}</a></p>
 

@@ -7,12 +7,12 @@
     {% trans "Username" %} : <input type="text" name="username" value="" size="50" />
     <br />
     {% trans "Password" %} : <input type="password" name="password" value="" size="50" />
-    <br />
+    <br /><br />
 
     {% if invalid %}
     {% trans "Your email and password are incorrect." %}
+    <br /><br />
     {% endif %}
-
     <button id="login_submit" type="submit" class="btn btn-primary">{% trans "submit" %}</button>
 </form>
 
@@ -23,5 +23,5 @@
 {% endblock %}
 
 {% block help %}
-{% trans "This is the login page. Type your username and password to log in." %}
+{% trans "This is the login page. Type your username and password to log in. If you've forgotten your password or do not have an account, click on the appropriate link." %}
 {% endblock help %}
