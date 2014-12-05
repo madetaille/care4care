@@ -9,6 +9,8 @@ from c4c import settings
 from django.template.loader import get_template
 from c4c_app.models import C4CUser
 
+from smtplib import *
+
 def send_email(request, pk):
     return render(request,"send_email.html",{'pk' : pk})
 
@@ -23,6 +25,10 @@ def send_email_user(request, pk):
     html_content = htmly.render(d)
     msg = EmailMultiAlternatives(subject, '', from_email, [to])
     msg.attach_alternative(html_content, "text/html")
-    msg.send()
+    try:
+        msg.send()
+    except SMTPDataError:
+        return HttpResponseRedirect(reverse('c4c:user_detail', args=(pk,)))
+    
     return HttpResponseRedirect(reverse('c4c:user_detail', args=(pk,)))
         

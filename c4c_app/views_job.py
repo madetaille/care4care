@@ -21,6 +21,7 @@ from c4c import settings
 from c4c_app.models import C4CUser, C4CJob, C4CEvent
 from c4c_app.views_error403 import error403
 
+from smtplib import *
 
 def JobCreation(request, job_pk=None, offer=True):
     """ Edit/add a job. Offer is only used when job_pk is None. """
@@ -322,7 +323,10 @@ def send_email_creation_job(job, maker):
     html_content = htmly.render(d)
     msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
     msg.attach_alternative(html_content, "text/html")
-    msg.send()
+    try:
+        msg.send()
+    except SMTPDataError:
+        text_content = ''
 
 
 def send_email_done_job(job):
@@ -335,7 +339,10 @@ def send_email_done_job(job):
     html_content = htmly.render(d)
     msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
     msg.attach_alternative(html_content, "text/html")
-    msg.send()
+    try:
+        msg.send()
+    except SMTPDataError:
+        text_content = ''
 
 
 def send_email_confirm(job):
@@ -348,7 +355,10 @@ def send_email_confirm(job):
     html_content = htmly.render(d)
     msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
     msg.attach_alternative(html_content, "text/html")
-    msg.send()
+    try:
+        msg.send()
+    except SMTPDataError:
+        text_content = ''
 
 
 def send_email_report_admin(job, emails):
@@ -363,7 +373,10 @@ def send_email_report_admin(job, emails):
         html_content = htmly.render(d)
         msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
         msg.attach_alternative(html_content, "text/html")
-        msg.send()
+        try:
+            msg.send()
+        except SMTPDataError:
+            text_content = ''
 
 
 def send_email_canceled_demand(job):
@@ -376,7 +389,10 @@ def send_email_canceled_demand(job):
     html_content = htmly.render(d)
     msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
     msg.attach_alternative(html_content, "text/html")
-    msg.send()
+    try:
+        msg.send()
+    except SMTPDataError:
+        text_content = ''
 
 
 def send_email_canceled_offer(job):
@@ -389,7 +405,10 @@ def send_email_canceled_offer(job):
     html_content = htmly.render(d)
     msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
     msg.attach_alternative(html_content, "text/html")
-    msg.send()
+    try:
+        msg.send()
+    except SMTPDataError:
+        text_content = ''
 
 
 def send_email_delete_offer(job):
@@ -402,7 +421,10 @@ def send_email_delete_offer(job):
     html_content = htmly.render(d)
     msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
     msg.attach_alternative(html_content, "text/html")
-    msg.send()
+    try:
+        msg.send()
+    except SMTPDataError:
+        text_content = ''
 
 
 def send_email_delete_demand(job):
@@ -415,7 +437,10 @@ def send_email_delete_demand(job):
     html_content = htmly.render(d)
     msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
     msg.attach_alternative(html_content, "text/html")
-    msg.send()
+    try:
+        msg.send()
+    except SMTPDataError:
+        text_content = ''
 
 
 def send_email_accepted_offer(job):
@@ -428,7 +453,10 @@ def send_email_accepted_offer(job):
     html_content = htmly.render(d)
     msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
     msg.attach_alternative(html_content, "text/html")
-    msg.send()
+    try:
+        msg.send()
+    except SMTPDataError:
+        text_content = ''
 
 
 def send_email_accepted_demand(job):
@@ -441,4 +469,7 @@ def send_email_accepted_demand(job):
     html_content = htmly.render(d)
     msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
     msg.attach_alternative(html_content, "text/html")
-    msg.send()
+    try:
+        msg.send()
+    except SMTPDataError:
+        text_content = ''
