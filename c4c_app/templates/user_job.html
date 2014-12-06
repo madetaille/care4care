@@ -45,7 +45,7 @@
 	            </div>
 	        {% else %}
 				{% for job in outdated %}
-					<div class="panel panel-default" onclick="location.href='{% url 'c4c:job_detail' job.id %}'">
+					<div id="outdated" class="panel panel-default" onclick="location.href='{% url 'c4c:job_detail' job.id %}'">
 					    <div class="panel-heading">
 					        <h3 class="panel-title"> {{job.title}} </h3>
 					    </div>
@@ -72,7 +72,7 @@
 	            </div>
 	        {% else %}
 	            {% for job in mydemands %}
-	                <div class="panel panel-default" onclick="location.href='{% url 'c4c:job_detail' job.id %}'">
+	                <div id="demands" class="panel panel-default" onclick="location.href='{% url 'c4c:job_detail' job.id %}'">
 	                    <div class="panel-heading">
 	                        <h3 class="panel-title"> {{job.title}} </h3>
 	                    </div>
@@ -97,7 +97,7 @@
 	            </div>
 	        {% else %}
 	            {% for job in myoffers %}
-	                <div class="panel panel-default" onclick="location.href='{% url 'c4c:job_detail' job.id %}'">
+	                <div id="offers" class="panel panel-default" onclick="location.href='{% url 'c4c:job_detail' job.id %}'">
 	                    <div class="panel-heading">
 	                        <h3 class="panel-title"> {{job.title}} </h3>
 	                    </div>

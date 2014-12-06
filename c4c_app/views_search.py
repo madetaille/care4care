@@ -15,7 +15,6 @@ class Search(generic.ListView):
         user_list2 = []
         user_list3 = []
         user_list = []
-        user = get_object_or_404(C4CUser, user=self.request.user)
 
         if 'search' in self.request.GET:
             for word_search in str.split(self.request.GET['search']):
@@ -27,16 +26,13 @@ class Search(generic.ListView):
                 user_list3 += list(User.objects.filter(username__icontains=word_search))
 
                 for i in user_list1:
-                    if i.pk != user.pk:
-                        user_list.append(i)
+                    user_list.append(i)
 
                 for i in user_list2:
-                    if i.pk != user.pk:
-                        user_list.append(i)
+                    user_list.append(i)
 
                 for i in user_list3:
-                    if i.pk != user.pk:
-                        user_list.append(i)
+                    user_list.append(i)
 
             job_list = set(job_list)
             user_list = set(user_list)
