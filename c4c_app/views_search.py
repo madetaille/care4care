@@ -50,13 +50,16 @@ class SearchNetwork(generic.ListView):
 
     def get_queryset(self):
         user_list = []
+        user_list_1 = []
+        user_list_2 = []
+        user_list_3 = []
         user = get_object_or_404(C4CUser, user=self.request.user)
         if 'search' in self.request.GET:
             for word_search in str.split(self.request.GET['search']):
 
-                user_list_1 = list(User.objects.filter(last_name=word_search))
-                user_list_2 = list(User.objects.filter(first_name=word_search))
-                user_list_3 = list(User.objects.filter(username=word_search))
+                user_list_1 += list(User.objects.filter(last_name__icontains=word_search))
+                user_list_2 += list(User.objects.filter(first_name__icontains=word_search))
+                user_list_3 += list(User.objects.filter(username__icontains=word_search))
 
                 for i in user_list_1:
                     if i.pk != user.pk:
