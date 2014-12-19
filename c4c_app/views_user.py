@@ -19,6 +19,8 @@ from django.views import generic
 from c4c import settings
 from c4c_app.models import C4CUser, C4CBranch
 from c4c_app.views_error403 import error403
+
+
 class UserDetail(generic.DetailView):
     model = C4CUser
     template_name = 'user_detail.html'
@@ -78,6 +80,7 @@ def UserEdit(request):
             request.user.c4cuser.save()
             if form.cleaned_data['password'] is not None and form.cleaned_data['password'] != "":
                 request.user.set_password(form.cleaned_data['password'])
+            request.user.save()
 
             return HttpResponseRedirect(reverse('c4c:user_detail', args=(request.user.pk,)))
 
@@ -132,9 +135,8 @@ def resetpassword(request):
                 msg.send()
             except SMTPDataError:
                 return HttpResponseRedirect(reverse('c4c:login'))
-            except SMTPAuthenticationError : 
+            except SMTPAuthenticationError:
                 return HttpResponseRedirect(reverse('c4c:login'))
-
 
             return HttpResponseRedirect(reverse('c4c:login'))
 

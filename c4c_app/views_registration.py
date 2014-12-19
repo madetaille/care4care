@@ -14,6 +14,8 @@ from django.utils.translation import ugettext as _
 
 from c4c import settings
 from c4c_app.models import C4CUser, C4CBranch
+
+
 class UserForm(forms.Form):
     username = forms.CharField(label=_('Username'), max_length=100)
     password = forms.CharField(label=_('Password'), max_length=10, widget=forms.PasswordInput)
@@ -23,7 +25,7 @@ class UserForm(forms.Form):
     last_name = forms.CharField(label=_('Last name'), max_length=40)
     address = forms.CharField(max_length=300)
     birthday = DateField(widget=widgets.AdminDateWidget)
-    avatar = ImageField(label=_('Avatar image'))
+    avatar = ImageField(label=_('Avatar image'), required=False)
     branches = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple)
 
     def __init__(self, *args, **kw):
@@ -61,7 +63,9 @@ def view_registration(request):
                 user.groups.add(C4CBranch.objects.get(pk=branch).group)
             user.save()
             c4cuser = C4CUser(user=user, address=form.cleaned_data['address'], birthday=form.cleaned_data['birthday'])
-            c4cuser.avatar = form.cleaned_data['avatar']
+
+            if 'avatar' in form.cleaned_data:
+                c4cuser.avatar = form.cleaned_data['avatar']
             c4cuser.save()
 
             subject = _('Your account has been successfully created !')
@@ -77,7 +81,7 @@ def view_registration(request):
                 msg.send()
             except SMTPDataError:
                 return HttpResponseRedirect('/')
-            except SMTPAuthenticationError : 
+            except SMTPAuthenticationError:
                 return HttpResponseRedirect('/')
 
             return HttpResponseRedirect('/')
