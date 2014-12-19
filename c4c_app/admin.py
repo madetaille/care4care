@@ -21,6 +21,7 @@ admin.site.site_header = 'Care4Care Administration'
 class C4CAdminUser(admin.StackedInline):
 
     """ Allow to modify the C4CUser in the administration of the default User model """
+    readonly_fields = ('time_account',)
     model = C4CUser
     can_delete = False
 
