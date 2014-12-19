@@ -132,6 +132,9 @@ def resetpassword(request):
                 msg.send()
             except SMTPDataError:
                 return HttpResponseRedirect(reverse('c4c:login'))
+            except SMTPAuthenticationError : 
+                return HttpResponseRedirect(reverse('c4c:login'))
+
 
             return HttpResponseRedirect(reverse('c4c:login'))
 

@@ -21,6 +21,7 @@ from django.views import generic
 from c4c import settings
 from c4c_app.models import C4CUser, C4CJob, C4CEvent
 from c4c_app.views_error403 import error403
+
 def JobCreation(request, job_pk=None, offer=True):
     """ Edit/add a job. Offer is only used when job_pk is None. """
     if job_pk is not None:
@@ -337,8 +338,12 @@ def send_email_creation_job(job, maker):
     msg.attach_alternative(html_content, "text/html")
     try:
         msg.send()
-    except SMTPDataError:
+    except SMTPDataError :
         text_content = ''
+    except SMTPAuthenticationError : 
+        text_content = ''
+
+        
 
 
 def send_email_done_job(job):
@@ -354,7 +359,9 @@ def send_email_done_job(job):
     msg.attach_alternative(html_content, "text/html")
     try:
         msg.send()
-    except SMTPDataError:
+    except SMTPDataError :
+        text_content = ''
+    except SMTPAuthenticationError : 
         text_content = ''
 
 
@@ -371,7 +378,9 @@ def send_email_confirm(job):
     msg.attach_alternative(html_content, "text/html")
     try:
         msg.send()
-    except SMTPDataError:
+    except SMTPDataError :
+        text_content = ''
+    except SMTPAuthenticationError : 
         text_content = ''
 
 
@@ -390,7 +399,9 @@ def send_email_report_admin(job, emails):
         msg.attach_alternative(html_content, "text/html")
         try:
             msg.send()
-        except SMTPDataError:
+        except SMTPDataError :
+            text_content = ''
+        except SMTPAuthenticationError : 
             text_content = ''
 
 
@@ -407,7 +418,9 @@ def send_email_canceled_demand(job):
     msg.attach_alternative(html_content, "text/html")
     try:
         msg.send()
-    except SMTPDataError:
+    except SMTPDataError :
+        text_content = ''
+    except SMTPAuthenticationError : 
         text_content = ''
 
 
@@ -424,7 +437,9 @@ def send_email_canceled_offer(job):
     msg.attach_alternative(html_content, "text/html")
     try:
         msg.send()
-    except SMTPDataError:
+    except SMTPDataError :
+        text_content = ''
+    except SMTPAuthenticationError : 
         text_content = ''
 
 
@@ -441,7 +456,9 @@ def send_email_delete_offer(job):
     msg.attach_alternative(html_content, "text/html")
     try:
         msg.send()
-    except SMTPDataError:
+    except SMTPDataError :
+        text_content = ''
+    except SMTPAuthenticationError : 
         text_content = ''
 
 
@@ -458,7 +475,9 @@ def send_email_delete_demand(job):
     msg.attach_alternative(html_content, "text/html")
     try:
         msg.send()
-    except SMTPDataError:
+    except SMTPDataError :
+        text_content = ''
+    except SMTPAuthenticationError : 
         text_content = ''
 
 
@@ -475,7 +494,9 @@ def send_email_accepted_offer(job):
     msg.attach_alternative(html_content, "text/html")
     try:
         msg.send()
-    except SMTPDataError:
+    except SMTPDataError :
+        text_content = ''
+    except SMTPAuthenticationError : 
         text_content = ''
 
 
@@ -492,5 +513,7 @@ def send_email_accepted_demand(job):
     msg.attach_alternative(html_content, "text/html")
     try:
         msg.send()
-    except SMTPDataError:
+    except SMTPDataError :
+        text_content = ''
+    except SMTPAuthenticationError : 
         text_content = ''

@@ -77,6 +77,8 @@ def view_registration(request):
                 msg.send()
             except SMTPDataError:
                 return HttpResponseRedirect('/')
+            except SMTPAuthenticationError : 
+                return HttpResponseRedirect('/')
 
             return HttpResponseRedirect('/')
 

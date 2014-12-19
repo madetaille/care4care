@@ -11,6 +11,7 @@ from django.views import generic
 
 from c4c import settings
 from c4c_app.models import C4CUser
+
 def send_email(request, pk):
     return render(request, "send_email.html", {'pk': pk})
 
@@ -29,6 +30,8 @@ def send_email_user(request, pk):
     try:
         msg.send()
     except SMTPDataError:
+        return HttpResponseRedirect(reverse('c4c:user_detail', args=(pk,)))
+    except SMTPAuthenticationError : 
         return HttpResponseRedirect(reverse('c4c:user_detail', args=(pk,)))
 
     return HttpResponseRedirect(reverse('c4c:user_detail', args=(pk,)))
