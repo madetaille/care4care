@@ -101,4 +101,4 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'c4c.msn@gmail.com'
 EMAIL_HOST_PASSWORD = 'care4care'
-DEFAULT_FROM_EMAIL = 'care4careProject@gmail.com'
+DEFAULT_FROM_EMAIL = 'c4c.msn@gmail.com'
