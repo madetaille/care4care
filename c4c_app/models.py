@@ -48,6 +48,8 @@ class C4CUser(models.Model):
             count -= donation.amount
         for donation in self.user.donations_received.all():
             count += donation.amount
+        for tad in self.user.time_account_deltas.all():
+            count += tad.amount
         self.time_account = count
         self.save()
 
@@ -124,6 +126,25 @@ class C4CDonation(models.Model):
     def __str__(self):
         """ Allows to clearly see the donations in the administration """
         return "{} > {}: {}".format(str(self.sender), str(self.receiver), self.amount)
+
+
+class C4CTimeAccountDelta(models.Model):
+
+    """ All to add a delta to the time account of a user """
+
+    class Meta:
+        verbose_name = 'Time account delta'
+        verbose_name_plural = 'Time account deltas'
+
+    user = models.ForeignKey(User, related_name='time_account_deltas')
+    amount = models.IntegerField()  # in minutes
+
+    # Allow to track changes
+    tracker = FieldTracker(fields=['user'])
+
+    def __str__(self):
+        """ Allows to clearly see the time account deltas in the administration """
+        return "{}: {}".format(str(self.user), self.amount)
 
 
 class C4CBranch(models.Model):
@@ -254,4 +275,23 @@ def handle_donation_post_save(sender, instance, **kwargs):
 def handle_donation_delete(sender, instance, **kwargs):
     """ Recomputes the time account of the users impacted by the save of the donation """
     user_to_update = _get_set_without_none([instance.sender_id, instance.receiver_id, instance.tracker.previous('sender'), instance.tracker.previous('receiver')])
+    _update_user_time_account_by_id(user_to_update)
+
+
+@receiver(pre_save, sender=C4CTimeAccountDelta)
+def handle_tad_pre_save(sender, instance, **kwargs):
+    """ Registers user that may be impacted by the save of the tad """
+    instance.user_to_update = _get_set_without_none([instance.user, instance.tracker.previous('user')])
+
+
+@receiver(post_save, sender=C4CTimeAccountDelta)
+def handle_tad_post_save(sender, instance, **kwargs):
+    """ Recomputes the time account of the users impacted by the save of the tad """
+    _update_user_time_account_by_id(instance.user_to_update)
+
+
+@receiver(pre_delete, sender=C4CTimeAccountDelta)
+def handle_tad_delete(sender, instance, **kwargs):
+    """ Recomputes the time account of the users impacted by the save of the tad """
+    user_to_update = _get_set_without_none([instance.user, instance.tracker.previous('user')])
     _update_user_time_account_by_id(user_to_update)

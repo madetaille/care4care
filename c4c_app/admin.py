@@ -6,7 +6,8 @@ from django.db.models import Q
 from django.forms import ModelForm
 from django.utils.translation import ugettext_lazy
 
-from c4c_app.models import C4CBranch, C4CDonation, C4CEvent, C4CJob, C4CUser, C4CNews
+from c4c_app.models import C4CBranch, C4CDonation, C4CEvent, C4CJob, C4CUser, C4CNews,\
+    C4CTimeAccountDelta
 admin.site.site_title = 'Care4Care Administration'
 admin.site.site_header = 'Care4Care Administration'
 
@@ -179,3 +180,4 @@ admin.site.register(C4CDonation, C4CAdminDonation)
 admin.site.register(C4CBranch, C4CAdminBranch)
 admin.site.register(C4CEvent, C4CAdminEvent)
 admin.site.register(C4CNews, C4CAdminNews)
+admin.site.register(C4CTimeAccountDelta)
